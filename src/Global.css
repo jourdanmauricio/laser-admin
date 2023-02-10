@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-0 h-8 bg-teal-700 border-none rounded text-white transition ease-in-out delay-100 hover:bg-teal-900 hover:cursor-pointer;
+  }
+  /* Form */
+  .form__title {
+    @apply text-center text-2xl text-teal-700;
+  }
+
+  .form__group {
+    @apply relative py-4 px-0 text-left;
+  }
+  .form_label {
+    @apply block font-normal text-xs text-slate-700;
+  }
+  .form__input {
+    @apply mt-0.5 py-1.5 px-2 w-full text-base border border-solid bg-slate-200 text-gray-700 rounded outline-none;
+  }
+  .input__icon {
+    @apply absolute right-0 p-4 min-w-[40px] text-slate-700;
+  }
+  .input__error {
+    @apply absolute block pt-[3px] text-xs text-red-500 transition-opacity duration-1000 ease-in-out;
+  }
+}
+
+.animation {
+  animation: popup 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+.transition-width {
+  transition: width 0.8s;
+}
+
+.grid-layout {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+@keyframes popup {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
