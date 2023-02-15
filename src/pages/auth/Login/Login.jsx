@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import Spinner from '@/commons/spinner/spinner';
+import Spinner from '@/commons/Spinner/Spinner';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import useLogin from './useLogin';
 

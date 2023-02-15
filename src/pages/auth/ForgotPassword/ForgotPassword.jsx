@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Spinner from '@/commons/spinner/spinner';
+import Spinner from '@/commons/Spinner/Spinner';
 import { Link } from 'react-router-dom';
 import { variables } from '@/config/variables';
 
@@ -9,8 +9,6 @@ const ForgotPassword = () => {
   const [emailError, setEmailError] = useState(null);
   const [messageOk, setMessageOk] = useState(null);
   const [messageErr, setMessageErr] = useState(null);
-
-  // const dispatchNotif = useNotification();
 
   const URL = `${variables.basePath}/auth/recovery`;
 
@@ -75,10 +73,16 @@ const ForgotPassword = () => {
           <p
             className={`pt-[3px] text-sm transition-opacity ${
               messageOk ? 'text-teal-500 opacity-100' : 'opacity-0'
-            } ${messageErr ? 'text-red-500 opacity-100' : 'opacity-0'}`}
+            } `}
+          >
+            {messageOk}
+          </p>
+          <p
+            className={`pt-[3px] text-sm transition-opacity  ${
+              messageErr ? 'text-red-500 opacity-100' : 'opacity-0'
+            }`}
           >
             {messageErr}
-            {messageOk}
           </p>
         </span>
 

@@ -1,10 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   FaCog,
   FaAngleLeft,
   FaAngleRight,
-  FaUsers,
   FaTh,
   FaUserCog,
   FaRegListAlt,
@@ -16,7 +15,9 @@ import { useSelector } from 'react-redux';
 
 const Layout = (props) => {
   let user = useSelector((state) => state.user.user);
+
   const [minItems, setMinItems] = useState(false);
+
   const handleMinItems = () => {
     setMinItems(!minItems);
   };
@@ -25,7 +26,7 @@ const Layout = (props) => {
       <Nav />
       <main className="flex w-full">
         <div
-          className={`w-44 h-full top-12 left-0 bg-slate-100 overflow-x-hidden pt-5 whitespace-nowrap transition-width 
+          className={`h-full top-12 left-0 bg-slate-100 overflow-x-hidden pt-5 whitespace-nowrap transition-width 
           ${minItems ? 'w-52' : 'w-12'}
 					`}
         >
@@ -75,7 +76,7 @@ const Layout = (props) => {
               </NavLink>
             </>
           )}
-          {user.role === 'superadmin' && (
+          {/* {user.role === 'superadmin' && (
             <NavLink
               to="/users"
               className={({ isActive }) =>
@@ -87,7 +88,7 @@ const Layout = (props) => {
               <FaUsers className="mr-4 inline-block" />
               <span className="align-middle">Usuarios</span>
             </NavLink>
-          )}
+          )} */}
           <NavLink
             className={({ isActive }) =>
               `py-2 pl-4 pr-[14px] no-underline text-lg block text-left hover:text-purple-500 ${

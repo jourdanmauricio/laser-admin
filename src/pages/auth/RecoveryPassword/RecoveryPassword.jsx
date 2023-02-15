@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Spinner from '@/commons/spinner/spinner';
+import Spinner from '@/commons/Spinner/Spinner';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
