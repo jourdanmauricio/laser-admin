@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
-import { putUser } from '../../../services/api/users.api';
+import { putUserChangePass } from '../../../services/api/users.api';
 import { useSelector } from 'react-redux';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
 import Spinner from '../../../commons/Spinner/Spinner';
@@ -48,7 +48,7 @@ const ChangePassword = ({ handleCancel }) => {
 
     try {
       setLoading(true);
-      const response = await putUser(user.id, newPass);
+      const response = await putUserChangePass(user.id, newPass);
       console.log(response);
       dispatchNotif({
         type: 'SUCCESS',
@@ -74,7 +74,7 @@ const ChangePassword = ({ handleCancel }) => {
       >
         <h2 className="form__title">Cambiar password</h2>
         <div className="form__group">
-          <label className="form_label">Nueva contraseña</label>
+          <label className="form__label">Nueva contraseña</label>
           <i
             className="input__icon"
             onClick={() =>
@@ -105,7 +105,7 @@ const ChangePassword = ({ handleCancel }) => {
           </p>
         </div>
         <div className="form__group">
-          <label className="form_label">Confirmación contraseña</label>
+          <label className="form__label">Confirmación contraseña</label>
           <i
             className="input__icon"
             onClick={() =>
@@ -137,7 +137,7 @@ const ChangePassword = ({ handleCancel }) => {
           </p>
         </div>
 
-        <button className="mt-8 btn-primary" type="submit">
+        <button className="mt-8 btn__primary" type="submit">
           Cambiar contraseña
         </button>
       </form>

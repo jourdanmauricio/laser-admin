@@ -27,24 +27,44 @@ const Post = () => {
         onSubmit={handleSubmit}
         className="bg-white p-5 flex justify-center items-center flex-col"
       >
+        <div className="form__group w-full">
+          <label className="form__label">Título</label>
+          <input
+            onChange={(e) => handleChange(e.target.name, e.target.value)}
+            className="form__input border-gray-500 w-full"
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Título de post"
+            value={editPost.title}
+          />
+          <p
+            className={`input__error ${
+              error.title ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            {error.title}
+          </p>
+        </div>
+
         <div className="flex flex-col sm:flex-row justify-start items-start sm:items-center gap-4 sm:gap-8 w-full">
           <div className="form__group w-full">
-            <label className="form_label">Título</label>
+            <label className="form__label">Slug</label>
             <input
               onChange={(e) => handleChange(e.target.name, e.target.value)}
               className="form__input border-gray-500 w-full"
               type="text"
-              id="title"
-              name="title"
-              placeholder="Título de post"
-              value={editPost.title}
+              id="slug"
+              name="slug"
+              placeholder="Url del post"
+              value={editPost.slug}
             />
             <p
               className={`input__error ${
-                error.title ? 'opacity-100' : 'opacity-0'
+                error.slug ? 'opacity-100' : 'opacity-0'
               }`}
             >
-              {error.title}
+              {error.slug}
             </p>
           </div>
           <div className="form__group min-w-fit mt-0 sm:mt-4">
@@ -67,7 +87,7 @@ const Post = () => {
         </div>
 
         <div className="form__group w-full">
-          <label className="form_label">Resumen</label>
+          <label className="form__label">Resumen</label>
           <textarea
             onChange={(e) => handleChange(e.target.name, e.target.value)}
             className="form__input border-gray-500 w-full"
@@ -94,7 +114,7 @@ const Post = () => {
         />
 
         <div className="form__group w-full editor">
-          <label className="form_label">Contenido</label>
+          <label className="form__label">Contenido</label>
           <EditorToolbar toolbarId={'t1'} />
           <ReactQuill
             theme="snow"
@@ -109,13 +129,13 @@ const Post = () => {
         <div className="actions">
           <button
             onClick={handleCancel}
-            className="mt-8 btn-secondary"
+            className="mt-8 btn__secondary"
             type="button"
           >
             Cancelar
           </button>
 
-          <button className="mt-8 btn-primary" type="submit">
+          <button className="mt-8 btn__primary" type="submit">
             {action === 'NEW' ? 'Crear post' : 'Editar Post'}
           </button>
         </div>

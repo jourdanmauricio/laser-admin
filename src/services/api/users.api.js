@@ -39,13 +39,28 @@ export const postUser = async (user) => {
   }
 };
 
-export const putUser = async (id, newPassword) => {
+export const putUserChangePass = async (id, newPassword) => {
   try {
     const newUser = await axiosApi.put(`/users/change-password/${id}`, {
       id,
       newPassword,
     });
     return newUser;
+  } catch (error) {
+    let message = '';
+    message = error.response.status
+      ? `${error.response.status}: ${error.response.statusText} - ${error.response.data}`
+      : 'Error modificando el usuario 😞';
+    throw message;
+  }
+};
+
+export const putUser = async (user) => {
+  try {
+    const { id } = user;
+    delete user.id;
+    const newUser = await axiosApi.put(`/users/${id}`, user);
+    return newUser.data;
   } catch (error) {
     let message = '';
     message = error.response.status

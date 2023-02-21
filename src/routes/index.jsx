@@ -39,6 +39,8 @@ const RecoveryPassword = React.lazy(() =>
 const Dashboard = React.lazy(() => import('@/pages/Dashboard/Dashboard'));
 const Profile = React.lazy(() => import('@/pages/Profile/Profile'));
 const Settings = React.lazy(() => import('@/pages/Settings/Settings'));
+const Media = React.lazy(() => import('@/pages/Media/Media'));
+const Patients = React.lazy(() => import('@/pages/Patients/Patients'));
 const Blog = React.lazy(() => import('@/pages/Blog/Blog'));
 
 function AppRoutes() {
@@ -75,6 +77,27 @@ function AppRoutes() {
                   </AuthRoute>
                 }
               />
+              <Route
+                path="/media"
+                element={
+                  <AuthRoute>
+                    <PostsProvider>
+                      <Media />
+                    </PostsProvider>
+                  </AuthRoute>
+                }
+              />
+              <Route
+                path="/patients"
+                element={
+                  <AuthRoute>
+                    <PostsProvider>
+                      <Patients />
+                    </PostsProvider>
+                  </AuthRoute>
+                }
+              />
+
               <Route
                 path="/blog"
                 element={

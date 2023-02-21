@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
 import { getAllPosts, setMessage } from '@/store/posts';
+import { FaCheck, FaTimes } from 'react-icons/fa';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,7 +17,18 @@ const columns = [
   },
   {
     name: 'Orden',
+    width: '90px',
     selector: (post) => post.order,
+  },
+  {
+    name: 'Pág Ppal',
+    width: '90px',
+    cell: (row) =>
+      row.main === true ? (
+        <FaCheck className="text-teal-500 text-xl" />
+      ) : (
+        <FaTimes className="text-red-500 text-xl" />
+      ),
   },
 ];
 
@@ -39,7 +51,7 @@ const useBlog = () => {
   }, [posts]);
 
   useEffect(() => {
-    if (message)
+    if (message) {
       if (status === 'failed') {
         dispatchNotif({
           type: 'ERROR',
@@ -52,6 +64,8 @@ const useBlog = () => {
           message,
         });
       }
+      dispatch(setMessage({ message: '' }));
+    }
   }, [message]);
 
   useEffect(() => {

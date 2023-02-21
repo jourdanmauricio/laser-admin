@@ -8,12 +8,13 @@ import {
 
 const initialPost = {
   title: '',
+  slug: '',
   resume: '',
   image: '',
   alt_image: '',
   content: '',
   order: 0,
-  main: 0,
+  main: false,
   user_id: 0,
 };
 
@@ -122,6 +123,7 @@ let postsSlice = createSlice({
     handlePostEdit: (state, payload) => {
       state.action = 'EDIT';
       state.editPost = payload.payload;
+      state.message = null;
     },
     setEditPost: (state, { payload }) => {
       state.editPost = {
@@ -154,7 +156,7 @@ let postsSlice = createSlice({
     [onCreatePost.pending]: (state) => {
       state.status = 'loading';
       state.error = '';
-      state.editPost = initialPost;
+      // state.editPost = initialPost;
     },
     [onCreatePost.fulfilled]: (state, action) => {
       state.posts = [action.payload, ...state.posts];

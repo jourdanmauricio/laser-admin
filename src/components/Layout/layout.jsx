@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   FaCog,
@@ -8,6 +8,7 @@ import {
   FaUserCog,
   FaRegListAlt,
   FaBlogger,
+  FaRegImages,
 } from 'react-icons/fa';
 
 import Nav from '../Nav/nav';
@@ -26,7 +27,7 @@ const Layout = (props) => {
       <Nav />
       <main className="flex w-full">
         <div
-          className={`h-full top-12 left-0 bg-slate-100 overflow-x-hidden pt-5 whitespace-nowrap transition-width 
+          className={`hidden sm:inline-block h-full top-12 left-0 bg-slate-100 overflow-x-hidden pt-5 whitespace-nowrap transition-width 
           ${minItems ? 'w-52' : 'w-12'}
 					`}
         >
@@ -99,6 +100,18 @@ const Layout = (props) => {
           >
             <FaRegListAlt className="mr-4 inline-block" />
             <span className="align-middle">Pacientes</span>
+          </NavLink>
+
+          <NavLink
+            className={({ isActive }) =>
+              `py-4 pl-4 pr-[14px] no-underline text-lg block text-left hover:text-purple-500 ${
+                isActive ? 'text-purple-700' : ''
+              } `
+            }
+            to="/media"
+          >
+            <FaRegImages className="mr-4 inline-block" />
+            <span className="align-middle">Media</span>
           </NavLink>
 
           <NavLink

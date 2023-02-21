@@ -7,6 +7,7 @@ import Layout from '@/components/Layout/layout';
 import Message from '@/commons/Message/Message';
 import Post from './Post/Post';
 import PostDetail from './PostDetail/PostDetail';
+import Spinner from '../../commons/Spinner/Spinner';
 
 const Blog = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const Blog = () => {
 
   return (
     <Layout>
+      {status === 'loading' && <Spinner />}
       <h1 className="title">
         {action === 'NEW' && 'Nuevo post'}
         {action === 'EDIT' && 'Editar Post'}
@@ -26,7 +28,7 @@ const Blog = () => {
         <>
           <button
             onClick={() => dispatch(setAction({ action: 'NEW' }))}
-            className="btn-primary"
+            className="btn__primary"
           >
             Nuevo
           </button>

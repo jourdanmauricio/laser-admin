@@ -35,6 +35,7 @@ export const updatePost = async (data2) => {
     console.log('UPD', data);
     const id = data.id;
     delete data.id;
+    delete data.created;
     delete data.createdAt;
     delete data.updatedAt;
 

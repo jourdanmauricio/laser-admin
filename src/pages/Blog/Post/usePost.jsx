@@ -7,12 +7,15 @@ import {
 } from '@/store/posts';
 import { useState } from 'react';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
+import { setMessage } from '../../../store/posts';
 
 const usePost = () => {
   const dispatch = useDispatch();
   const dispatchNotif = useNotification();
   const [error, setError] = useState({
-    name: null,
+    title: null,
+    slug: null,
+    main: false,
     resume: null,
     image: null,
     alt_image: null,
@@ -36,10 +39,10 @@ const usePost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let error = false;
-    const fields = ['title', 'resume', 'image', 'alt_image', 'content'];
+    const fields = ['title', 'slug', 'resume', 'image', 'alt_image', 'content'];
     console.log('Submit', editPost, action);
-    if (editPost.title.length > 50) {
-      setError({ ...error, title: 'Cantidad máx 50 caracteres' });
+    if (editPost.title.length > 250) {
+      setError({ ...error, title: 'Cantidad máx 250 caracteres' });
       error = true;
     }
 

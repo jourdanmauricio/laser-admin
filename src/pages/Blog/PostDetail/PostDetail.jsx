@@ -16,11 +16,16 @@ const PostDetail = ({ data }) => {
 
     dispatch(onChangeOrder({ editPost: orderPost, position: data.order }));
   };
+
+  const onEditPost = (post) => {
+    dispatch(handlePostEdit(post));
+  };
+
   return (
     <>
       <div className="flex justify-end gap-4">
         <button
-          onClick={() => dispatch(handlePostEdit(data))}
+          onClick={() => onEditPost(data)}
           className="hover:bg-slate-200 p-2 rounded-full cursor-pointer"
         >
           <FaEdit className="text-blue-500 text-xl" />
@@ -47,8 +52,21 @@ const PostDetail = ({ data }) => {
         </button>
       </div>
 
-      <div className="form__group w-full">
-        <label className="form_label">Resumen</label>
+      <div className="form__group w-full px-10">
+        <label className="form__label">Slug</label>
+        <input
+          disabled
+          className="form__input border-gray-500 w-full"
+          name="resume"
+          id="resume"
+          cols="30"
+          rows="2"
+          value={data.slug}
+        ></input>
+      </div>
+
+      {/* <div className="form__group w-full p-10">
+        <label className="form__label">Resumen</label>
         <textarea
           disabled
           className="form__input border-gray-500 w-full"
@@ -58,10 +76,10 @@ const PostDetail = ({ data }) => {
           rows="2"
           value={data.resume}
         ></textarea>
-      </div>
+      </div> */}
 
-      <div className="form__group w-full">
-        <label className="form_label">Contenido</label>
+      {/* <div className="form__group w-full">
+        <label className="form__label">Contenido</label>
 
         <div className="ql-editor form__input border-gray-500 w-full">
           <div
@@ -69,7 +87,7 @@ const PostDetail = ({ data }) => {
             dangerouslySetInnerHTML={{ __html: data.content }}
           />
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
