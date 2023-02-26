@@ -20,6 +20,27 @@ body {
   margin: auto;
 }
 
+@layer base {
+  h1 {
+    @apply mx-0 my-[0.67em] block text-[3em];
+  }
+  h2 {
+    @apply mx-0 my-[0.83em] block text-[2em];
+  }
+  h3 {
+    @apply mx-0 my-[1em] block text-[1.17em];
+  }
+  h4 {
+    @apply mx-0 my-[1.33em] block text-base;
+  }
+  h5 {
+    @apply mx-0 my-[1.67em] block text-[0.83em];
+  }
+  h6 {
+    @apply mx-0 my-[2.33em] block text-[0.67em];
+  }
+}
+
 @layer components {
   .title {
     @apply text-center text-2xl text-teal-700;

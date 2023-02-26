@@ -1,4 +1,8 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+  configureStore,
+  createAsyncThunk,
+  createSlice,
+} from '@reduxjs/toolkit';
 import { fetchSettings, updateSettings } from '../services/api/settings.api';
 
 export const getSettings = createAsyncThunk(
@@ -7,7 +11,7 @@ export const getSettings = createAsyncThunk(
     try {
       const settings = await fetchSettings();
       console.log('settings', settings);
-      return settings.setting;
+      return settings;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -18,8 +22,9 @@ export const putSettings = createAsyncThunk(
   'settings/putSettings',
   async (data, { rejectWithValue }) => {
     try {
+      console.log('data', data);
       const settings = await updateSettings(data);
-      return settings.setting;
+      return settings;
     } catch (err) {
       return rejectWithValue(err);
     }
@@ -30,14 +35,44 @@ let settingsSlice = createSlice({
   name: 'settings',
   initialState: {
     settings: null,
+    editSettings: null,
     status: '',
     error: '',
+    action: 'VIEW',
   },
   reducers: {
     logOutSettings: (state) => {
       state.settings = null;
+      state.editSettings = null;
       state.status = '';
       state.error = '';
+    },
+    initEditSettings: (state) => {
+      state.action = 'EDIT';
+      state.editSettings = state.settings;
+      state.message = null;
+    },
+    setSettings: (state, { payload }) => {
+      console.log('payload store', payload);
+      console.log('store state', state.editSettings);
+      const feature = state.editSettings.find(
+        (setting) => setting.feature === payload.feature
+      );
+      console.log('feature store', feature);
+      feature.value = payload.value;
+
+      const newEditSettings = state.editSettings.map((setting) =>
+        setting.id === feature.id ? feature : setting
+      );
+
+      state.editSettings = newEditSettings;
+      //  state.editSettings = {
+      //    ...state.editSettings,
+      //    [payload.name]: payload.value,
+      //  };
+
+      // state.status = '';
+      // state.error = '';
     },
   },
   extraReducers: {
@@ -51,6 +86,7 @@ let settingsSlice = createSlice({
       state.settings = action.payload;
       state.status = 'success';
       state.error = '';
+      state.editSettings = state.settings;
     },
     [getSettings.rejected]: (state, action) => {
       state.settings = null;
@@ -77,6 +113,7 @@ let settingsSlice = createSlice({
   },
 });
 
-export const { logOutSettings } = settingsSlice.actions;
+export const { logOutSettings, initEditSettings, setSettings } =
+  settingsSlice.actions;
 
 export default settingsSlice.reducer;

@@ -7,7 +7,6 @@ import {
 } from '@/store/posts';
 import { useState } from 'react';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
-import { setMessage } from '../../../store/posts';
 
 const usePost = () => {
   const dispatch = useDispatch();

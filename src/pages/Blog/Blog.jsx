@@ -7,7 +7,7 @@ import Layout from '@/components/Layout/layout';
 import Message from '@/commons/Message/Message';
 import Post from './Post/Post';
 import PostDetail from './PostDetail/PostDetail';
-import Spinner from '../../commons/Spinner/Spinner';
+import Spinner from '@/commons/Spinner/Spinner';
 
 const Blog = () => {
   const dispatch = useDispatch();

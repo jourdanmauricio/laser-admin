@@ -1,5 +1,6 @@
 import AppRoutes from './routes';
-import './Global.css';
+import '@/styles/Global.css';
+import '@/styles/quill.snow.css';
 
 function App() {
   return <AppRoutes />;

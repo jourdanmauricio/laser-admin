@@ -64,30 +64,6 @@ const PostDetail = ({ data }) => {
           value={data.slug}
         ></input>
       </div>
-
-      {/* <div className="form__group w-full p-10">
-        <label className="form__label">Resumen</label>
-        <textarea
-          disabled
-          className="form__input border-gray-500 w-full"
-          name="resume"
-          id="resume"
-          cols="30"
-          rows="2"
-          value={data.resume}
-        ></textarea>
-      </div> */}
-
-      {/* <div className="form__group w-full">
-        <label className="form__label">Contenido</label>
-
-        <div className="ql-editor form__input border-gray-500 w-full">
-          <div
-            className="relative"
-            dangerouslySetInnerHTML={{ __html: data.content }}
-          />
-        </div>
-      </div> */}
     </>
   );
 };

@@ -7,6 +7,7 @@ import { setEditPost } from '../../../store/posts';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { updProfile } from '../../../store/user';
+import { setSettings } from '../../../store/settings';
 
 const Gallery = ({
   images,
@@ -66,6 +67,14 @@ const Gallery = ({
     if (type === 'profile') {
       dispatch(updProfile({ id: user.id, image: image.secure_url }));
       navigate('/profile');
+    }
+    if (type === 'logo') {
+      dispatch(setSettings({ feature: 'logo', value: image.secure_url }));
+      navigate('/configuracion');
+    }
+    if (type === 'hero') {
+      dispatch(setSettings({ feature: 'hero', value: image.secure_url }));
+      navigate('/configuracion');
     }
   };
 

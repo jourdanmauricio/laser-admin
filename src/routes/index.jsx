@@ -42,6 +42,7 @@ const Settings = React.lazy(() => import('@/pages/Settings/Settings'));
 const Media = React.lazy(() => import('@/pages/Media/Media'));
 const Patients = React.lazy(() => import('@/pages/Patients/Patients'));
 const Blog = React.lazy(() => import('@/pages/Blog/Blog'));
+const Clinics = React.lazy(() => import('@/pages/Clinics/Clinics'));
 
 function AppRoutes() {
   return (
@@ -62,7 +63,7 @@ function AppRoutes() {
                 }
               />
               <Route
-                path="/profile"
+                path="/perfil"
                 element={
                   <AuthRoute>
                     <Profile />
@@ -70,7 +71,7 @@ function AppRoutes() {
                 }
               />
               <Route
-                path="/settings"
+                path="/configuracion"
                 element={
                   <AuthRoute>
                     <Settings />
@@ -88,7 +89,7 @@ function AppRoutes() {
                 }
               />
               <Route
-                path="/patients"
+                path="/pacientes"
                 element={
                   <AuthRoute>
                     <PostsProvider>
@@ -97,13 +98,22 @@ function AppRoutes() {
                   </AuthRoute>
                 }
               />
-
               <Route
                 path="/blog"
                 element={
                   <AuthRoute>
                     <PostsProvider>
                       <Blog />
+                    </PostsProvider>
+                  </AuthRoute>
+                }
+              />
+              <Route
+                path="/clinicas"
+                element={
+                  <AuthRoute>
+                    <PostsProvider>
+                      <Clinics />
                     </PostsProvider>
                   </AuthRoute>
                 }
