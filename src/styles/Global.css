@@ -45,11 +45,9 @@ body {
   .title {
     @apply text-center text-2xl text-teal-700;
   }
-
   .actions {
     @apply w-full flex justify-between;
   }
-
   .btn__primary {
     @apply px-4 py-0 h-8 bg-teal-700 border-none rounded text-white transition ease-in-out delay-100 hover:bg-teal-900 hover:cursor-pointer;
   }
@@ -61,7 +59,6 @@ body {
   .form__title {
     @apply text-center text-2xl text-teal-700;
   }
-
   .form__group {
     @apply relative py-4 px-0 text-left;
   }
@@ -77,6 +74,12 @@ body {
   .input__error {
     @apply absolute block pt-[3px] text-xs text-red-500 transition-opacity duration-1000 ease-in-out;
   }
+  .form__input--color {
+    @apply p-1 h-10 rounded;
+  }
+  .form__input--colorDesc {
+    @apply w-[40%] ml-[5%] mr-[10%];
+  }
 
   /*   Tabs   */
   .tabs__container {
@@ -88,9 +91,6 @@ body {
   .tabs {
     @apply relative p-[15px] text-base text-center w-1/2 bg-gray-200 cursor-pointer border-b border-solid border-gray-500 outline-0 flex items-center justify-center gap-4;
   }
-  /* .tabs span {
-    @apply hidden;
-  } */
   .tabs:not(:last-child) {
     border-right: 1px solid rgba(0, 0, 0, 0.274);
   }
@@ -120,11 +120,40 @@ body {
   .tab__content hr {
     @apply w-full h-0.5 bg-gray-800 mb-1;
   }
-  /* .tab__content p {
-    @apply w-full h-full;
-  } */
   .active__content {
     @apply block;
+  }
+
+  /* MENU */
+  .menu {
+    @apply flex flex-row justify-between sticky min-h-[50px] top-0 z-50 items-center shadow-[0_0_9px_0px_rgba(41,41,41,0.25)] px-6 py-0 bg-navBgColor;
+  }
+  .menu__icon {
+    @apply lg:hidden hover:cursor-pointer;
+  }
+  .menu__desktop {
+    @apply hidden lg:flex justify-between items-center;
+  }
+  .menu__ul {
+    @apply list-none p-0 m-0 flex items-center h-[50px] ml-3;
+  }
+  .menu__link {
+    @apply ml-4 no-underline font-semibold hover:border-b hover:border-solid hover:border-b-navHoverColor;
+  }
+  .menu__item {
+    @apply block px-2 py-1 text-navTextColor hover:text-navHoverColor;
+  }
+  .menu__mobile {
+    @apply absolute top-[45px] left-0 w-[50%] bg-slate-200 -z-10;
+  }
+  .menu__ul-mobile {
+    @apply min-h-screen justify-between px-0 list-none;
+  }
+  .menu__link-mobile {
+    @apply hover:bg-gray-600 transition duration-300 ease-in-out;
+  }
+  .menu__mobile-item {
+    @apply no-underline text-black font-normal px-6 py-6 block;
   }
 }
 

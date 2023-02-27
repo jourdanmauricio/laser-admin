@@ -81,7 +81,7 @@ const Profile = () => {
             <input
               onChange={(e) => handleChange(e.target.name, e.target.value)}
               className={`form__input ${
-                !error.name ? 'border-gray-500 ' : 'border-red-500'
+                !error.name ? 'border-gray-500' : 'border-red-500'
               }`}
               type="text"
               id="name"

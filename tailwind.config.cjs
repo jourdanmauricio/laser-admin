@@ -2,7 +2,14 @@
 module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        navHoverColor: 'var(--navHoverColor)',
+        navBgColor: 'var(--navBgColor)',
+        navTextColor: 'var(--navTextColor)',
+        navCurrentPageColor: 'var(--navCurrentPageColor)',
+      },
+    },
   },
   plugins: [],
 };

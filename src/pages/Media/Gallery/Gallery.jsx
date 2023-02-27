@@ -68,13 +68,13 @@ const Gallery = ({
       dispatch(updProfile({ id: user.id, image: image.secure_url }));
       navigate('/profile');
     }
-    if (type === 'logo') {
-      dispatch(setSettings({ feature: 'logo', value: image.secure_url }));
-      navigate('/configuracion');
+    if (type === 'logoImage') {
+      dispatch(setSettings({ feature: 'logoImage', value: image.secure_url }));
+      navigate(`/configuracion?type=${type}`);
     }
-    if (type === 'hero') {
-      dispatch(setSettings({ feature: 'hero', value: image.secure_url }));
-      navigate('/configuracion');
+    if (type === 'heroImage') {
+      dispatch(setSettings({ feature: 'heroImage', value: image.secure_url }));
+      navigate(`/configuracion?type=${type}`);
     }
   };
 
