@@ -5,12 +5,12 @@ import {
   onUpdatePost,
   setEditPost,
 } from '@/store/posts';
-import { useState } from 'react';
-import { useNotification } from '@/commons/Notifications/NotificationProvider';
+import { useRef, useState } from 'react';
+import { useModal } from '@/hooks/useModal';
+import useEditor from '@/config/useEditor';
 
 const usePost = () => {
-  const dispatch = useDispatch();
-  const dispatchNotif = useNotification();
+  const [isOpenModal, openModal, closeModal] = useModal(false);
   const [error, setError] = useState({
     title: null,
     slug: null,
@@ -21,25 +21,57 @@ const usePost = () => {
     content: null,
   });
   let { editPost, action } = useSelector((state) => state.posts);
+  const dispatch = useDispatch();
+  const quillRef = useRef();
+
+  const imageHandler = async () => {
+    openModal();
+  };
+
+  const { modules } = useEditor({ imageHandler });
 
   const onContent = (value) => {
     dispatch(setEditPost({ name: 'content', value }));
   };
 
-  const handleChange = (name, value) => {
+  const onBlurTitle = (value) => {
+    if (action === 'NEW' && editPost.slug === '') {
+      const slug = value
+        .trim()
+        .replace(/\s+/g, '-')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+      dispatch(setEditPost({ name: 'slug', value: slug }));
+    }
+  };
+
+  const onChange = (name, value) => {
     dispatch(setEditPost({ name, value }));
     setError({ ...error, [name]: null });
   };
 
-  const handleCancel = () => {
+  const onCancelPost = () => {
     dispatch(onCancel());
   };
 
-  const handleSubmit = async (e) => {
+  const handleSelect = (image) => {
+    closeModal();
+    const quillObj = quillRef.current.getEditor();
+    console.log('quillObj', quillObj);
+    quillObj.focus();
+    const position = quillObj.getSelection();
+    console.log('position', position);
+    quillObj.editor.insertEmbed(position.index, 'image', image, 'user');
+    const changes = quillRef.current.unprivilegedEditor.getHTML();
+
+    onContent(changes);
+  };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
     let error = false;
     const fields = ['title', 'slug', 'resume', 'image', 'alt_image', 'content'];
-    console.log('Submit', editPost, action);
     if (editPost.title.length > 250) {
       setError({ ...error, title: 'Cantidad máx 250 caracteres' });
       error = true;
@@ -78,10 +110,18 @@ const usePost = () => {
     setEditPost,
     editPost,
     error,
+    isOpenModal,
+    openModal,
+    closeModal,
+    quillRef,
+    modules,
     onContent,
-    handleChange,
-    handleSubmit,
-    handleCancel,
+    imageHandler,
+    onChange,
+    onSubmit,
+    onCancelPost,
+    handleSelect,
+    onBlurTitle,
   };
 };
 

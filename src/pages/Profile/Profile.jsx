@@ -1,12 +1,9 @@
-import axios from 'axios';
-import { variables } from '@/config/variables';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '@/components/Layout/layout';
 import { Modal } from '@/commons/Modal/Modal';
 import { useModal } from '@/hooks/useModal';
 import ChangePassword from './ChangePassword/ChangePassword';
-import UploadImage from '@/commons/UploadImage/UploadImage';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
 import { delMessage, updProfile } from '../../store/user';
 import Spinner from '@/commons/Spinner/Spinner';
@@ -15,7 +12,6 @@ import AddPicture from './AddPicture/AddPicture';
 const Profile = () => {
   const [error, setError] = useState({ name: null });
   const [profile, setProfile] = useState({});
-  const [picture, setPicture] = useState(null);
   const dispatch = useDispatch();
   const dispatchNotif = useNotification();
   const [isOpenModalPass, openModalPass, closeModalPass] = useModal(false);
@@ -105,6 +101,7 @@ const Profile = () => {
           </button>
         </form>
       </div>
+
       <Modal isOpenModal={isOpenModalPass} closeModal={closeModalPass}>
         <ChangePassword handleCancel={handleCancel} />
       </Modal>

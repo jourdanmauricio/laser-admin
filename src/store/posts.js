@@ -114,6 +114,13 @@ let postsSlice = createSlice({
   },
   reducers: {
     setAction: (state, { payload }) => {
+      if (payload.action === 'NEW') {
+        state.editPost = {
+          ...state.editPost,
+          order: state.posts.length + 1,
+          main: true,
+        };
+      }
       state.action = payload.action;
     },
     onCancel: (state) => {

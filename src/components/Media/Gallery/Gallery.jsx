@@ -14,6 +14,7 @@ const Gallery = ({
   isOpenModalDetail,
   openModalDetail,
   closeModalDetail,
+  handleSelect,
 }) => {
   const isSelected = (asset_id) => {
     return asset_id === selected?.asset_id ? false : true;
@@ -31,6 +32,7 @@ const Gallery = ({
 
   const onViewImage = (image) => {
     setSelected(image);
+    console.log('image', image);
     openModalDetail();
   };
 
@@ -38,6 +40,10 @@ const Gallery = ({
     setSelected(null);
     closeModalDelete();
     closeModalDetail();
+  };
+
+  const onDoubleClick = (image) => {
+    handleSelect(image.secure_url);
   };
 
   return (
@@ -48,7 +54,7 @@ const Gallery = ({
             <div
               key={image.asset_id}
               onClick={() => onSelect(image)}
-              onDoubleClick={() => onViewImage(image)}
+              onDoubleClick={() => onDoubleClick(image)}
               className={`relative flex justify-center items-center rounded border border-solid  shadow-[0_1px_4px_rgba(0,0,0,0.16)] min-h-[200px] max-w-[200px] mx-auto group ${
                 isSelected(image.asset_id)
                   ? 'border-gray-500'
@@ -79,7 +85,20 @@ const Gallery = ({
           ))}
       </div>
 
-      <Modal isOpenModal={isOpenModalDelete} closeModal={closeModalDelete}>
+      {selected && (
+        <button
+          onClick={() => onDoubleClick(selected)}
+          className="btn__primary mb-5 block ml-auto"
+        >
+          Seleccionar
+        </button>
+      )}
+
+      <Modal
+        isOpenModal={isOpenModalDelete}
+        closeModal={closeModalDelete}
+        capa="2"
+      >
         <DeleteImage
           image={selected}
           handleCancelDelete={handleCancelDelete}
@@ -87,7 +106,11 @@ const Gallery = ({
         />
       </Modal>
 
-      <Modal isOpenModal={isOpenModalDetail} closeModal={closeModalDetail}>
+      <Modal
+        isOpenModal={isOpenModalDetail}
+        closeModal={closeModalDetail}
+        capa="2"
+      >
         <DetailImage image={selected} handleCancelDelete={handleCancelDelete} />
       </Modal>
     </>

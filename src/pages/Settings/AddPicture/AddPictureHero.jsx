@@ -1,24 +1,29 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import { quillSimpleModules } from '@/config/constants';
 import { setSettings } from '@/store/settings';
+import { useModal } from '@/hooks/useModal';
+import { Modal } from '@/commons/Modal/Modal';
+import Media from '@/components/Media/Media';
 
 const AddPictureHero = ({ heroImage }) => {
+  const [isOpenModal, openModal, closeModal] = useModal(false);
+
   const dispatch = useDispatch();
-  let navigate = useNavigate();
   const { editSettings } = useSelector((state) => state.settings);
+
   const heroText = editSettings.find(
     (setting) => setting.feature === 'heroText'
   );
-  const heroPos = editSettings.find((setting) => setting.feature === 'heroPos');
   const heroOpacity = editSettings.find(
     (setting) => setting.feature === 'heroOpacity'
   );
-
-  const onClickSelImage = () => {
-    navigate(`/media?type=${heroImage.feature}`);
-  };
+  document.documentElement.style.setProperty(
+    '--heroOpacity',
+    heroOpacity.value
+  );
+  const heroTop = editSettings.find((setting) => setting.feature === 'heroTop');
+  document.documentElement.style.setProperty('--heroTop', heroTop.value);
 
   function firstCapital(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -28,76 +33,62 @@ const AddPictureHero = ({ heroImage }) => {
     dispatch(setSettings({ feature, value }));
   };
 
+  const handleSelect = (image) => {
+    closeModal();
+    dispatch(setSettings({ feature: 'heroImage', value: image }));
+  };
+
   return (
     <>
-      <div className="flex justify-center">
-        <div className="form__group">
-          <label className="form__label">
-            {firstCapital(heroImage.feature)}
-          </label>
+      <section className="relative w-full max-h-[85vh] overflow-hidden">
+        <div className="-z-10">
           <img
-            className="inline-block min-w-[250px] min-h-[60px] rounded bg-cover bg-center border border-solid border-gray-300 shadow-[0_0_10px_rgba(0,0,0,0.1)] w-full max-h-screen"
             src={heroImage.value}
             alt={heroImage.feature}
+            className="w-full h-auto object-cover object-center"
           />
-          <div
-            className={`absolute w-full top-8 bottom-4 bg-black rounded
-          ${
-            heroOpacity.value === '10'
-              ? 'opacity-10'
-              : heroOpacity.value === '20'
-              ? 'opacity-20'
-              : heroOpacity.value === '30'
-              ? 'opacity-30'
-              : heroOpacity.value === '40'
-              ? 'opacity-40'
-              : heroOpacity.value === '50'
-              ? 'opacity-50'
-              : heroOpacity.value === '60'
-              ? 'opacity-60'
-              : heroOpacity.value === '70'
-              ? 'opacity-70'
-              : heroOpacity.value === '80'
-              ? 'opacity-80'
-              : heroOpacity.value === '90'
-              ? 'opacity-90'
-              : heroOpacity.value === '100'
-              ? 'opacity-100'
-              : 'opacity-0'
-          }`}
-          ></div>
-          <div
-            className={`absolute text-center ${heroPos.value} left-1/2 -translate-x-2/4 -translate-y-2/4 w-full p-10`}
-          >
-            <div
-              className="relative ql-editor"
-              dangerouslySetInnerHTML={{ __html: heroText.value }}
-            />
-          </div>
         </div>
-      </div>
+        <div className="absolute top-0 bg-black w-full h-full hero__opacity"></div>
+        <div className="absolute hero__top text-center left-1/2 w-full p-10 -translate-x-2/4 -translate-y-2/4">
+          <div
+            className="relative ql-editor"
+            dangerouslySetInnerHTML={{ __html: heroText.value }}
+          />
+        </div>
+      </section>
 
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
         <div>
           <input
             type="range"
             id="heroOpacity"
             name="heroOpacity"
             min="0"
-            max="100"
+            max="1"
             value={heroOpacity.value}
             onChange={(e) => handleChange(e.target.name, e.target.value)}
-            step="10"
+            step="0.01"
           />
           <label className="ml-4" htmlFor="heroOpacity">
             Opacidad
           </label>
         </div>
-        <button
-          onClick={onClickSelImage}
-          type="button"
-          className="btn__primary"
-        >
+        <div>
+          <input
+            type="range"
+            id="heroTop"
+            name="heroTop"
+            min="5"
+            max="95"
+            value={heroTop.value.replace('%', '')}
+            onChange={(e) => handleChange(e.target.name, e.target.value + '%')}
+          />
+          <label className="ml-4" htmlFor="heroTop">
+            Altura
+          </label>
+        </div>
+
+        <button onClick={openModal} type="button" className="btn__primary">
           Seleccionar {firstCapital(heroImage.feature)}
         </button>
       </div>
@@ -115,25 +106,9 @@ const AddPictureHero = ({ heroImage }) => {
           // formats={formats}
         />
       </div>
-
-      <button
-        onClick={() => handleChange('heroPos', 'top-1/4')}
-        className="btn__primary m-4"
-      >
-        Texto Arriba
-      </button>
-      <button
-        onClick={() => handleChange('heroPos', 'top-1/2')}
-        className="btn__primary m-4"
-      >
-        Texo centrado
-      </button>
-      <button
-        onClick={() => handleChange('heroPos', 'top-3/4')}
-        className="btn__primary m-4"
-      >
-        Texto Abajo
-      </button>
+      <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
+        <Media handleSelect={handleSelect} />
+      </Modal>
     </>
   );
 };

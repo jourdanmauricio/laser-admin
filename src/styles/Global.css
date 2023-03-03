@@ -20,14 +20,25 @@ body {
   margin: auto;
 }
 
+.hero__top {
+  top: var(--heroTop);
+}
+
+.hero__opacity {
+  opacity: var(--heroOpacity);
+}
+
 @layer base {
   h1 {
+    text-align: var(--h1Pos);
     @apply mx-0 my-[0.67em] block text-[3em];
   }
   h2 {
+    text-align: var(--h2Pos);
     @apply mx-0 my-[0.83em] block text-[2em];
   }
   h3 {
+    text-align: var(--h3Pos);
     @apply mx-0 my-[1em] block text-[1.17em];
   }
   h4 {

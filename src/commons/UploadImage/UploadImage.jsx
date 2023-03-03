@@ -43,8 +43,7 @@ const UploadImage = ({ picture, setPicture, handleAddPict }) => {
 
   return (
     <div className="w-full lg:w-[80%] mx-auto">
-      <h1 className="title mt-5">Upload</h1>
-      <div className="my-5">
+      <div className="my-5 mt-5">
         <div className="w-[80%] h-[200px] mx-auto border border-solid border-gray-500 p-2">
           {picture && (
             <div className="flex flex-col sm:flex-row gap-10">

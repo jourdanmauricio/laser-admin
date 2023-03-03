@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { Provider, useSelector } from 'react-redux';
-import PostsProvider from '@/context/posts/Provider';
+// import PostsProvider from '@/context/posts/Provider';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '@/store';
 
@@ -43,6 +43,7 @@ const Media = React.lazy(() => import('@/pages/Media/Media'));
 const Patients = React.lazy(() => import('@/pages/Patients/Patients'));
 const Blog = React.lazy(() => import('@/pages/Blog/Blog'));
 const Clinics = React.lazy(() => import('@/pages/Clinics/Clinics'));
+const Sections = React.lazy(() => import('@/pages/Sections/Sections'));
 
 function AppRoutes() {
   return (
@@ -71,6 +72,16 @@ function AppRoutes() {
                 }
               />
               <Route
+                path="/media"
+                element={
+                  <AuthRoute>
+                    {/* <PostsProvider> */}
+                    <Media />
+                    {/* </PostsProvider> */}
+                  </AuthRoute>
+                }
+              />
+              <Route
                 path="/configuracion"
                 element={
                   <AuthRoute>
@@ -79,12 +90,10 @@ function AppRoutes() {
                 }
               />
               <Route
-                path="/media"
+                path="/secciones"
                 element={
                   <AuthRoute>
-                    <PostsProvider>
-                      <Media />
-                    </PostsProvider>
+                    <Sections />
                   </AuthRoute>
                 }
               />
@@ -92,9 +101,9 @@ function AppRoutes() {
                 path="/pacientes"
                 element={
                   <AuthRoute>
-                    <PostsProvider>
-                      <Patients />
-                    </PostsProvider>
+                    {/* <PostsProvider> */}
+                    <Patients />
+                    {/* </PostsProvider> */}
                   </AuthRoute>
                 }
               />
@@ -102,9 +111,9 @@ function AppRoutes() {
                 path="/blog"
                 element={
                   <AuthRoute>
-                    <PostsProvider>
-                      <Blog />
-                    </PostsProvider>
+                    {/* <PostsProvider> */}
+                    <Blog />
+                    {/* </PostsProvider> */}
                   </AuthRoute>
                 }
               />
@@ -112,9 +121,9 @@ function AppRoutes() {
                 path="/clinicas"
                 element={
                   <AuthRoute>
-                    <PostsProvider>
-                      <Clinics />
-                    </PostsProvider>
+                    {/* <PostsProvider> */}
+                    <Clinics />
+                    {/* </PostsProvider> */}
                   </AuthRoute>
                 }
               />

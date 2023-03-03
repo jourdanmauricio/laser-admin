@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import AddPictureHero from '../AddPicture/AddPictureHero';
 
-const Images = () => {
+const Hero = () => {
   const { editSettings } = useSelector((state) => state.settings);
   const heroImage = editSettings.find(
     (setting) => setting.feature === 'heroImage'
@@ -14,4 +14,4 @@ const Images = () => {
   );
 };
 
-export default Images;
+export default Hero;

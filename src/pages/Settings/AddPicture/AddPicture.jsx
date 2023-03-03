@@ -1,10 +1,16 @@
-import { useNavigate } from 'react-router-dom';
+import { useModal } from '@/hooks/useModal';
+import { Modal } from '@/commons/Modal/Modal';
+import Media from '@/components/Media/Media';
+import { setSettings } from '@/store/settings';
+import { useDispatch } from 'react-redux';
 
 const AddPicture = ({ logoImage }) => {
-  let navigate = useNavigate();
+  const [isOpenModal, openModal, closeModal] = useModal(false);
+  const dispatch = useDispatch();
 
-  const onClickSelImage = () => {
-    navigate(`/media?type=${logoImage.feature}`);
+  const handleSelect = (image) => {
+    closeModal();
+    dispatch(setSettings({ feature: 'logoImage', value: image }));
   };
 
   function firstCapital(str) {
@@ -25,14 +31,13 @@ const AddPicture = ({ logoImage }) => {
           />
         </div>
 
-        <button
-          onClick={onClickSelImage}
-          type="button"
-          className="btn__primary"
-        >
+        <button onClick={openModal} type="button" className="btn__primary">
           Seleccionar {firstCapital(logoImage.feature)}
         </button>
       </div>
+      <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
+        <Media handleSelect={handleSelect} />
+      </Modal>
     </>
   );
 };

@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import { FaImages } from 'react-icons/fa';
 import Spinner from '@/commons/Spinner/Spinner';
-import Images from '../Images/Images';
+import Hero from '../Hero/Hero';
 import { useDispatch, useSelector } from 'react-redux';
-import { initEditSettings, putSettings } from '../../../store/settings';
+import { initEditSettings, putSettings } from '@/store/settings';
 import Menu from '../Menu/Menu';
+import General from '../General/General';
 
 const Tabs = () => {
-  const { status, editSettings } = useSelector((state) => state.settings);
   const [toggleState, setToggleState] = useState(1);
+  const { status, editSettings } = useSelector((state) => state.settings);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const search = window.location.search;
@@ -25,8 +27,6 @@ const Tabs = () => {
   const toggleTab = (index) => {
     setToggleState(index);
   };
-
-  const dispatch = useDispatch();
 
   const onCancel = () => {
     dispatch(initEditSettings());
@@ -56,13 +56,13 @@ const Tabs = () => {
             <FaImages color="teal" size={20} />
             <span>Hero</span>
           </div>
-          {/* <div
-          onClick={() => toggleTab(2)}
-          className={toggleState === 2 ? 'tabs active__tabs' : 'tabs'}
-        >
-          <FaImages color="green" size={20} />
-          <span>Galería</span>
-        </div>*/}
+          <div
+            onClick={() => toggleTab(3)}
+            className={toggleState === 3 ? 'tabs active__tabs' : 'tabs'}
+          >
+            <FaImages color="green" size={20} />
+            <span>General</span>
+          </div>
         </div>
         <div className="tabs__content">
           <div
@@ -81,26 +81,17 @@ const Tabs = () => {
                 : 'tab__content'
             }
           >
-            <Images />
+            <Hero />
           </div>
-          {/* <div
-          className={
-            toggleState === 2 ? 'tab__content active__content' : 'tab__content'
-          }
-        >
-          <Gallery
-            images={images}
-            handleDelete={handleDelete}
-            selected={selected}
-            setSelected={setSelected}
-            isOpenModalDelete={isOpenModalDelete}
-            openModalDelete={openModalDelete}
-            closeModalDelete={closeModalDelete}
-            isOpenModalDetail={isOpenModalDetail}
-            openModalDetail={openModalDetail}
-            closeModalDetail={closeModalDetail}
-          />
-        </div> */}
+          <div
+            className={
+              toggleState === 3
+                ? 'tab__content active__content'
+                : 'tab__content'
+            }
+          >
+            <General />
+          </div>
         </div>
       </div>
       <div className="actions">

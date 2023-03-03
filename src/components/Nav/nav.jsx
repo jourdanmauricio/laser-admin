@@ -66,7 +66,7 @@ const Nav = () => {
   }, [location]);
 
   return (
-    <nav className="sticky top-0 h-12 bg-slate-100 shadow-[0_0_9px_3px_rgba(41,41,41,0.25)] z-50 py-0 px-6 flex items-center justify-around">
+    <nav className="sticky top-0 h-12 bg-slate-100 shadow-[0_0_9px_3px_rgba(41,41,41,0.25)] z-10 py-0 px-6 flex items-center justify-around">
       <div className="sm:hidden">
         <FaBars className="text-2xl" onClick={handleMobileMenu} />
       </div>

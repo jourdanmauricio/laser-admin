@@ -10,6 +10,7 @@ import {
   FaBlogger,
   FaRegImages,
   FaRegHospital,
+  FaThList,
 } from 'react-icons/fa';
 
 import Nav from '../Nav/nav';
@@ -63,6 +64,17 @@ const Layout = (props) => {
             <FaTh className="mr-4 inline-block" />
             <span className="align-middle">Dashboard</span>
           </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              `py-4 pl-4 pr-[14px] no-underline text-lg block text-left hover:text-purple-500 ${
+                isActive ? 'text-purple-700' : ''
+              } `
+            }
+            to="/media"
+          >
+            <FaRegImages className="mr-4 inline-block" />
+            <span className="align-middle">Media</span>
+          </NavLink>
           {user.role === 'superadmin' && (
             <>
               <NavLink
@@ -78,19 +90,21 @@ const Layout = (props) => {
               </NavLink>
             </>
           )}
-          {/* {user.role === 'superadmin' && (
+
+          {user.role === 'superadmin' && (
             <NavLink
-              to="/users"
+              to="/secciones"
               className={({ isActive }) =>
                 `py-4 pl-4 pr-[14px] no-underline text-lg block text-left hover:text-purple-500 ${
                   isActive ? 'text-purple-700' : ''
                 } `
               }
             >
-              <FaUsers className="mr-4 inline-block" />
-              <span className="align-middle">Usuarios</span>
+              <FaThList className="mr-4 inline-block" />
+              <span className="align-middle">Secciones</span>
             </NavLink>
-          )} */}
+          )}
+
           <NavLink
             className={({ isActive }) =>
               `py-2 pl-4 pr-[14px] no-underline text-lg block text-left hover:text-purple-500 ${
@@ -102,19 +116,6 @@ const Layout = (props) => {
             <FaRegListAlt className="mr-4 inline-block" />
             <span className="align-middle">Pacientes</span>
           </NavLink>
-
-          <NavLink
-            className={({ isActive }) =>
-              `py-4 pl-4 pr-[14px] no-underline text-lg block text-left hover:text-purple-500 ${
-                isActive ? 'text-purple-700' : ''
-              } `
-            }
-            to="/media"
-          >
-            <FaRegImages className="mr-4 inline-block" />
-            <span className="align-middle">Media</span>
-          </NavLink>
-
           <NavLink
             className={({ isActive }) =>
               `py-4 pl-4 pr-[14px] no-underline text-lg block text-left hover:text-purple-500 ${
