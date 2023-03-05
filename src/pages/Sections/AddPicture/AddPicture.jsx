@@ -6,17 +6,6 @@ import Media from '@/components/Media/Media';
 
 const AddPicture = ({ subsection, handleChangeSubsection }) => {
   const [isOpenModal, openModal, closeModal] = useModal(false);
-  // let { editPost } = useSelector((state) => state.posts);
-  // const dispatch = useDispatch();
-
-  // const handleSelect = (image) => {
-  //   closeModal();
-  //   dispatch(setEditPost({ name: 'image', value: image }));
-  // };
-
-  // const handleEditPost = (name, value) => {
-  //   dispatch(setEditPost({ name, value }));
-  // };
 
   const handleSelect = (image) => {
     handleChangeSubsection('image', image, subsection.id);

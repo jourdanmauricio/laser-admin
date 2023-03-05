@@ -1,6 +1,13 @@
+import ReactQuill from 'react-quill';
 import AddPicture from '../AddPicture/AddPicture';
+import useEditor from '@/config/useEditor';
 
 const SectionType = ({ section, onChange, handleChangeSubsection }) => {
+  const imageHandler = async () => {
+    // openModal();
+  };
+  const { modules } = useEditor({ imageHandler });
+
   return (
     <>
       <div className="p-2 sm:p-10">
@@ -177,35 +184,51 @@ const SectionType = ({ section, onChange, handleChangeSubsection }) => {
         </div>
       </div>
 
-      {section.type !== 'TEXT' && (
-        <>
-          <div className="form__group w-full">
-            <label className="form__label">Título</label>
-            <input
-              onChange={(e) => onChange(e.target.name, e.target.value)}
-              onBlur={(e) => onBlurTitle(e.target.value)}
-              className="form__input border-gray-500 w-full"
-              type="text"
-              id="title"
-              name="title"
-              placeholder="Título de post"
-              value={section.title}
-            />
-            {/* <p
+      <div className="form__group w-full">
+        <label className="form__label">Título</label>
+        <input
+          onChange={(e) => onChange(e.target.name, e.target.value)}
+          onBlur={(e) => onBlurTitle(e.target.value)}
+          className="form__input border-gray-500 w-full"
+          type="text"
+          id="title"
+          name="title"
+          placeholder="Título de post"
+          value={section.title}
+        />
+        {/* <p
               className={`input__error ${
                 error.title ? 'opacity-100' : 'opacity-0'
               }`}
             >
               {error.title}
             </p> */}
-          </div>
+      </div>
 
-          <AddPicture
-            subsection={section.subsections[0]}
-            handleChangeSubsection={handleChangeSubsection}
-          />
-        </>
-      )}
+      {section.subsections.map((subsection) => (
+        <div key={subsection.id}>
+          {section.type !== 'TEXT' && (
+            <AddPicture
+              subsection={subsection}
+              handleChangeSubsection={handleChangeSubsection}
+            />
+          )}
+          <div className="form__group w-full editor">
+            <label className="form__label">Contenido</label>
+            <ReactQuill
+              className="bg-gray-600"
+              theme="snow"
+              value={subsection.content}
+              onChange={(e) =>
+                handleChangeSubsection('content', e, subsection.id)
+              }
+              placeholder={'Write something awesome...'}
+              modules={modules}
+            />
+          </div>
+        </div>
+      ))}
+      <hr />
     </>
   );
 };

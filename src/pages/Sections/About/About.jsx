@@ -1,19 +1,12 @@
-import ReactQuill from 'react-quill';
 import { useEffect, useState } from 'react';
 import { getSections } from '@/services/api/sections';
 // import { quillSimpleModules } from '@/config/constants';
 import { updateSubsection } from '@/services/api/sections';
-import useEditor from '@/config/useEditor';
+
 import SectionType from '../SectionType/SectionType';
 
 const About = () => {
   const [section, setSection] = useState();
-
-  const imageHandler = async () => {
-    // openModal();
-  };
-
-  const { modules } = useEditor({ imageHandler });
 
   useEffect(() => {
     fetchData();
@@ -72,19 +65,6 @@ const About = () => {
             handleChangeSubsection={handleChangeSubsection}
           />
 
-          <div className="form__group w-full editor">
-            <label className="form__label">Contenido</label>
-            <ReactQuill
-              className="bg-gray-600"
-              theme="snow"
-              value={section.subsections[0].content}
-              onChange={(e) =>
-                handleChangeSubsection('content', e, section.subsections[0].id)
-              }
-              placeholder={'Write something awesome...'}
-              modules={modules}
-            />
-          </div>
           <div className="actions">
             <button
               onClick={onCancel}
