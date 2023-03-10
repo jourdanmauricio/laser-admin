@@ -46,7 +46,6 @@ let userSlice = createSlice({
       state.message = null;
     },
     [signIn.fulfilled]: (state, action) => {
-      console.log('action.payload', action.payload);
       state.user = action.payload;
       state.status = 'success';
       state.message = null;
@@ -60,7 +59,6 @@ let userSlice = createSlice({
       state.message = null;
     },
     [updProfile.fulfilled]: (state, action) => {
-      console.log('action.payload', action.payload);
       state.user = { ...state.user, ...action.payload };
       state.status = 'success';
       state.message = 'Perfil modificado';

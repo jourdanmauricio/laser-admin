@@ -1,6 +1,6 @@
 import { axiosApi } from '../api';
 
-export const fetchSettings = async () => {
+export const getSettingsApi = async () => {
   try {
     const response = await axiosApi.get(`/settings`);
     return response.data;
@@ -13,35 +13,28 @@ export const fetchSettings = async () => {
   }
 };
 
-export const updateSettings = async (setting) => {
+export const updateSettingsApi = async (data) => {
   try {
-    const data = {
-      data: setting,
-    };
-    const response = await axiosApi.put('/settings', data);
-
-    return response.data;
+    const data2 = JSON.parse(JSON.stringify(data));
+    for (const setting of data2) {
+      if (setting.updated === true) {
+        const id = setting.id;
+        delete setting.id;
+        delete setting.updated;
+        delete setting.createdAt;
+        delete setting.updatedAt;
+        await axiosApi.put(`/settings/${id}`, setting);
+      }
+    }
+    const newSettings = await getSettingsApi();
+    return newSettings;
   } catch (error) {
+    console.log('error!!!!!!!!!!!', error);
     let message = '';
+    console.log('error', error.response.data);
     message = error.response.data
       ? `${error.response.data.statusCode}: ${error.response.data.message}`
-      : 'Error modificando configuración 😞';
+      : 'Error creando el post 😞';
     throw message;
   }
 };
-
-// const postSetting = async data => {
-// 	try {
-// 		console.log('data', data);
-// 		const settings = await Api.post('/settings', data);
-// 		return settings;
-// 	} catch (error) {
-// 		let message = '';
-// 		message = error.response.data
-// 			? `${error.response.data.statusCode}: ${error.response.data.message}`
-// 			: 'Error creando configuración 😞';
-// 		throw message;
-// 	}
-// };
-// 	return {getSettings};
-// };

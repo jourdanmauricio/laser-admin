@@ -25,7 +25,6 @@ const Gallery = ({
 
   const onDeleteImage = (image) => {
     setSelected(image);
-    console.log('image', image);
     openModalDelete();
   };
 

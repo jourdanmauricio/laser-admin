@@ -30,7 +30,6 @@ const Tabs = ({ handleSelect }) => {
     try {
       setLoading(true);
       const allImages = await getAllImages();
-      console.log('allImages', allImages);
       setImages(allImages);
     } catch (error) {
       console.log('ERRROR', error);

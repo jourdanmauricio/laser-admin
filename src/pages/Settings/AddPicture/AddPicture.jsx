@@ -1,8 +1,8 @@
 import { useModal } from '@/hooks/useModal';
 import { Modal } from '@/commons/Modal/Modal';
 import Media from '@/components/Media/Media';
-import { setSettings } from '@/store/settings';
 import { useDispatch } from 'react-redux';
+import { changeSettings } from '@/store/settings';
 
 const AddPicture = ({ logoImage }) => {
   const [isOpenModal, openModal, closeModal] = useModal(false);
@@ -10,7 +10,7 @@ const AddPicture = ({ logoImage }) => {
 
   const handleSelect = (image) => {
     closeModal();
-    dispatch(setSettings({ feature: 'logoImage', value: image }));
+    dispatch(changeSettings({ feature: 'image', value: image }));
   };
 
   function firstCapital(str) {

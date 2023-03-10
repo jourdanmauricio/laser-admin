@@ -1,6 +1,5 @@
 import React, { Suspense } from 'react';
 import { Provider, useSelector } from 'react-redux';
-// import PostsProvider from '@/context/posts/Provider';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '@/store';
 
@@ -75,9 +74,7 @@ function AppRoutes() {
                 path="/media"
                 element={
                   <AuthRoute>
-                    {/* <PostsProvider> */}
                     <Media />
-                    {/* </PostsProvider> */}
                   </AuthRoute>
                 }
               />
@@ -89,6 +86,7 @@ function AppRoutes() {
                   </AuthRoute>
                 }
               />
+
               <Route
                 path="/secciones"
                 element={
@@ -101,9 +99,7 @@ function AppRoutes() {
                 path="/pacientes"
                 element={
                   <AuthRoute>
-                    {/* <PostsProvider> */}
                     <Patients />
-                    {/* </PostsProvider> */}
                   </AuthRoute>
                 }
               />
@@ -111,9 +107,7 @@ function AppRoutes() {
                 path="/blog"
                 element={
                   <AuthRoute>
-                    {/* <PostsProvider> */}
                     <Blog />
-                    {/* </PostsProvider> */}
                   </AuthRoute>
                 }
               />
@@ -121,9 +115,7 @@ function AppRoutes() {
                 path="/clinicas"
                 element={
                   <AuthRoute>
-                    {/* <PostsProvider> */}
                     <Clinics />
-                    {/* </PostsProvider> */}
                   </AuthRoute>
                 }
               />

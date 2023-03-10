@@ -16,13 +16,11 @@ export const usersInitialState = {
 
 export const quillSimpleModules = {
   toolbar: [
-    // [{ font: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }, { font: [] }],
+    [{ size: [] }],
     ['bold', 'italic', 'underline', 'strike'],
     [{ color: [] }, { background: [] }],
     [{ script: 'sub' }, { script: 'super' }],
-    ['code-block'],
-    [{ list: 'ordered' }, { list: 'bullet' }],
     [{ indent: '-1' }, { indent: '+1' }, { align: [] }],
     ['link'],
     ['clean'],

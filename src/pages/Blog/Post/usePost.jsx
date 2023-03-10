@@ -58,10 +58,8 @@ const usePost = () => {
   const handleSelect = (image) => {
     closeModal();
     const quillObj = quillRef.current.getEditor();
-    console.log('quillObj', quillObj);
     quillObj.focus();
     const position = quillObj.getSelection();
-    console.log('position', position);
     quillObj.editor.insertEmbed(position.index, 'image', image, 'user');
     const changes = quillRef.current.unprivilegedEditor.getHTML();
 

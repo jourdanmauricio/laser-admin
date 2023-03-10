@@ -1,5 +1,3 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { setEditPost } from '@/store/posts';
 import { useModal } from '@/hooks/useModal';
 import { Modal } from '@/commons/Modal/Modal';
 import Media from '@/components/Media/Media';

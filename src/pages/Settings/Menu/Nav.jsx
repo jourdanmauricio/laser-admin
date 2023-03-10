@@ -2,35 +2,46 @@ import { FaBars } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 const Nav = () => {
-  const { editSettings } = useSelector((state) => state.settings);
-  const logoImage = editSettings.find(
-    (setting) => setting.feature === 'logoImage'
+  const logoImage = useSelector((state) =>
+    state.settings.settings.find((setting) => setting.feature === 'logoImage')
   );
-  const navBgColor = editSettings.find(
-    (setting) => setting.feature === 'navBgColor'
+  const navBgColor = useSelector((state) =>
+    state.settings.settings.find((setting) => setting.feature === 'navBgColor')
   );
-  const navTextColor = editSettings.find(
-    (setting) => setting.feature === 'navTextColor'
+  const navTextColor = useSelector((state) =>
+    state.settings.settings.find(
+      (setting) => setting.feature === 'navTextColor'
+    )
   );
-  const navHoverColor = editSettings.find(
-    (setting) => setting.feature === 'navHoverColor'
+  const navHoverColor = useSelector((state) =>
+    state.settings.settings.find(
+      (setting) => setting.feature === 'navHoverColor'
+    )
   );
-  const navCurrentPageColor = editSettings.find(
-    (setting) => setting.feature === 'navCurrentPageColor'
+  const navCurrentPageColor = useSelector((state) =>
+    state.settings.settings.find(
+      (setting) => setting.feature === 'navCurrentPageColor'
+    )
   );
-  document.documentElement.style.setProperty('--navBgColor', navBgColor.value);
-  document.documentElement.style.setProperty(
-    '--navHoverColor',
-    navHoverColor.value
-  );
-  document.documentElement.style.setProperty(
-    '--navTextColor',
-    navTextColor.value
-  );
-  document.documentElement.style.setProperty(
-    '--navCurrentPageColor',
-    navCurrentPageColor.value
-  );
+
+  if (navBgColor) {
+    document.documentElement.style.setProperty(
+      '--navBgColor',
+      navBgColor.value
+    );
+    document.documentElement.style.setProperty(
+      '--navHoverColor',
+      navHoverColor.value
+    );
+    document.documentElement.style.setProperty(
+      '--navTextColor',
+      navTextColor.value
+    );
+    document.documentElement.style.setProperty(
+      '--navCurrentPageColor',
+      navCurrentPageColor.value
+    );
+  }
 
   return (
     <>

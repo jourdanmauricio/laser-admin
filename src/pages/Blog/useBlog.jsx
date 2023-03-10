@@ -5,13 +5,6 @@ import { FaCheck, FaTimes, FaEdit, FaTrashAlt } from 'react-icons/fa';
 import { handlePostEdit, onDeletePost } from '@/store/posts';
 import { useDispatch, useSelector } from 'react-redux';
 
-const paginationComponentOptions = {
-  rowsPerPageText: 'Filas por página',
-  rangeSeparatorText: 'de',
-  selectAllRowsItem: true,
-  selectAllRowsItemText: 'Todos',
-};
-
 const useBlog = () => {
   let [orderPosts, setOrderPosts] = useState([]);
   let { posts, message, status } = useSelector((state) => state.posts);
@@ -31,7 +24,6 @@ const useBlog = () => {
           message,
         });
       } else {
-        console.log('Message', message, status);
         dispatchNotif({
           type: 'SUCCESS',
           message,
@@ -122,7 +114,6 @@ const useBlog = () => {
   return {
     orderPosts,
     columns,
-    paginationComponentOptions,
     actionsMemo,
     closeMessage,
   };

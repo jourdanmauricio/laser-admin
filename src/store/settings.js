@@ -3,28 +3,33 @@ import {
   createAsyncThunk,
   createSlice,
 } from '@reduxjs/toolkit';
-import { fetchSettings, updateSettings } from '../services/api/settings.api';
+import {
+  getSettingsApi,
+  // updateSettings,
+  updateSettingsApi,
+} from '@/services/api/settings.api';
 
-export const getSettings = createAsyncThunk(
-  'settings/getSettings',
+export const getAllSettings = createAsyncThunk(
+  'settings/getAllSettings',
   async (_, { rejectWithValue }) => {
     try {
-      const settings = await fetchSettings();
-      console.log('settings', settings);
+      const settings = await getSettingsApi();
+      // console.log('settings', settings);
       return settings;
     } catch (error) {
       return rejectWithValue(error);
     }
   }
 );
-
-export const putSettings = createAsyncThunk(
-  'settings/putSettings',
-  async (data, { rejectWithValue }) => {
+export const updateSettings = createAsyncThunk(
+  'settings/updateSettings',
+  async (_, { rejectWithValue, getState }) => {
     try {
-      console.log('data', data);
-      const settings = await updateSettings(data);
-      return settings;
+      const state = getState();
+      const settings = state.settings.settings;
+
+      const newSettings = await updateSettingsApi(settings);
+      return newSettings;
     } catch (err) {
       return rejectWithValue(err);
     }
@@ -35,85 +40,74 @@ let settingsSlice = createSlice({
   name: 'settings',
   initialState: {
     settings: null,
-    editSettings: null,
+    // editSettings: null,
     status: '',
     error: '',
-    action: 'VIEW',
+    action: 'SETTINGS',
   },
   reducers: {
     logOutSettings: (state) => {
       state.settings = null;
-      state.editSettings = null;
+      // state.editSettings = null;
       state.status = '';
       state.error = '';
     },
-    initEditSettings: (state) => {
-      state.action = 'EDIT';
-      state.editSettings = state.settings;
-      state.message = null;
+    // initEditSettings: (state) => {
+    //   state.action = 'EDIT';
+    //   state.editSettings = state.settings;
+    //   state.message = null;
+    // },
+
+    setAction: (state, { payload }) => {
+      state.action = payload.action;
     },
-    setSettings: (state, { payload }) => {
-      console.log('payload store', payload);
-      console.log('store state', state.editSettings);
-      const feature = state.editSettings.find(
-        (setting) => setting.feature === payload.feature
+
+    changeSettings: (state, { payload }) => {
+      const newSettings = state.settings.map((setting) =>
+        setting.feature === payload.feature
+          ? { ...setting, value: payload.value, updated: true }
+          : setting
       );
-      console.log('feature store', feature);
-      feature.value = payload.value;
-
-      const newEditSettings = state.editSettings.map((setting) =>
-        setting.id === feature.id ? feature : setting
-      );
-
-      state.editSettings = newEditSettings;
-      //  state.editSettings = {
-      //    ...state.editSettings,
-      //    [payload.name]: payload.value,
-      //  };
-
-      // state.status = '';
-      // state.error = '';
+      state.settings = newSettings;
     },
   },
   extraReducers: {
-    [getSettings.pending]: (state) => {
+    [getAllSettings.pending]: (state) => {
       state.status = 'loading';
       state.error = '';
-      state.settings = null;
+      state.settings = [];
     },
-    [getSettings.fulfilled]: (state, action) => {
+    [getAllSettings.fulfilled]: (state, action) => {
       console.log(action);
       state.settings = action.payload;
       state.status = 'success';
       state.error = '';
-      state.editSettings = state.settings;
+      // state.editSettings = state.settings;
     },
-    [getSettings.rejected]: (state, action) => {
-      state.settings = null;
+    [getAllSettings.rejected]: (state, action) => {
+      state.settings = [];
       state.status = 'failed';
       state.error = action.payload;
     },
-    [putSettings.pending]: (state) => {
+    [updateSettings.pending]: (state) => {
       state.status = 'loading';
       state.error = '';
       // state.settings = null;
     },
-    [putSettings.fulfilled]: (state, action) => {
-      console.log('action.payload', action.payload);
+    [updateSettings.fulfilled]: (state, action) => {
       state.settings = action.payload;
       state.status = 'success';
       state.error = '';
     },
-    [putSettings.rejected]: (state, action) => {
-      console.log('action.payload', action.payload);
-      state.settings = null;
+    [updateSettings.rejected]: (state, action) => {
+      state.settings = [];
       state.status = 'failed';
       state.error = action.payload;
     },
   },
 });
 
-export const { logOutSettings, initEditSettings, setSettings } =
+export const { logOutSettings, initEditSettings, changeSettings, setAction } =
   settingsSlice.actions;
 
 export default settingsSlice.reducer;

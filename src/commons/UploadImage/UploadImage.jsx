@@ -31,7 +31,6 @@ const UploadImage = ({ picture, setPicture, handleAddPict }) => {
   };
 
   const handleFile = (file) => {
-    console.log('handleFile', file);
     const newImage = file;
     file.secure_url = URL.createObjectURL(file);
     setPicture(newImage);

@@ -2,7 +2,6 @@ import { axiosApi } from '../api';
 
 export const createPost = async (formPost) => {
   try {
-    console.log('formPost', formPost);
     const response = await axiosApi.post('/posts', formPost);
     return response.data;
   } catch (error) {
@@ -32,7 +31,6 @@ export const getPosts = async () => {
 export const updatePost = async (data2) => {
   try {
     let data = Object.assign({}, data2);
-    console.log('UPD', data);
     const id = data.id;
     delete data.id;
     delete data.created;
@@ -40,7 +38,6 @@ export const updatePost = async (data2) => {
     delete data.updatedAt;
 
     const response = await axiosApi.put(`/posts/${id}`, data);
-    console.log('response', response);
     return response.data;
   } catch (error) {
     console.log('error!!!!!!!!!!!', error);

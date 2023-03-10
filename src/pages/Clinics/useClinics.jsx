@@ -91,6 +91,7 @@ const useClinics = () => {
     setClinic({ ...clinic, order: clinics.length + 1 });
     setAction('NEW');
   };
+
   const onDelete = (clinic) => {
     setClinic(clinic);
     openModalDelete();
@@ -98,7 +99,6 @@ const useClinics = () => {
 
   const handleDelete = async () => {
     const id = clinic.id;
-    console.log('Delete ID', id);
     try {
       setStatus('loading');
       await deleteClinic(id);

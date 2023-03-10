@@ -26,13 +26,11 @@ const Gallery = ({
 
   const onDeleteImage = (image) => {
     setSelected(image);
-    console.log('image', image);
     openModalDelete();
   };
 
   const onViewImage = (image) => {
     setSelected(image);
-    console.log('image', image);
     openModalDetail();
   };
 

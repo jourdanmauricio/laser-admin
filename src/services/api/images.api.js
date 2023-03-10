@@ -3,7 +3,6 @@ import { axiosApi } from '../api';
 export const getAllImages = async () => {
   try {
     const response = await axiosApi.get('/images');
-    console.log('response', response.data);
     return response.data;
   } catch (error) {
     let message = '';
@@ -17,11 +16,9 @@ export const getAllImages = async () => {
 
 export const deleteImage = async (id) => {
   try {
-    console.log('id', id);
     const response = await axiosApi.delete(`/images`, {
       data: { public_id: id },
     });
-    console.log('response', response.data);
     return response.data;
   } catch (error) {
     let message = '';

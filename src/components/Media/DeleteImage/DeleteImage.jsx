@@ -1,7 +1,6 @@
 const DeleteImage = ({ image, handleCancelDelete, handleDelete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('submit');
     handleDelete();
   };
   return (

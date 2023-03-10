@@ -5,12 +5,13 @@ import Post from './Post/Post';
 import Spinner from '@/commons/Spinner/Spinner';
 import useBlog from './useBlog';
 import { useSelector } from 'react-redux';
+import { paginationComponentOptions } from '@/config/constants';
 
 const Blog = () => {
   const {
     orderPosts,
     columns,
-    paginationComponentOptions,
+    // paginationComponentOptions,
     actionsMemo,
     closeMessage,
   } = useBlog();

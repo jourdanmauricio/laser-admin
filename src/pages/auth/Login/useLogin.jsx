@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
 import { signIn } from '@/store/user';
-import { getSettings } from '@/store/settings';
+import { getAllSettings } from '@/store/settings';
 
 const useLogin = () => {
   const [passwordShown, setPasswordShown] = useState(false);
@@ -78,7 +78,8 @@ const useLogin = () => {
   async function isMatch() {
     // Login
     await dispatch(signIn(credentials));
-    dispatch(getSettings());
+    await dispatch(getAllSettings());
+    // dispatch(getSettings());
   }
 
   function handleSubmit(e) {

@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 
 const Image = Quill.import('formats/image');
 const icons = Quill.import('ui/icons');
+const Keyboard = Quill.import('modules/keyboard');
 
 const ATTRIBUTES = [
   'alt',
@@ -66,6 +67,7 @@ const useEditor = ({ imageHandler }) => {
           [{ header: [1, 2, 3, 4, 5, 6, false] }, { font: [] }],
           [{ size: [] }],
           ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+          [{ color: [] }, { background: [] }],
           [
             { list: 'ordered' },
             { list: 'bullet' },
@@ -94,6 +96,17 @@ const useEditor = ({ imageHandler }) => {
       imageResize: {
         parchment: Quill.import('parchment'),
         modules: ['Resize', 'DisplaySize', 'Toolbar'],
+      },
+      keyboard: {
+        bindings: {
+          custom: {
+            key: 's',
+            ctrlKey: true,
+            handler: function () {
+              return false;
+            },
+          },
+        },
       },
     }),
     []
