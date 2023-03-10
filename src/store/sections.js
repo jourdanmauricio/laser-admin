@@ -6,15 +6,6 @@ import {
   updateSectionsApi,
 } from '../services/api/sections';
 
-// const initialSection = {
-//   name: '',
-//   title: '',
-//   show: true,
-//   page: '',
-//   type: '',
-//   subsections: [],
-// };
-
 export const getAllSections = createAsyncThunk(
   'sections/getAllSections',
   async (_, { rejectWithValue }) => {
@@ -151,6 +142,7 @@ let sectionsSlice = createSlice({
       state.message = null;
     },
     [updateSubsections.fulfilled]: (state, action) => {
+      console.log('SECTIONS', action.payload);
       state.sections = action.payload;
       state.status = 'success';
       state.error = '';
