@@ -86,13 +86,15 @@ const Tabs = () => {
           >
             <General />
           </div>
-        </div>
-        <div
-          className={
-            toggleState === 4 ? 'tab__content active__content' : 'tab__content'
-          }
-        >
-          <Footer />
+          <div
+            className={
+              toggleState === 4
+                ? 'tab__content active__content'
+                : 'tab__content'
+            }
+          >
+            <Footer />
+          </div>
         </div>
       </div>
       <div className="actions">

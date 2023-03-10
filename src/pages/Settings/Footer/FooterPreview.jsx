@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   FaFacebookF,
   FaInstagram,
@@ -6,8 +7,23 @@ import {
 } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { createSubscriber } from '@/services/api/newsletter.api';
+import SpinnerComp from '@/commons/Spinner/SpinnerComp';
 
 const FooterPreview = () => {
+  const [action, setAction] = useState('form');
+  const [formMsg, setFormMsg] = useState(null);
+
+  const [suscribe, setSuscribe] = useState({
+    name: '',
+    email: '',
+    status: 'Activo',
+  });
+  const [error, setError] = useState({
+    name: null,
+    email: null,
+  });
+
   const footerBgColor = useSelector((state) =>
     state.settings.settings.find(
       (setting) => setting.feature === 'footerBgColor'
@@ -97,6 +113,95 @@ const FooterPreview = () => {
     state.settings.settings.find((setting) => setting.feature === 'whatsapp')
   );
 
+  const handleChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+    const pattern = e.target.pattern || e.target.dataset.pattern;
+    const textError = e.target.title;
+
+    setSuscribe({
+      ...suscribe,
+      [name]: value,
+    });
+
+    if (!e.target.required && !pattern) {
+      setError({
+        ...error,
+        [name]: null,
+      });
+      return;
+    }
+
+    if (e.target.required && value === '') {
+      setError({
+        ...error,
+        [name]: 'Requerido',
+      });
+      return;
+    }
+
+    let regex = new RegExp(pattern);
+    if (regex.exec(value) === null) {
+      setError({
+        ...error,
+        [name]: textError,
+      });
+      console.log('textError', textError);
+    } else {
+      setError({
+        ...error,
+        [name]: null,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (formMsg) {
+      const timeout = setTimeout(() => {
+        setFormMsg(null);
+        setAction('form');
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [formMsg]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let formError = false;
+    let fieldsErrors = Object.assign({}, error);
+    const fields = ['name', 'email'];
+    for (let field of fields) {
+      if (suscribe[field].trim() === '') {
+        formError = true;
+        console.log('nulo', field);
+        fieldsErrors = {
+          ...fieldsErrors,
+          [field]: 'Requerido',
+        };
+      }
+      if (error[field]) {
+        formError = true;
+      }
+    }
+
+    if (formError === true) {
+      setError(fieldsErrors);
+      return;
+    }
+
+    try {
+      console.log('TRY');
+      setAction('loading');
+      const suscriber = await createSubscriber(suscribe);
+
+      setFormMsg('Formulario enviado!. Pronto recibirás novedades.');
+    } catch (error) {
+      setFormMsg('Error enviando el formulario');
+    } finally {
+      setAction('msg');
+    }
+  };
+
   return (
     <footer className="bg-footerBgColor text-center text-footerTextColor">
       <div className="container px-6 pt-6">
@@ -150,7 +255,7 @@ const FooterPreview = () => {
             exclusivo directamente en tu bandeja de entrada, incluyendo
             artículos interesantes, consejos y ofertas especiales.{' '}
           </p>
-          <p>
+          <p className="pt-8">
             Para suscribirte, simplemente ingresa tu dirección de correo
             electrónico en el campo provisto y haz clic en el botón Suscribir.
             No te pierdas la oportunidad de ser parte de nuestra comunidad y
@@ -158,53 +263,96 @@ const FooterPreview = () => {
           </p>
         </div>
 
-        <div>
-          <form action="">
-            <div className="gird-cols-1 grid items-center justify-center gap-4 md:grid-cols-3">
-              <div className="md:ml-auto md:mb-6">
-                <p className="">
-                  <strong>Suscríbite a nuestro newsletter</strong>
-                </p>
-              </div>
+        <div className="mb-6 mt-8">
+          <h4>
+            <strong>Suscríbite a nuestro newsletter</strong>
+          </h4>
+          {action === 'loading' && <SpinnerComp />}
+          {action === 'msg' && (
+            <h4
+              id="form-rta"
+              className="text-teal-500 text-2xl w-5/6 h-4/6 mx-auto text-center"
+            >
+              {formMsg}
+            </h4>
+          )}
+          {action === 'form' && (
+            <form onSubmit={handleSubmit} noValidate>
+              <div className="pt-10 flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-4">
+                <div className="relative">
+                  <input
+                    type="text"
+                    className="min-h-[auto] w-full rounded border border-footerTextColor bg-transparent py-[0.32rem] px-3 leading-[1.6] text-footerTextColor outline-none block dark:focus:border-footerLinksHoverColor focus:outline-none focus:ring-0 focus:border-footerLinksHoverColor peer"
+                    id="name"
+                    name="name"
+                    title="Ingresa solo letras"
+                    pattern="^[A-Za-zÑñÁáÉéÍíÓóÚú\s]+$"
+                    placeholder=" "
+                    required
+                    onChange={handleChange}
+                  />
+                  <label
+                    htmlFor="name"
+                    className="absolute text-footerLinksHoverColor  duration-300 transform -translate-y-7 scale-90 top-1.5 z-10 origin-[0_0] left-3 mb-0 peer-focus:text-footerLinksHoverColor peer-focus:dark:text-footerLinksHoverColor peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-90 peer-focus:-translate-y-7"
+                  >
+                    Nombre
+                  </label>
+                  <span
+                    className={`form__error text-base scale-90 ${
+                      error.name ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  >
+                    {error.name}
+                  </span>
+                </div>
 
-              <div className="relative md:mb-6" data-te-input-wrapper-init>
-                <input
-                  type="text"
-                  className="peer block min-h-[auto] w-full rounded border border-footerTextColor bg-transparent py-[0.32rem] px-3 leading-[1.6] text-footerTextColor outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
-                  id="email"
-                  placeholder="Email address"
-                />
-                <label
-                  htmlFor="email"
-                  className="pointer-events-none bg-footerBgColor absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate mt-[0.37rem] px-1 leading-[1.6] text-footerTextColor transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-footerTextColor peer-data-[te-input-state-active]:-translate-y-[0.9rem] peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none"
-                >
-                  Email address
-                </label>
-              </div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    className="min-h-[auto] w-full rounded border border-footerTextColor bg-transparent py-[0.32rem] px-3 leading-[1.6] text-footerTextColor outline-none block dark:focus:border-footerLinksHoverColor focus:outline-none focus:ring-0 focus:border-footerLinksHoverColor peer"
+                    id="email"
+                    name="email"
+                    title="Ingresa un email válido"
+                    pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$"
+                    placeholder=" "
+                    required
+                    onChange={handleChange}
+                  />
+                  <label
+                    htmlFor="email"
+                    className="absolute text-footerLinksHoverColor  duration-300 transform -translate-y-7 scale-90 top-1.5 z-10 origin-[0_0] left-3 mb-0 peer-focus:text-footerLinksHoverColor peer-focus:dark:text-footerLinksHoverColor peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-90 peer-focus:-translate-y-7"
+                  >
+                    Email address
+                  </label>
+                  <span
+                    className={`form__error text-base scale-90 ${
+                      error.email ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  >
+                    {error.email}
+                  </span>
+                </div>
 
-              <div className="mb-6 md:mr-auto">
                 <button
                   type="submit"
                   className="inline-block rounded border-2 border-footerButtonsColor px-6 pt-2 pb-[6px] text-xs font-medium uppercase leading-normal text-footerButtonsColor transition duration-150 ease-in-out bg-transparent hover:bg-footerButtonsHoverColor focus:ring-0 active:border-neutral-200 active:text-neutral-200"
-                  // dark:hover:bg-neutral-100 dark:hover:bg-opacity-10
                   data-te-ripple-init
                   data-te-ripple-color="light"
                 >
                   Suscribir
                 </button>
               </div>
-            </div>
-          </form>
+            </form>
+          )}
         </div>
-
-        <h5 className="mb-2.5 font-bold uppercase">Links</h5>
+        <h4 className="mb-2.5 pt-10 font-bold uppercase">Links</h4>
         <div className="grid sm:grid-cols-1 md:grid-cols-2">
           <div className="mb-6">
-            <ul className="mb-0 list-none">
+            <ul className="mb-0 list-none w-fit m-auto text-left">
               <li>
                 <Link
-                  href="#"
-                  className="text-white text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
+                  href="/"
+                  className="text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
                 >
                   Inicio
                 </Link>
@@ -212,7 +360,7 @@ const FooterPreview = () => {
               <li>
                 <Link
                   href="#"
-                  className="text-white text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
+                  className="text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
                 >
                   Sobre mi
                 </Link>
@@ -220,23 +368,23 @@ const FooterPreview = () => {
               <li>
                 <Link
                   href="#"
-                  className="text-white text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
+                  className="text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
                 >
                   Servicios
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#"
-                  className="text-white text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
+                  href="/blog"
+                  className="text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
                 >
                   Blog
                 </Link>
               </li>
               <li>
                 <Link
-                  href="#"
-                  className="text-white text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
+                  href="/contact"
+                  className="text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
                 >
                   Contacto
                 </Link>
@@ -245,11 +393,11 @@ const FooterPreview = () => {
           </div>
 
           <div className="mb-6">
-            <ul className="mb-0 list-none">
+            <ul className="mb-0 list-none w-fit m-auto text-left">
               <li>
                 <Link
                   href="/proteccion-datos"
-                  className="text-white text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
+                  className="text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
                 >
                   Protección de datos
                 </Link>
@@ -257,7 +405,7 @@ const FooterPreview = () => {
               <li>
                 <Link
                   href="/politicas-privacidad"
-                  className="text-white text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
+                  className="text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
                 >
                   Política de privacidad
                 </Link>
@@ -265,7 +413,7 @@ const FooterPreview = () => {
               <li>
                 <Link
                   href="/politicas-cookies"
-                  className="text-white text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
+                  className="text-footerLinksColor hover:underline hover:text-footerLinksHoverColor"
                 >
                   Política de cookies
                 </Link>

@@ -180,7 +180,7 @@ const Footer = () => {
               </div>
             </div>
             <div className="mt-8 form__group w-full">
-              <label className="form__label">Color hover botones</label>
+              <label className="form__label">Color hover links</label>
               <div className="flex items-center gap-4">
                 <input
                   className="form__input--color w-full border-gray-500"
@@ -204,6 +204,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
+          {/* FOOTER 2 */}
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-20">
             <div className="mt-8 form__group w-full">
               <label className="form__label">Color de fondo footer 2</label>
