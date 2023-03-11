@@ -44,12 +44,9 @@ const Newsletter = () => {
   };
 
   const handleDelete = async (id) => {
-    // let endpoint = `${url}/${id}`;
     setLoading(true);
     try {
-      // const resData = await api.del(endpoint);
       const resData = await deleteSubscriber(id);
-      // if (resData.statusCode) throw data;
       let newData = data.filter((el) => el.id !== id);
       setData(newData);
       closeModal();

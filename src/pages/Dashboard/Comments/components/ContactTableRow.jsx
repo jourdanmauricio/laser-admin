@@ -1,6 +1,6 @@
-import React from "react";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { formatDateTable } from "@/helpers/helpFunctions";
+import React from 'react';
+import { FaRegTrashAlt } from 'react-icons/fa';
+import { formatDateTable } from '@/helpers/helpFunctions';
 
 const ContactTableRow = ({ el, deleteData }) => {
   let { name, phone, email, comment, createdAt } = el;
@@ -16,7 +16,7 @@ const ContactTableRow = ({ el, deleteData }) => {
           onClick={() => deleteData(el)}
           className="table__icon table__icon--delete"
         >
-          <FaRegTrashAlt />
+          <FaRegTrashAlt className="text-red-500" />
         </button>
       </td>
     </tr>

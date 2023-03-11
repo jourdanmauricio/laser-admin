@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const ContactDeleteForm = ({
   dataToDelete,
@@ -14,11 +14,11 @@ const ContactDeleteForm = ({
     <form className="confirm__delete" onSubmit={handleSubmit}>
       <h2 className="title">Eliminar Mensaje</h2>
       <p className="delete__paragraph">
-        Esta seguro de eliminar el mensaje {dataToDelete?.id}?{" "}
+        Esta seguro de eliminar el mensaje {dataToDelete?.id}?{' '}
       </p>
       <div className="delete__actions">
         <button
-          className="btn"
+          className="btn__secondary"
           onClick={handleCancelDelete}
           id="cancel"
           type="button"
@@ -26,7 +26,7 @@ const ContactDeleteForm = ({
           Cancelar
         </button>
 
-        <button className="btn btn__primary" id="delete" type="submit">
+        <button className="btn__primary" id="delete" type="submit">
           Eliminar
         </button>
       </div>

@@ -7,7 +7,7 @@ import Message from '@/commons/Message/Message';
 import Spinner from '@/commons/Spinner/Spinner';
 import ContactDeleteForm from './components/ContactDeleteForm';
 import ContactTable from './components/ContactTable';
-import { getComments } from '@/services/api/comments.api';
+import { getComments, deleteComment } from '@/services/api/comments.api';
 
 const Comments = () => {
   const dispatch = useNotification();
@@ -43,12 +43,10 @@ const Comments = () => {
   };
 
   const handleDelete = async (id) => {
-    let endpoint = `${url}/${id}`;
     setLoading(true);
     try {
-      const data = await api.del(endpoint);
+      const resData = await deleteComment(id);
 
-      if (data.statusCode) throw data;
       let newData = contact.filter((el) => el.id !== id);
       setContact(newData);
       closeModal();

@@ -9,7 +9,7 @@ export const getSubscribers = async () => {
     console.log('error', error.response.data);
     message = error.response.data
       ? `${error.response.data.statusCode}: ${error.response.data.message}`
-      : 'Error creando el post 😞';
+      : 'Error creando suscriber 😞';
     throw message;
   }
 };
@@ -23,7 +23,7 @@ export const createSubscriber = async (data) => {
     console.log('error', error.response.data);
     message = error.response.data
       ? `${error.response.data.statusCode}: ${error.response.data.message}`
-      : 'Error creando el post 😞';
+      : 'Error obteniendo suscriptores 😞';
     throw message;
   }
 };
@@ -37,7 +37,7 @@ export const deleteSubscriber = async (id) => {
     console.log('error', error.response.data);
     message = error.response.data
       ? `${error.response.data.statusCode}: ${error.response.data.message}`
-      : 'Error creando el post 😞';
+      : 'Error eliminado suscriptor 😞';
     throw message;
   }
 };
