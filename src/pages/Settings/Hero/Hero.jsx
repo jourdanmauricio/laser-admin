@@ -84,7 +84,7 @@ const Hero = () => {
               />
             </div>
             {waveHeroShow.value === 'true' && (
-              <div className="absolute bottom-0 h-[100px] left-0 w-full overflow-hidden opacity-50">
+              <div className="absolute bottom-0 h-[100px] left-0 w-full overflow-hidden">
                 <svg
                   viewBox="0 0 500 150"
                   preserveAspectRatio="none"
