@@ -68,7 +68,10 @@ export const updateSubsectionsApi = async (data) => {
 
 export const cretateSubsectionApi = async (subsection) => {
   try {
-    await axiosApi.post('/subsections', subsection);
+    const data = Object.assign({}, subsection);
+    delete data.id;
+    delete data.updated;
+    await axiosApi.post('/subsections', data);
     const newSections = await getSections();
     return newSections;
   } catch (error) {

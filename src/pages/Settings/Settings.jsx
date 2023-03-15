@@ -1,18 +1,32 @@
 import Layout from '@/components/Layout/layout';
 import Tabs from './Tabs/Tabs';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllSettings, setAction } from '@/store/settings';
+import { getAllSettings, setAction, delMessage } from '@/store/settings';
 import Spinner from '@/commons/Spinner/Spinner';
 import { useEffect } from 'react';
+import { useNotification } from '@/commons/Notifications/NotificationProvider';
 
 const Settings = () => {
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.settings);
+  const dispatchNotif = useNotification();
+  const { status, message } = useSelector((state) => state.settings);
 
   useEffect(() => {
     dispatch(getAllSettings());
     dispatch(setAction({ action: 'SETTINGS' }));
   }, []);
+
+  useEffect(() => {
+    console.log('message', message);
+    if (message) {
+      dispatchNotif({
+        type: status === 'success' ? 'SUCCESS' : 'ERROR',
+        message,
+      });
+      dispatch(delMessage());
+    }
+  }, [message]);
+
   return (
     <>
       <Layout>

@@ -11,6 +11,7 @@ module.exports = {
         bodyBgColor: 'var(--bodyBgColor)',
         heroTop: 'var(--heroTop)',
         heroOpacity: 'var(--heroOpacity)',
+        aboutBgColor: 'var(--aboutBgColor)',
         footerBgColor: 'var(--footerBgColor)',
         footerTextColor: 'var(--footerTextColor)',
         footerButtonsColor: 'var(--footerButtonsColor)',

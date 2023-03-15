@@ -3,23 +3,29 @@ import Tabs from './Tabs/Tabs';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllSections } from '@/store/sections';
 import { useEffect } from 'react';
-import { setAction } from '@/store/sections';
 import Spinner from '@/commons/Spinner/Spinner';
+import { getAllPosts } from '@/store/posts';
+import { getAllClinics } from '@/store/clinics';
 
 const Sections = () => {
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.sections);
+  const statusSections = useSelector((state) => state.sections.status);
+  const statusClinics = useSelector((state) => state.clinics.status);
+  const statusPosts = useSelector((state) => state.posts.status);
+  const statusSettings = useSelector((state) => state.settings.status);
 
   useEffect(() => {
     dispatch(getAllSections());
-    dispatch(setAction({ action: 'SECTIONS' }));
+    dispatch(getAllPosts());
+    dispatch(getAllClinics());
   }, []);
 
   return (
     <Layout>
-      {status === 'loading' && <Spinner />}
-      <h1 className="title">Secciones</h1>
-
+      {(statusSections === 'loading' ||
+        statusClinics === 'loading' ||
+        statusPosts === 'loading' ||
+        statusSettings === 'loading') && <Spinner />}
       <Tabs />
     </Layout>
   );

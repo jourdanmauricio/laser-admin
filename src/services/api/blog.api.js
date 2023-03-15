@@ -1,9 +1,15 @@
 import { axiosApi } from '../api';
 
-export const createPost = async (formPost) => {
+export const createPostApi = async (formPost) => {
   try {
-    const response = await axiosApi.post('/posts', formPost);
-    return response.data;
+    const data = JSON.parse(JSON.stringify(formPost));
+    delete data.id;
+    delete data.updated;
+
+    await axiosApi.post('/posts', data);
+    const newPosts = await getAllPostsApi();
+
+    return newPosts;
   } catch (error) {
     let message = '';
     console.log('error', error.response.data);
@@ -14,7 +20,7 @@ export const createPost = async (formPost) => {
   }
 };
 
-export const getPosts = async () => {
+export const getAllPostsApi = async () => {
   try {
     const response = await axiosApi.get('/posts');
     return response.data;
@@ -28,17 +34,22 @@ export const getPosts = async () => {
   }
 };
 
-export const updatePost = async (data2) => {
+export const updatePostApi = async (data) => {
   try {
-    let data = Object.assign({}, data2);
-    const id = data.id;
-    delete data.id;
-    delete data.created;
-    delete data.createdAt;
-    delete data.updatedAt;
-
-    const response = await axiosApi.put(`/posts/${id}`, data);
-    return response.data;
+    const data2 = JSON.parse(JSON.stringify(data));
+    for (const post of data2) {
+      if (post.updated === true) {
+        const id = post.id;
+        delete post.id;
+        delete post.updated;
+        delete post.created;
+        delete post.createdAt;
+        delete post.updatedAt;
+        await axiosApi.put(`/posts/${id}`, post);
+      }
+    }
+    const newPosts = await getAllPostsApi();
+    return newPosts;
   } catch (error) {
     console.log('error!!!!!!!!!!!', error);
     let message = '';
@@ -50,10 +61,11 @@ export const updatePost = async (data2) => {
   }
 };
 
-export const deletePost = async (id) => {
+export const deletePostApi = async (id) => {
   try {
-    const response = await axiosApi.delete(`/posts/${id}`);
-    return response.data;
+    await axiosApi.delete(`/posts/${id}`);
+    const newPosts = await getAllPostsApi();
+    return newPosts;
   } catch (error) {
     let message = '';
     console.log('error', error.response.data);

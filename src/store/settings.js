@@ -45,6 +45,13 @@ let settingsSlice = createSlice({
       state.status = '';
       state.error = '';
     },
+    delMessage: (state) => {
+      state.message = null;
+    },
+
+    delError: (state) => {
+      state.error = null;
+    },
 
     setAction: (state, { payload }) => {
       state.action = payload.action;
@@ -69,6 +76,7 @@ let settingsSlice = createSlice({
       state.settings = action.payload;
       state.status = 'success';
       state.error = '';
+      state.message = null;
     },
     [getAllSettings.rejected]: (state, action) => {
       state.settings = [];
@@ -84,16 +92,24 @@ let settingsSlice = createSlice({
       state.settings = action.payload;
       state.status = 'success';
       state.error = '';
+      state.message = 'Configuración modificada';
     },
     [updateSettings.rejected]: (state, action) => {
       state.settings = [];
       state.status = 'failed';
       state.error = action.payload;
+      state.message = 'Error modificando la configuración';
     },
   },
 });
 
-export const { logOutSettings, initEditSettings, changeSettings, setAction } =
-  settingsSlice.actions;
+export const {
+  logOutSettings,
+  initEditSettings,
+  changeSettings,
+  setAction,
+  delMessage,
+  delError,
+} = settingsSlice.actions;
 
 export default settingsSlice.reducer;

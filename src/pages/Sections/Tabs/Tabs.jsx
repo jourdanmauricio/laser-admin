@@ -1,64 +1,20 @@
 import { useState } from 'react';
-import { FaImages } from 'react-icons/fa';
-import About from '../About/About';
-import { useDispatch, useSelector } from 'react-redux';
 import {
-  getAllSections,
-  updateSections,
-  updateSubsections,
-  createSubsection,
-  setAction,
-} from '@/store/sections';
-import Services from '../Services/Services';
-import { useNotification } from '@/commons/Notifications/NotificationProvider';
-import { updateSettings } from '@/store/settings';
-import Blog from '../Blog/Blog';
+  FaRegListAlt,
+  FaBlogger,
+  FaRegHospital,
+  FaHospitalUser,
+} from 'react-icons/fa';
+import ClinicsSection from '../ClinicsSection/ClinicsSection';
+import AboutSection from '../AboutSection/AboutSection';
+import BlogSection from '../BlogSection/BlogSection';
+import ServicesSection from '../ServicesSection/ServicesSection';
 
 const Tabs = () => {
-  const dispatch = useDispatch();
-  const dispatchNotif = useNotification();
-  const { action } = useSelector((state) => state.sections);
-  const [newSubsection, setNewSubsection] = useState({});
-
   const [toggleState, setToggleState] = useState(1);
 
   const toggleTab = (index) => {
     setToggleState(index);
-  };
-
-  const onCancel = () => {
-    dispatch(getAllSections());
-    dispatch(setAction({ action: 'SECTIONS' }));
-  };
-
-  const onChangeNewSubsection = (newSub) => {
-    setNewSubsection(newSub);
-  };
-
-  const onSubmit = async () => {
-    try {
-      dispatch(updateSettings());
-      if (action === 'NEW') {
-        dispatch(createSubsection(newSubsection));
-        dispatchNotif({
-          type: 'SUCCESS',
-          message: 'Servicio creado!',
-        });
-      } else {
-        dispatch(updateSubsections());
-        dispatchNotif({
-          type: 'SUCCESS',
-          message: 'Servicio modificado!',
-        });
-      }
-
-      dispatch(setAction({ action: 'SECTIONS' }));
-    } catch (error) {
-      dispatchNotif({
-        type: 'ERROR',
-        message: error,
-      });
-    }
   };
 
   return (
@@ -69,7 +25,7 @@ const Tabs = () => {
             onClick={() => toggleTab(1)}
             className={toggleState === 1 ? 'tabs active__tabs' : 'tabs'}
           >
-            <FaImages color="teal" size={20} />
+            <FaHospitalUser color="teal" size={20} />
             <span>Sobre Mi</span>
           </div>
 
@@ -77,7 +33,7 @@ const Tabs = () => {
             onClick={() => toggleTab(2)}
             className={toggleState === 2 ? 'tabs active__tabs' : 'tabs'}
           >
-            <FaImages color="teal" size={20} />
+            <FaRegListAlt color="teal" size={20} />
             <span>Servicios</span>
           </div>
 
@@ -85,8 +41,16 @@ const Tabs = () => {
             onClick={() => toggleTab(3)}
             className={toggleState === 3 ? 'tabs active__tabs' : 'tabs'}
           >
-            <FaImages color="teal" size={20} />
-            <span>Entradas</span>
+            <FaBlogger color="teal" size={20} />
+            <span>Blog</span>
+          </div>
+
+          <div
+            onClick={() => toggleTab(4)}
+            className={toggleState === 4 ? 'tabs active__tabs' : 'tabs'}
+          >
+            <FaRegHospital color="teal" size={20} />
+            <span>Consultorios</span>
           </div>
         </div>
 
@@ -98,7 +62,7 @@ const Tabs = () => {
                 : 'tab__content'
             }
           >
-            <About />
+            <AboutSection />
           </div>
           <div
             className={
@@ -107,7 +71,7 @@ const Tabs = () => {
                 : 'tab__content'
             }
           >
-            <Services onChangeNewSubsection={onChangeNewSubsection} />
+            <ServicesSection />
           </div>
           <div
             className={
@@ -116,11 +80,21 @@ const Tabs = () => {
                 : 'tab__content'
             }
           >
-            <Blog onChangeNewSubsection={onChangeNewSubsection} />
+            <BlogSection />
+          </div>
+          <div
+            className={
+              toggleState === 4
+                ? 'tab__content active__content'
+                : 'tab__content'
+            }
+          >
+            <ClinicsSection />
           </div>
         </div>
       </div>
-      <div className="actions">
+
+      {/* <div className="actions">
         <button
           onClick={onCancel}
           className="mt-8 btn__secondary"
@@ -130,9 +104,18 @@ const Tabs = () => {
         </button>
 
         <button onClick={onSubmit} className="my-8 btn__primary" type="button">
-          {action === 'NEW' ? 'Crear' : 'Modificar'}
+          {actionSections === 'SECTIONS' &&
+            actionPosts === 'POSTS' &&
+            actionClinics === 'CLINICS' &&
+            'Modificar'}
+          {actionSections === 'NEW' && 'Crear'}
+          {actionSections === 'EDIT' && 'Modificar'}
+          {actionPosts === 'NEW' && 'Crear'}
+          {actionPosts === 'EDIT' && 'Modificar'}
+          {actionClinics === 'NEW' && 'Crear'}
+          {actionClinics === 'EDIT' && 'Modificar'}
         </button>
-      </div>
+      </div> */}
     </>
   );
 };

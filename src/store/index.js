@@ -7,12 +7,14 @@ import userReducer from './user';
 import settingsReducer from './settings';
 import postsReducer from './posts';
 import sectionsReducer from './sections';
+import clinicsReducer from './clinics';
 
 const reducer = combineReducers({
   user: userReducer,
   settings: settingsReducer,
   posts: postsReducer,
   sections: sectionsReducer,
+  clinics: clinicsReducer,
 });
 
 const persistConfig = {

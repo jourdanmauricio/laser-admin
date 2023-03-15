@@ -6,10 +6,7 @@ import {
   FaAngleRight,
   FaTh,
   FaUserCog,
-  FaRegListAlt,
-  FaBlogger,
   FaRegImages,
-  FaRegHospital,
   FaThList,
 } from 'react-icons/fa';
 
@@ -104,40 +101,6 @@ const Layout = (props) => {
               <span className="align-middle">Secciones</span>
             </NavLink>
           )}
-
-          <NavLink
-            className={({ isActive }) =>
-              `py-2 pl-4 pr-[14px] no-underline text-lg block text-left hover:text-purple-500 ${
-                isActive ? 'text-purple-700' : ''
-              } `
-            }
-            to="/pacientes"
-          >
-            <FaRegListAlt className="mr-4 inline-block" />
-            <span className="align-middle">Pacientes</span>
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              `py-4 pl-4 pr-[14px] no-underline text-lg block text-left hover:text-purple-500 ${
-                isActive ? 'text-purple-700' : ''
-              } `
-            }
-            to="/blog"
-          >
-            <FaBlogger className="mr-4 inline-block" />
-            <span className="align-middle">Blog</span>
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              `py-4 pl-4 pr-[14px] no-underline text-lg block text-left hover:text-purple-500 ${
-                isActive ? 'text-purple-700' : ''
-              } `
-            }
-            to="/clinicas"
-          >
-            <FaRegHospital className="mr-4 inline-block" />
-            <span className="align-middle">Clínicas</span>
-          </NavLink>
         </div>
 
         <section

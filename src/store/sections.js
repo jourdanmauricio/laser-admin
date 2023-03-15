@@ -48,8 +48,18 @@ export const updateSubsections = createAsyncThunk(
 
 export const createSubsection = createAsyncThunk(
   'sections/createSubsection',
-  async (subsection, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
+      const state = getState();
+      const sections = state.sections.sections;
+
+      let subsection = {};
+      sections.forEach((section) => {
+        section.subsections.forEach((sub) => {
+          if (sub.id === 0) subsection = sub;
+        });
+      });
+
       const newSubsection = await cretateSubsectionApi(subsection);
       return newSubsection;
     } catch (error) {
@@ -76,7 +86,7 @@ let sectionsSlice = createSlice({
     sections: [],
     status: '',
     error: '',
-    action: 'SECTIONS',
+    actionSections: 'SECTIONS',
     message: null,
   },
   reducers: {
@@ -112,9 +122,21 @@ let sectionsSlice = createSlice({
 
       state.sections = newSections;
     },
-
-    setAction: (state, { payload }) => {
-      state.action = payload.action;
+    setActionSection: (state, { payload }) => {
+      state.actionSections = payload.action;
+    },
+    setNewSubsection: (state, { payload }) => {
+      const newSections = state.sections.map((section) => {
+        if (section.id === payload.subsection.section_id) {
+          const newSubsections = [...section.subsections, payload.subsection];
+          section.subsections = newSubsections;
+          return section;
+        } else {
+          return section;
+        }
+      });
+      state.sections = newSections;
+      state.actionSections = 'NEW';
     },
   },
   extraReducers: {
@@ -123,6 +145,7 @@ let sectionsSlice = createSlice({
       state.error = '';
       state.sections = [];
       state.message = null;
+      state.actionSections = 'SECTIONS';
     },
     [getAllSections.fulfilled]: (state, action) => {
       state.sections = action.payload;
@@ -142,10 +165,11 @@ let sectionsSlice = createSlice({
       state.message = null;
     },
     [updateSubsections.fulfilled]: (state, action) => {
-      console.log('SECTIONS', action.payload);
       state.sections = action.payload;
       state.status = 'success';
       state.error = '';
+      state.actionSections = 'SECTIONS';
+      state.message = 'Sección modificada';
     },
     [updateSubsections.rejected]: (state, action) => {
       state.sections = [];
@@ -162,6 +186,8 @@ let sectionsSlice = createSlice({
       state.sections = action.payload;
       state.status = 'success';
       state.error = '';
+      state.actionSections = 'SECTIONS';
+      state.message = 'Sección modificada';
     },
     [createSubsection.rejected]: (state, action) => {
       state.sections = [];
@@ -188,7 +214,11 @@ let sectionsSlice = createSlice({
   },
 });
 
-export const { changeSubsection, setAction, changeSection } =
-  sectionsSlice.actions;
+export const {
+  changeSubsection,
+  setActionSection,
+  changeSection,
+  setNewSubsection,
+} = sectionsSlice.actions;
 
 export default sectionsSlice.reducer;

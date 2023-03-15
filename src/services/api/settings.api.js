@@ -33,8 +33,8 @@ export const updateSettingsApi = async (data) => {
     let message = '';
     console.log('error', error.response.data);
     message = error.response.data
-      ? `${error.response.data.statusCode}: ${error.response.data.message}`
-      : 'Error creando el post 😞';
+      ? `${error.response.status}: ${error.response.statusText}`
+      : 'Error modificando la configuración 😞';
     throw message;
   }
 };

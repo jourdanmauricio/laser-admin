@@ -2,11 +2,11 @@ import { useModal } from '@/hooks/useModal';
 import { Modal } from '@/commons/Modal/Modal';
 import Media from '@/components/Media/Media';
 
-const AddPicture = ({ subsection, handleChangeSubsection }) => {
+const AddPicture = ({ container, handleChangeImage, error }) => {
   const [isOpenModal, openModal, closeModal] = useModal(false);
 
   const handleSelect = (image) => {
-    handleChangeSubsection('image', image, subsection.id);
+    handleChangeImage('image', image);
     closeModal();
   };
 
@@ -17,7 +17,7 @@ const AddPicture = ({ subsection, handleChangeSubsection }) => {
           <div className="w-[150px] self-center justify-center mx-auto">
             <img
               className="rounded border border-solid border-gray-400 w-[150px]  object-contain aspect-square"
-              src={subsection?.image}
+              src={container?.image}
               alt=""
             />
           </div>
@@ -34,22 +34,22 @@ const AddPicture = ({ subsection, handleChangeSubsection }) => {
                 handleChangeSubsection(
                   e.target.name,
                   e.target.value,
-                  subsection.id
+                  container.id
                 )
               }
               className="form__input border-gray-500 w-full"
               type="text"
               name="alt_image"
               placeholder="Texto alternativo"
-              value={subsection.alt_image}
+              value={container.alt_image}
             />
-            {/* <p
+            <p
               className={`input__error ${
                 error.alt_image ? 'opacity-100' : 'opacity-0'
               }`}
             >
               {error.alt_image}
-            </p> */}
+            </p>
           </div>
 
           <div className="form__group w-full">
@@ -61,15 +61,15 @@ const AddPicture = ({ subsection, handleChangeSubsection }) => {
               id="image"
               name="image"
               placeholder="Imagen Resumen del post"
-              value={subsection.image}
+              value={container.image}
             />
-            {/* <p
+            <p
               className={`input__error ${
                 error.image ? 'opacity-100' : 'opacity-0'
               }`}
             >
               {error.image}
-            </p> */}
+            </p>
           </div>
         </div>
       </div>

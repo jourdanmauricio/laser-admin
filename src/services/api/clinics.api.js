@@ -1,6 +1,6 @@
 import { axiosApi } from '../api';
 
-export const getAllClinics = async () => {
+export const getAllClinicsApi = async () => {
   try {
     const response = await axiosApi.get('/clinics');
     return response.data;
@@ -14,10 +14,14 @@ export const getAllClinics = async () => {
   }
 };
 
-export const createClinic = async (data) => {
+export const createClinicApi = async (data2) => {
   try {
-    const response = await axiosApi.post('/clinics', data);
-    return response.data;
+    const data = JSON.parse(JSON.stringify(data2));
+    delete data.id;
+    delete data.updated;
+    await axiosApi.post('/clinics', data);
+    const newClinics = await getAllClinicsApi();
+    return newClinics;
   } catch (error) {
     let message = '';
     console.log('error', error.response.data);
@@ -28,34 +32,43 @@ export const createClinic = async (data) => {
   }
 };
 
-export const updateClinic = async (data) => {
+export const updateClinicApi = async (data) => {
   try {
-    const id = data.id;
-    delete data.id;
-    delete data.createdAt;
-    delete data.updatedAt;
-    const response = await axiosApi.put(`/clinics/${id}`, data);
-    return response.data;
+    const data2 = JSON.parse(JSON.stringify(data));
+    for (const clinic of data2) {
+      if (clinic.updated === true) {
+        const id = clinic.id;
+        delete clinic.id;
+        delete clinic.updated;
+        delete clinic.createdAt;
+        delete clinic.updatedAt;
+        await axiosApi.put(`/clinics/${id}`, clinic);
+      }
+    }
+    const newClinics = await getAllClinicsApi();
+    return newClinics;
   } catch (error) {
+    console.log('error!!!!!!!!!!!', error);
     let message = '';
     console.log('error', error.response.data);
     message = error.response.data
       ? `${error.response.data.statusCode}: ${error.response.data.message}`
-      : 'Error modificando la clínica 😞';
+      : 'Error creando el post 😞';
     throw message;
   }
 };
 
-export const deleteClinic = async (id) => {
+export const deleteClinicApi = async (id) => {
   try {
-    const response = await axiosApi.delete(`/clinics/${id}`);
-    return response.data;
+    await axiosApi.delete(`/clinics/${id}`);
+    const newClinics = await getAllClinicsApi();
+    return newClinics;
   } catch (error) {
     let message = '';
     console.log('error', error.response.data);
     message = error.response.data
       ? `${error.response.data.statusCode}: ${error.response.data.message}`
-      : 'Error elinando la clínica 😞';
+      : 'Error eliminando el consultorio 😞';
     throw message;
   }
 };

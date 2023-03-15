@@ -36,12 +36,9 @@ const RecoveryPassword = React.lazy(() =>
 );
 
 const Dashboard = React.lazy(() => import('@/pages/Dashboard/Dashboard'));
-const Profile = React.lazy(() => import('@/pages/Profile/Profile'));
+const Profile = React.lazy(() => import('@/pages/Profile/Tabs'));
 const Settings = React.lazy(() => import('@/pages/Settings/Settings'));
 const Media = React.lazy(() => import('@/pages/Media/Media'));
-const Patients = React.lazy(() => import('@/pages/Patients/Patients'));
-const Blog = React.lazy(() => import('@/pages/Blog/Blog'));
-const Clinics = React.lazy(() => import('@/pages/Clinics/Clinics'));
 const Sections = React.lazy(() => import('@/pages/Sections/Sections'));
 
 function AppRoutes() {
@@ -92,30 +89,6 @@ function AppRoutes() {
                 element={
                   <AuthRoute>
                     <Sections />
-                  </AuthRoute>
-                }
-              />
-              <Route
-                path="/pacientes"
-                element={
-                  <AuthRoute>
-                    <Patients />
-                  </AuthRoute>
-                }
-              />
-              <Route
-                path="/blog"
-                element={
-                  <AuthRoute>
-                    <Blog />
-                  </AuthRoute>
-                }
-              />
-              <Route
-                path="/clinicas"
-                element={
-                  <AuthRoute>
-                    <Clinics />
                   </AuthRoute>
                 }
               />

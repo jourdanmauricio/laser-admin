@@ -146,7 +146,6 @@ const FooterPreview = () => {
         ...error,
         [name]: textError,
       });
-      console.log('textError', textError);
     } else {
       setError({
         ...error,
@@ -173,7 +172,6 @@ const FooterPreview = () => {
     for (let field of fields) {
       if (suscribe[field].trim() === '') {
         formError = true;
-        console.log('nulo', field);
         fieldsErrors = {
           ...fieldsErrors,
           [field]: 'Requerido',
@@ -190,7 +188,6 @@ const FooterPreview = () => {
     }
 
     try {
-      console.log('TRY');
       setAction('loading');
       const suscriber = await createSubscriber(suscribe);
 
