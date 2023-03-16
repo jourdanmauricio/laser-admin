@@ -32,6 +32,11 @@ const useBlogSection = () => {
   const blogBgColor = useSelector((state) =>
     state.settings.settings.find((setting) => setting.feature === 'blogBgColor')
   );
+  const clinicBgColor = useSelector((state) =>
+    state.settings.settings.find(
+      (setting) => setting.feature === 'clinicBgColor'
+    )
+  );
   const waveBlogShow = useSelector((state) =>
     state.settings.settings.find(
       (setting) => setting.feature === 'waveBlogShow'
@@ -51,6 +56,7 @@ const useBlogSection = () => {
   const dispatchNotif = useNotification();
   const dispatch = useDispatch();
   const [isOpenModal, openModal, closeModal] = useModal(false);
+  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
   const quillRef = useRef();
   const quillRef2 = useRef();
   const quillRef3 = useRef();
@@ -179,6 +185,10 @@ const useBlogSection = () => {
     errorField,
     waveBlogShow,
     waveBlog,
+    isOpenModalWave,
+    openModalWave,
+    closeModalWave,
+    clinicBgColor,
     setEditData,
     setDelError,
     onSubmit,

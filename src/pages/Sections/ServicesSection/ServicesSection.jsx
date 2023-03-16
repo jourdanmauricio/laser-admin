@@ -8,7 +8,8 @@ import Service from './Service/Service';
 import { Modal } from '@/commons/Modal/Modal';
 import DeleteSubsection from './DeleteSubsection/DeleteSubsection';
 import useServicesSection from './useServicesSection';
-import WaveSettings from '../../../commons/WaveSettings/WaveSettings';
+// import WaveSettings from '../../../commons/WaveSettings/WaveSettings';
+import WaveStyles from '@/components/WaveStyles/WaveStyles';
 
 const ServicesSection = () => {
   const {
@@ -24,6 +25,10 @@ const ServicesSection = () => {
     errorFields,
     waveServiceShow,
     waveService,
+    isOpenModalWave,
+    openModalWave,
+    closeModalWave,
+    blogBgColor,
     onChangeSection,
     onChangeSetting,
     onCancel,
@@ -52,7 +57,7 @@ const ServicesSection = () => {
                   />
                 </div>
 
-                <div className="mt-8 form__group">
+                <div className="form__group">
                   <label className="form__label">Color fondo sección</label>
                   <div className="flex items-center gap-4">
                     <input
@@ -77,11 +82,42 @@ const ServicesSection = () => {
                   </div>
                 </div>
 
-                <WaveSettings
-                  waveShow={waveServiceShow}
-                  wave={waveService}
-                  onChangeWave={onChangeSetting}
-                />
+                {/* WAVE */}
+                <div className="flex">
+                  <div className="form__group w-full">
+                    <input
+                      checked={
+                        waveServiceShow?.value === 'false' ? false : true
+                      }
+                      type="checkbox"
+                      value=""
+                      name={waveServiceShow.feature}
+                      onChange={(e) =>
+                        onChangeSetting(
+                          e.target.name,
+                          e.target.checked.toString()
+                        )
+                      }
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                    <label
+                      htmlFor="main"
+                      className="ml-2 text-sm font-medium text-gray-700 text"
+                    >
+                      Wave
+                    </label>
+                  </div>
+                  <div className="form__group w-full">
+                    <button
+                      type="button"
+                      onClick={() => openModalWave()}
+                      className="btn__primary"
+                    >
+                      Modificar wave
+                    </button>
+                  </div>
+                </div>
+
                 <hr />
 
                 <DataTable
@@ -115,11 +151,24 @@ const ServicesSection = () => {
           </button>
         </div>
       </form>
+
       <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
         <DeleteSubsection
           subsection={service}
           handleCancelDelete={handleCancelDelete}
           handleDelete={handleDelete}
+        />
+      </Modal>
+
+      <Modal isOpenModal={isOpenModalWave} closeModal={closeModalWave}>
+        <WaveStyles
+          wave={waveService}
+          onChangeSetting={onChangeSetting}
+          closeModalWave={closeModalWave}
+          bg={servicesBgColor} // Color seccion actual
+          waveColor={blogBgColor} // Color siguiente seccion
+          section="Servicios"
+          nextSection="Entradas destacadas"
         />
       </Modal>
     </>

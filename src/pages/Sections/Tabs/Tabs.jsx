@@ -26,7 +26,7 @@ const Tabs = () => {
             className={toggleState === 1 ? 'tabs active__tabs' : 'tabs'}
           >
             <FaHospitalUser color="teal" size={20} />
-            <span>Sobre Mi</span>
+            <span className="hidden sm:inline-block">Sobre Mi</span>
           </div>
 
           <div
@@ -34,7 +34,7 @@ const Tabs = () => {
             className={toggleState === 2 ? 'tabs active__tabs' : 'tabs'}
           >
             <FaRegListAlt color="teal" size={20} />
-            <span>Servicios</span>
+            <span className="hidden sm:inline-block">Servicios</span>
           </div>
 
           <div
@@ -42,7 +42,7 @@ const Tabs = () => {
             className={toggleState === 3 ? 'tabs active__tabs' : 'tabs'}
           >
             <FaBlogger color="teal" size={20} />
-            <span>Blog</span>
+            <span className="hidden sm:inline-block">Blog</span>
           </div>
 
           <div
@@ -50,7 +50,7 @@ const Tabs = () => {
             className={toggleState === 4 ? 'tabs active__tabs' : 'tabs'}
           >
             <FaRegHospital color="teal" size={20} />
-            <span>Consultorios</span>
+            <span className="hidden sm:inline-block">Consultorios</span>
           </div>
         </div>
 

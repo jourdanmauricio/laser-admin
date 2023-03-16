@@ -46,6 +46,20 @@ const useClinicsSection = () => {
       (setting) => setting.feature === 'clinicBgColor'
     )
   );
+  const clinicTextColor = useSelector((state) =>
+    state.settings.settings.find(
+      (setting) => setting.feature === 'clinicTextColor'
+    )
+  );
+
+  const clinicBtn2 = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'clinicBtn')
+  );
+  const clinicBtn = clinicBtn2.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
+  );
+
   const [errorField, setErrorField] = useState(INITIAL_ERROR_CLINICS);
   const [editData, setEditData] = useState();
   const clinic = useSelector((state) =>
@@ -59,12 +73,25 @@ const useClinicsSection = () => {
   const waveClinic = useSelector((state) =>
     state.settings.settings.find((setting) => setting.feature === 'waveClinic')
   );
+  const footerBgColor = useSelector((state) =>
+    state.settings.settings.find(
+      (setting) => setting.feature === 'footerBgColor'
+    )
+  );
+
+  document.documentElement.style.setProperty(
+    '--clinicBgColor',
+    clinicBgColor.value
+  );
 
   const dispatchNotif = useNotification();
   const dispatch = useDispatch();
   const quillRef = useRef();
   const quillRef2 = useRef();
   const [isOpenModal, openModal, closeModal] = useModal(false);
+  const [isOpenModalButton, openModalButton, closeModalButton] =
+    useModal(false);
+  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
 
   const imageHandler = async () => {
     openModal();
@@ -216,13 +243,22 @@ const useClinicsSection = () => {
     quillRef,
     quillRef2,
     clinicBgColor,
+    clinicTextColor,
     isOpenModal,
     closeModal,
+    isOpenModalButton,
+    closeModalButton,
+    openModalButton,
     modules,
     errorField,
     editData,
     waveClinicShow,
     waveClinic,
+    clinicBtn,
+    isOpenModalWave,
+    openModalWave,
+    closeModalWave,
+    footerBgColor,
     setDelError,
     setEditData,
     onChangeSection,

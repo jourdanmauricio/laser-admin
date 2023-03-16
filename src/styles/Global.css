@@ -24,6 +24,30 @@ body {
   top: var(--heroTop);
 }
 
+.btn__settings {
+  border-radius: var(--btnTlRadius) var(--btnTrRadius) var(--btnBlRadius)
+    var(--btnBrRadius);
+  color: var(--btnTextColor);
+  background-color: var(--btnBg);
+  border-color: var(--btnBorderColor);
+  box-shadow: var(--btnShadow);
+}
+.btn__settings:hover {
+  color: var(--btnTextColorHover);
+  background-color: var(--btnBgHover);
+  border-color: var(--btnBorderColorHover);
+}
+
+.wave__settings {
+  background-color: var(--waveBgColor);
+  background-color: '#969696';
+}
+
+.wave__settings--path {
+  stroke: none;
+  fill: var(--waveColor);
+}
+
 .hero__opacity {
   opacity: var(--heroOpacity);
 }

@@ -5,6 +5,7 @@ import Media from '@/components/Media/Media';
 import Posts from './Posts/Posts';
 import useBlogSection from './useBlogSection';
 import WaveSettings from '@/commons/WaveSettings/WaveSettings';
+import WaveStyles from '@/components/WaveStyles/WaveStyles';
 
 const BlogSection = () => {
   const {
@@ -20,6 +21,10 @@ const BlogSection = () => {
     errorField,
     waveBlogShow,
     waveBlog,
+    isOpenModalWave,
+    openModalWave,
+    closeModalWave,
+    clinicBgColor,
     setEditData,
     setDelError,
     onSubmit,
@@ -34,7 +39,7 @@ const BlogSection = () => {
     <>
       <form onSubmit={onSubmit} noValidate>
         {blogSection && (
-          <div>
+          <>
             <div className="form__group w-full">
               <label className="form__label">Título</label>
               <ReactQuill
@@ -72,39 +77,84 @@ const BlogSection = () => {
                   />
                 </div>
 
+                <div className="form__group w-full">
+                  <label className="form__label">Color fondo sección</label>
+                  <div className="flex items-center gap-4">
+                    <input
+                      className="form__input--color w-full border-gray-500"
+                      type="color"
+                      name="blogBgColor"
+                      value={blogBgColor.value}
+                      onChange={(e) =>
+                        onChangeSetting(e.target.name, e.target.value)
+                      }
+                    />
+                    <input
+                      type="text"
+                      value={blogBgColor.value}
+                      name="blogBgColor"
+                      placeholder="#531253"
+                      className="form__input border-gray-500"
+                      onChange={(e) =>
+                        onChangeSetting(e.target.name, e.target.value)
+                      }
+                    />
+                  </div>
+                </div>
+
+                {/* WAVE */}
+                <div className="flex">
+                  <div className="form__group w-full">
+                    <input
+                      checked={waveBlogShow?.value === 'false' ? false : true}
+                      type="checkbox"
+                      value=""
+                      name={waveBlogShow.feature}
+                      onChange={(e) =>
+                        onChangeSetting(
+                          e.target.name,
+                          e.target.checked.toString()
+                        )
+                      }
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    />
+                    <label
+                      htmlFor="main"
+                      className="ml-2 text-sm font-medium text-gray-700 text"
+                    >
+                      Wave
+                    </label>
+                  </div>
+                  <div className="form__group w-full">
+                    <button
+                      type="button"
+                      onClick={() => openModalWave()}
+                      className="btn__primary"
+                    >
+                      Modificar wave
+                    </button>
+                  </div>
+                </div>
+
                 <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
                   <Media handleSelect={handleSelect} />
                 </Modal>
               </div>
             ))}
-          </div>
+          </>
         )}
-        <div className="mt-8 form__group">
-          <label className="form__label">Color fondo sección</label>
-          <div className="flex items-center gap-4">
-            <input
-              className="form__input--color w-full border-gray-500"
-              type="color"
-              name="blogBgColor"
-              value={blogBgColor.value}
-              onChange={(e) => onChangeSetting(e.target.name, e.target.value)}
-            />
-            <input
-              type="text"
-              value={blogBgColor.value}
-              name="blogBgColor"
-              placeholder="#531253"
-              className="form__input border-gray-500"
-              onChange={(e) => onChangeSetting(e.target.name, e.target.value)}
-            />
-          </div>
-        </div>
 
-        <WaveSettings
-          waveShow={waveBlogShow}
-          wave={waveBlog}
-          onChangeWave={onChangeSetting}
-        />
+        <Modal isOpenModal={isOpenModalWave} closeModal={closeModalWave}>
+          <WaveStyles
+            wave={waveBlog}
+            onChangeSetting={onChangeSetting}
+            closeModalWave={closeModalWave}
+            bg={blogBgColor} // Color seccion actual
+            waveColor={clinicBgColor} // Color siguiente seccion
+            section="Entradas destacadas"
+            nextSection="Consultorios"
+          />
+        </Modal>
 
         <hr />
 

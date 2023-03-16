@@ -19,6 +19,7 @@ const useServicesSection = () => {
   const [service, setService] = useState();
   const quillRef = useRef();
   const [isOpenModal, openModal, closeModal] = useModal(false);
+  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
   const [errorFields, setErrorFields] = useState({
     image: null,
     alt_image: null,
@@ -31,6 +32,9 @@ const useServicesSection = () => {
     state.settings.settings.find(
       (setting) => setting.feature === 'servicesBgColor'
     )
+  );
+  const blogBgColor = useSelector((state) =>
+    state.settings.settings.find((setting) => setting.feature === 'blogBgColor')
   );
   const waveServiceShow = useSelector((state) =>
     state.settings.settings.find(
@@ -164,6 +168,10 @@ const useServicesSection = () => {
     errorFields,
     waveServiceShow,
     waveService,
+    isOpenModalWave,
+    openModalWave,
+    closeModalWave,
+    blogBgColor,
     onChangeSection,
     onChangeSetting,
     onCancel,

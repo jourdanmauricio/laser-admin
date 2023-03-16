@@ -14,11 +14,16 @@ import {
   FaPowerOff,
   FaBars,
   FaBoxOpen,
+  FaRegEdit,
 } from 'react-icons/fa';
 import { logOutSettings } from '@/store/settings';
+import { useModal } from '@/hooks/useModal';
+import { Modal } from '@/commons/Modal/Modal';
+import DesignComponents from '../DesignComponents/DesignComponents';
 
 const Nav = () => {
   const [mobileMenu, setMobileMenu] = useState(true);
+  const [isOpenModal, openModal, closeModal] = useModal(false);
   let [page, setPage] = useState([]);
   let user = useSelector((state) => state.user.user);
   let dispatch = useDispatch();
@@ -27,6 +32,11 @@ const Nav = () => {
 
   const handleMobileMenu = () => {
     setMobileMenu(!mobileMenu);
+  };
+
+  const handleDesign = () => {
+    console.log('open design');
+    openModal();
   };
 
   const handleLogout = () => {
@@ -66,13 +76,14 @@ const Nav = () => {
   }, [location]);
 
   return (
-    <nav className="sticky top-0 h-12 bg-slate-100 shadow-[0_0_9px_3px_rgba(41,41,41,0.25)] z-10 py-0 px-6 flex items-center justify-around">
-      <div className="sm:hidden">
-        <FaBars className="text-2xl" onClick={handleMobileMenu} />
-      </div>
-      <div className="flex w-full justify-center">
-        <span>Laura Rodriguez</span>
-        {/* <ul className="navbar__items">
+    <>
+      <nav className="sticky top-0 h-12 bg-slate-100 shadow-[0_0_9px_3px_rgba(41,41,41,0.25)] z-10 py-0 px-6 flex items-center justify-around">
+        <div className="sm:hidden">
+          <FaBars className="text-2xl" onClick={handleMobileMenu} />
+        </div>
+        <div className="flex w-full justify-center">
+          <span>Laura Rodriguez</span>
+          {/* <ul className="navbar__items">
             {page.map((e) => (
               <li className="navbar__item" key={e.id}>
                 <NavLink
@@ -89,106 +100,116 @@ const Nav = () => {
               </li>
             ))}
           </ul> */}
-      </div>
-      <span>
-        {user && (
-          <button
-            className="text-red-700 text-2xl border-none cursor-pointer"
-            onClick={handleLogout}
-          >
-            <FaPowerOff />
+        </div>
+        <div className="flex items-center">
+          <button onClick={handleDesign}>
+            <FaRegEdit className="text-teal-700 text-2xl border-none" />
           </button>
-        )}
-      </span>
-      {/* </div> */}
-      <div
-        className={`absolute top-[53px] left-0 w-[60%] bg-slate-100 ${
-          mobileMenu && 'hidden'
-        }`}
-      >
-        <ul>
-          <li>
-            <NavLink
-              to="/home"
-              className={({ isActive }) =>
-                `py-4 pl-8 pr-[14px] no-underline text-lg block text-left hover:bg-slate-500 ${
-                  isActive ? 'bg-slate-500' : 'bg-slate-100'
-                }  `
-              }
-            >
-              <FaUserCog className="mr-4 inline-block" />
-              <span className="align-middle">Perfil</span>
-            </NavLink>
-          </li>
 
-          <li>
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                `py-4 pl-8 pr-[14px] no-underline text-lg block text-left hover:bg-slate-500 ${
-                  isActive ? 'bg-slate-500' : 'bg-slate-100'
-                }  `
-              }
+          {user && (
+            <button
+              className="text-red-700 ml-6 text-2xl border-none cursor-pointer"
+              onClick={handleLogout}
             >
-              <FaTh className="mr-4 inline-block" />
-              <span className="align-middle">Dashboard</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/settings"
-              className={({ isActive }) =>
-                `py-4 pl-8 pr-[14px] no-underline text-lg block text-left hover:bg-slate-500 ${
-                  isActive ? 'bg-slate-500' : 'bg-slate-100'
-                }  `
-              }
-            >
-              <FaCog className="mr-4 inline-block" />
-              <span className="align-middle">Configuración</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              className={({ isActive }) =>
-                `py-4 pl-8 pr-[14px] no-underline text-lg block text-left hover:bg-slate-500 ${
-                  isActive ? 'bg-slate-500' : 'bg-slate-100'
-                }  `
-              }
-              to="/categories"
-            >
-              <FaRegCalendarAlt className="mr-4 inline-block" />
-              <span className="align-middle">Categorías</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/products"
-              className={({ isActive }) =>
-                `py-4 pl-8 pr-[14px] no-underline text-lg block text-left hover:bg-slate-500 ${
-                  isActive ? 'bg-slate-500' : 'bg-slate-100'
-                }  `
-              }
-            >
-              <FaBoxOpen className="mr-4 inline-block" />
-              <span className="align-middle">Productos</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/users"
-              className={({ isActive }) =>
-                `py-4 pl-8 pr-[14px] no-underline text-lg block text-left hover:bg-slate-500 ${
-                  isActive ? 'bg-slate-500' : 'bg-slate-100'
-                }  `
-              }
-            >
-              <FaUsers className="mr-4 inline-block" />
-              <span className="align-middle">Usuarios</span>
-            </NavLink>
-          </li>
-        </ul>
-      </div>
-    </nav>
+              <FaPowerOff />
+            </button>
+          )}
+        </div>
+        {/* </div> */}
+        <div
+          className={`absolute top-[53px] left-0 w-[60%] bg-slate-100 ${
+            mobileMenu && 'hidden'
+          }`}
+        >
+          <ul>
+            <li>
+              <NavLink
+                to="/home"
+                className={({ isActive }) =>
+                  `py-4 pl-8 pr-[14px] no-underline text-lg block text-left hover:bg-slate-500 ${
+                    isActive ? 'bg-slate-500' : 'bg-slate-100'
+                  }  `
+                }
+              >
+                <FaUserCog className="mr-4 inline-block" />
+                <span className="align-middle">Perfil</span>
+              </NavLink>
+            </li>
+
+            <li>
+              <NavLink
+                to="/dashboard"
+                className={({ isActive }) =>
+                  `py-4 pl-8 pr-[14px] no-underline text-lg block text-left hover:bg-slate-500 ${
+                    isActive ? 'bg-slate-500' : 'bg-slate-100'
+                  }  `
+                }
+              >
+                <FaTh className="mr-4 inline-block" />
+                <span className="align-middle">Dashboard</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/settings"
+                className={({ isActive }) =>
+                  `py-4 pl-8 pr-[14px] no-underline text-lg block text-left hover:bg-slate-500 ${
+                    isActive ? 'bg-slate-500' : 'bg-slate-100'
+                  }  `
+                }
+              >
+                <FaCog className="mr-4 inline-block" />
+                <span className="align-middle">Configuración</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                className={({ isActive }) =>
+                  `py-4 pl-8 pr-[14px] no-underline text-lg block text-left hover:bg-slate-500 ${
+                    isActive ? 'bg-slate-500' : 'bg-slate-100'
+                  }  `
+                }
+                to="/categories"
+              >
+                <FaRegCalendarAlt className="mr-4 inline-block" />
+                <span className="align-middle">Categorías</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/products"
+                className={({ isActive }) =>
+                  `py-4 pl-8 pr-[14px] no-underline text-lg block text-left hover:bg-slate-500 ${
+                    isActive ? 'bg-slate-500' : 'bg-slate-100'
+                  }  `
+                }
+              >
+                <FaBoxOpen className="mr-4 inline-block" />
+                <span className="align-middle">Productos</span>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/users"
+                className={({ isActive }) =>
+                  `py-4 pl-8 pr-[14px] no-underline text-lg block text-left hover:bg-slate-500 ${
+                    isActive ? 'bg-slate-500' : 'bg-slate-100'
+                  }  `
+                }
+              >
+                <FaUsers className="mr-4 inline-block" />
+                <span className="align-middle">Usuarios</span>
+              </NavLink>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
+        {/* <DesignComponents /> */}
+        Holas
+      </Modal>
+    </>
   );
 };
 

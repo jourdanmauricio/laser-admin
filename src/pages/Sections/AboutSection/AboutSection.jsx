@@ -3,7 +3,8 @@ import { quillSimpleModules } from '@/config/constants';
 import { Modal } from '@/commons/Modal/Modal';
 import Media from '@/components/Media/Media';
 import useAboutSection from './useAboutSection';
-import WaveSettings from '@/commons/WaveSettings/WaveSettings';
+// import WaveSettings from '@/commons/WaveSettings/WaveSettings';
+import WaveStyles from '@/components/WaveStyles/WaveStyles';
 
 const AboutSection = () => {
   const {
@@ -16,6 +17,10 @@ const AboutSection = () => {
     closeModal,
     waveAboutShow,
     waveAbout,
+    isOpenModalWave,
+    openModalWave,
+    closeModalWave,
+    servicesBgColor,
     onChangeSection,
     onChangeSubsection,
     onSubmit,
@@ -65,12 +70,9 @@ const AboutSection = () => {
                 />
               </div>
               <hr />
-              <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
-                <Media handleSelect={handleSelect} />
-              </Modal>
             </div>
           ))}
-          <div className="mt-8 form__group">
+          <div className="form__group">
             <label className="form__label">Color fondo sección</label>
             <div className="flex items-center gap-4">
               <input
@@ -91,11 +93,36 @@ const AboutSection = () => {
             </div>
           </div>
 
-          <WaveSettings
-            waveShow={waveAboutShow}
-            wave={waveAbout}
-            onChangeWave={onChangeSetting}
-          />
+          {/* WAVE */}
+          <div className="flex">
+            <div className="form__group w-full">
+              <input
+                checked={waveAboutShow?.value === 'false' ? false : true}
+                type="checkbox"
+                value=""
+                name={waveAboutShow.feature}
+                onChange={(e) =>
+                  onChangeSetting(e.target.name, e.target.checked.toString())
+                }
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              />
+              <label
+                htmlFor="main"
+                className="ml-2 text-sm font-medium text-gray-700 text"
+              >
+                Wave
+              </label>
+            </div>
+            <div className="form__group w-full">
+              <button
+                type="button"
+                onClick={() => openModalWave()}
+                className="btn__primary"
+              >
+                Modificar wave
+              </button>
+            </div>
+          </div>
 
           <div className="actions">
             <button
@@ -112,6 +139,20 @@ const AboutSection = () => {
           </div>
         </form>
       )}
+      <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
+        <Media handleSelect={handleSelect} />
+      </Modal>
+      <Modal isOpenModal={isOpenModalWave} closeModal={closeModalWave}>
+        <WaveStyles
+          wave={waveAbout}
+          onChangeSetting={onChangeSetting}
+          closeModalWave={closeModalWave}
+          bg={aboutBgColor} // Color seccion actual
+          waveColor={servicesBgColor} // Color siguiente seccion
+          section="Sobre mi"
+          nextSection="Servicios"
+        />
+      </Modal>
     </>
   );
 };

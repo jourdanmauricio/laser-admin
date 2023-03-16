@@ -5,10 +5,12 @@ import { quillSimpleModules } from '@/config/constants';
 import { useModal } from '@/hooks/useModal';
 import { Modal } from '@/commons/Modal/Modal';
 import Media from '@/components/Media/Media';
-import WaveSettings from '@/commons/WaveSettings/WaveSettings';
+// import WaveSettings from '@/commons/WaveSettings/WaveSettings';
+import WaveStyles from '@/components/WaveStyles/WaveStyles';
 
 const Hero = () => {
   const [isOpenModal, openModal, closeModal] = useModal(false);
+  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
   const dispatch = useDispatch();
 
   const heroText = useSelector((state) =>
@@ -99,11 +101,11 @@ const Hero = () => {
             )}
           </section>
 
-          <WaveSettings
+          {/* <WaveSettings
             waveShow={waveHeroShow}
             wave={waveHero}
             onChangeWave={onChangeSetting}
-          />
+          /> */}
 
           <div className="mt-10 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div>
@@ -143,6 +145,37 @@ const Hero = () => {
             </button>
           </div>
 
+          {/* WAVE */}
+          <div className="flex">
+            <div className="form__group w-full">
+              <input
+                checked={waveHeroShow?.value === 'false' ? false : true}
+                type="checkbox"
+                value=""
+                name={waveHeroShow.feature}
+                onChange={(e) =>
+                  onChangeSetting(e.target.name, e.target.checked.toString())
+                }
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              />
+              <label
+                htmlFor="main"
+                className="ml-2 text-sm font-medium text-gray-700 text"
+              >
+                Wave
+              </label>
+            </div>
+            <div className="form__group w-full">
+              <button
+                type="button"
+                onClick={() => openModalWave()}
+                className="btn__primary"
+              >
+                Modificar wave
+              </button>
+            </div>
+          </div>
+
           <div className="form__group w-full editor">
             <label className="form__label">Contenido</label>
             <ReactQuill
@@ -158,6 +191,18 @@ const Hero = () => {
 
           <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
             <Media handleSelect={handleSelect} />
+          </Modal>
+
+          <Modal isOpenModal={isOpenModalWave} closeModal={closeModalWave}>
+            <WaveStyles
+              wave={waveHero}
+              onChangeSetting={onChangeSetting}
+              closeModalWave={closeModalWave}
+              bg="#FFFFFF" // Color seccion actual
+              waveColor={aboutBgColor} // Color siguiente seccion
+              section="Imagen Hero"
+              nextSection="Sobre mi"
+            />
           </Modal>
         </>
       )}

@@ -24,6 +24,12 @@ const useAboutSection = () => {
       (setting) => setting.feature === 'aboutBgColor'
     )
   );
+  const servicesBgColor = useSelector((state) =>
+    state.settings.settings.find(
+      (setting) => setting.feature === 'servicesBgColor'
+    )
+  );
+
   const waveAboutShow = useSelector((state) =>
     state.settings.settings.find(
       (setting) => setting.feature === 'waveAboutShow'
@@ -34,6 +40,7 @@ const useAboutSection = () => {
   );
 
   const [isOpenModal, openModal, closeModal] = useModal(false);
+  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
   const quillRef = useRef();
   const quillRef2 = useRef();
 
@@ -110,6 +117,10 @@ const useAboutSection = () => {
     closeModal,
     waveAboutShow,
     waveAbout,
+    isOpenModalWave,
+    openModalWave,
+    closeModalWave,
+    servicesBgColor,
     onChangeSubsection,
     onChangeSection,
     onSubmit,
