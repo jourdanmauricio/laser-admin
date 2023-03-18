@@ -33,6 +33,12 @@ const useServicesSection = () => {
       (setting) => setting.feature === 'servicesBgColor'
     )
   );
+  const servicesTextColor = useSelector((state) =>
+    state.settings.settings.find(
+      (setting) => setting.feature === 'servicesTextColor'
+    )
+  );
+
   const blogBgColor = useSelector((state) =>
     state.settings.settings.find((setting) => setting.feature === 'blogBgColor')
   );
@@ -160,6 +166,7 @@ const useServicesSection = () => {
     actionSections,
     quillRef,
     servicesBgColor,
+    servicesTextColor,
     columns,
     actionsMemo,
     service,

@@ -4,7 +4,6 @@ import { Modal } from '@/commons/Modal/Modal';
 import Media from '@/components/Media/Media';
 import Clinics from './Clinics/Clinics';
 import useClinicsSection from './useClinicsSection';
-// import WaveSettings from '@/commons/WaveSettings/WaveSettings';
 import ButtonStyles from '@/components/ButtonStyles/ButtonStyles';
 import WaveStyles from '@/components/WaveStyles/WaveStyles';
 
@@ -26,7 +25,7 @@ const ClinicsSection = () => {
     isOpenModalButton,
     closeModalButton,
     openModalButton,
-    clinicBtn,
+    button,
     isOpenModalWave,
     openModalWave,
     closeModalWave,
@@ -36,16 +35,18 @@ const ClinicsSection = () => {
     onChangeSection,
     handleSelect,
     onChangeSetting,
+    onChangeSetting2,
     onChangeSubsection,
     onSubmit,
     onCancel,
     onChangeClinic,
+    onChangeClinicImage,
   } = useClinicsSection();
 
   return (
     <>
       <form onSubmit={onSubmit} noValidate>
-        {clinicSection && (
+        {clinicSection && clinicBgColor && (
           <>
             <div>
               <div className="form__group w-full">
@@ -86,130 +87,133 @@ const ClinicsSection = () => {
                 </div>
               ))}
 
-              {clinicBtn.clinicBtnShow.value === 'true' && (
-                <div className="border border-solid border-gray-300 bg-clinicBgColor h-20 w-full flex items-center justify-center">
+              <div className="border border-solid border-gray-300 bg-clinicBgColor h-20 w-full flex items-center justify-center">
+                {button.show.value === 'true' && (
                   <div
                     type="button"
-                    className="border border-solid px-4 py-2 transition ease-in-out delay-100  hover:cursor-pointer btn__settings"
+                    className="border border-solid transition ease-in-out delay-100  hover:cursor-pointer btn__clinic"
                   >
-                    {clinicBtn.clinicBtnText.value}
+                    {/* px-8 py-2 */}
+                    {button.text.value}
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
             {/* SECCION */}
-            <div className="form__group">
-              <label className="form__label">Color fondo sección</label>
-              <div className="flex items-center gap-4">
-                <input
-                  className="form__input--color w-full border-gray-500"
-                  type="color"
-                  name="clinicBgColor"
-                  value={clinicBgColor.value}
-                  onChange={(e) =>
-                    onChangeSetting(e.target.name, e.target.value)
-                  }
-                />
-                <input
-                  type="text"
-                  value={clinicBgColor.value}
-                  name="clinicBgColor"
-                  placeholder="#531253"
-                  className="form__input border-gray-500"
-                  onChange={(e) =>
-                    onChangeSetting(e.target.name, e.target.value)
-                  }
-                />
+            <div className="flex flex-col sm:flex-row sm:gap-10">
+              <div className="form__group w-full">
+                <label className="form__label">Background</label>
+                <div className="flex items-center gap-4">
+                  <input
+                    className="form__input--color w-full border-gray-500"
+                    type="color"
+                    name="clinicBgColor"
+                    value={clinicBgColor.value}
+                    onChange={(e) =>
+                      onChangeSetting(e.target.name, e.target.value)
+                    }
+                  />
+                  <input
+                    type="text"
+                    value={clinicBgColor.value}
+                    name="clinicBgColor"
+                    placeholder="#531253"
+                    className="form__input border-gray-500"
+                    onChange={(e) =>
+                      onChangeSetting(e.target.name, e.target.value)
+                    }
+                  />
+                </div>
+              </div>
+
+              <div className="form__group w-full">
+                <label className="form__label">Contenido</label>
+                <div className="flex items-center gap-4">
+                  <input
+                    className="form__input--color w-full border-gray-500"
+                    type="color"
+                    name="clinicTextColor"
+                    value={clinicTextColor.value}
+                    onChange={(e) =>
+                      onChangeSetting(e.target.name, e.target.value)
+                    }
+                  />
+                  <input
+                    type="text"
+                    value={clinicTextColor.value}
+                    name="clinicTextColor"
+                    placeholder="#531253"
+                    className="form__input border-gray-500"
+                    onChange={(e) =>
+                      onChangeSetting(e.target.name, e.target.value)
+                    }
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="form__group">
-              <label className="form__label">Color de texto consultorios</label>
-              <div className="flex items-center gap-4">
-                <input
-                  className="form__input--color w-full border-gray-500"
-                  type="color"
-                  name="clinicTextColor"
-                  value={clinicTextColor.value}
-                  onChange={(e) =>
-                    onChangeSetting(e.target.name, e.target.value)
-                  }
-                />
-                <input
-                  type="text"
-                  value={clinicTextColor.value}
-                  name="clinicTextColor"
-                  placeholder="#531253"
-                  className="form__input border-gray-500"
-                  onChange={(e) =>
-                    onChangeSetting(e.target.name, e.target.value)
-                  }
-                />
-              </div>
-            </div>
-
-            {/* BOTON */}
-            <div className="flex">
+            {/* BOTON - WAVE */}
+            <div className="flex flex-col sm:flex-row sm:gap-10">
               <div className="form__group w-full">
                 <input
-                  checked={
-                    clinicBtn.clinicBtnShow.value === 'false' ? false : true
-                  }
+                  checked={button.show.value === 'false' ? false : true}
                   type="checkbox"
                   value=""
-                  name={clinicBtn.clinicBtnShow.feature}
+                  name={button.show.feature}
+                  id={button.show.feature}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.checked.toString())
                   }
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label
-                  htmlFor="main"
-                  className="ml-2 text-sm font-medium text-gray-700 text"
+                  htmlFor={button.show.feature}
+                  className="ml-2 min-w-[90px] text-sm font-medium text-gray-700"
                 >
-                  Mostrar botón
+                  Botón CTA
                 </label>
-              </div>
-              <div className="form__group w-full">
                 <button
+                  disabled={button.show.value === 'false'}
                   type="button"
                   onClick={() => openModalButton()}
-                  className="btn__primary"
+                  className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
                 >
                   Modificar botón
                 </button>
               </div>
-            </div>
 
-            {/* WAVE */}
-            <div className="flex">
-              <div className="form__group w-full">
-                <input
-                  checked={waveClinicShow?.value === 'false' ? false : true}
-                  type="checkbox"
-                  value=""
-                  name={waveClinicShow.feature}
-                  onChange={(e) =>
-                    onChangeWave(e.target.name, e.target.checked.toString())
-                  }
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label
-                  htmlFor="main"
-                  className="ml-2 text-sm font-medium text-gray-700 text"
-                >
-                  Wave
-                </label>
-              </div>
-              <div className="form__group w-full">
-                <button
-                  type="button"
-                  onClick={() => openModalWave()}
-                  className="btn__primary"
-                >
-                  Modificar wave
-                </button>
+              <div className="flex items-center gap-4 w-full">
+                <div className="form__group w-full">
+                  <input
+                    checked={waveClinicShow?.value === 'false' ? false : true}
+                    type="checkbox"
+                    value=""
+                    name={waveClinicShow.feature}
+                    id={waveClinicShow.feature}
+                    onChange={(e) =>
+                      onChangeSetting(
+                        e.target.name,
+                        e.target.checked.toString()
+                      )
+                    }
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    htmlFor={waveClinicShow.feature}
+                    className="ml-2 w-[90px] text-sm font-medium text-gray-700"
+                  >
+                    Wave
+                  </label>
+                  <button
+                    disabled={waveClinicShow.value === 'false'}
+                    type="button"
+                    onClick={() => openModalWave()}
+                    className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
+                  >
+                    Modificar wave
+                  </button>
+                </div>
               </div>
             </div>
           </>
@@ -222,7 +226,10 @@ const ClinicsSection = () => {
           editData={editData}
           setEditData={setEditData}
           setDelError={setDelError}
+          onChangeClinicImage={onChangeClinicImage}
         />
+
+        {/* ACTIONS */}
         <div className="actions">
           <button
             onClick={onCancel}
@@ -237,7 +244,6 @@ const ClinicsSection = () => {
           </button>
         </div>
       </form>
-
       <Modal isOpenModal={isOpenModalWave} closeModal={closeModalWave}>
         <WaveStyles
           wave={waveClinic}
@@ -249,27 +255,15 @@ const ClinicsSection = () => {
           nextSection="Footer"
         />
       </Modal>
-
-      <Modal isOpenModal={isOpenModalButton} closeModal={closeModalButton}>
-        <ButtonStyles
-          text={clinicBtn.clinicBtnText}
-          textColor={clinicBtn.clinicBtnTextColor}
-          textColorHover={clinicBtn.clinicBtnTextColorHover}
-          borderColor={clinicBtn.clinicBtnBorderColor}
-          borderColorHover={clinicBtn.clinicBtnBorderColorHover}
-          bg={clinicBtn.clinicBtnBg}
-          bgHover={clinicBtn.clinicBtnBgHover}
-          tlRadius={clinicBtn.clinicBtnTlRadius}
-          trRadius={clinicBtn.clinicBtnTrRadius}
-          blRadius={clinicBtn.clinicBtnBlRadius}
-          brRadius={clinicBtn.clinicBtnBrRadius}
-          shadow={clinicBtn.clinicBtnShadow}
-          link={clinicBtn.clinicBtnLink}
-          onChangeSetting={onChangeSetting}
-          closeModalButton={closeModalButton}
-        />
-      </Modal>
-
+      {isOpenModalButton && (
+        <Modal isOpenModal={isOpenModalButton} closeModal={closeModalButton}>
+          <ButtonStyles
+            button={button}
+            onChangeSetting2={onChangeSetting2}
+            closeModal={closeModalButton}
+          />
+        </Modal>
+      )}
       <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
         <Media handleSelect={handleSelect} />
       </Modal>

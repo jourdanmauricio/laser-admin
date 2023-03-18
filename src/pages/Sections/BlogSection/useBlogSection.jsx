@@ -2,7 +2,11 @@ import useEditor from '@/config/useEditor';
 import { useEffect, useRef, useState } from 'react';
 import { useModal } from '@/hooks/useModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeSettings, updateSettings } from '@/store/settings';
+import {
+  changeSettings2,
+  changeSettings,
+  updateSettings,
+} from '@/store/settings';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
 import {
   getAllPosts,
@@ -32,6 +36,20 @@ const useBlogSection = () => {
   const blogBgColor = useSelector((state) =>
     state.settings.settings.find((setting) => setting.feature === 'blogBgColor')
   );
+  const blogTextColor = useSelector((state) =>
+    state.settings.settings.find(
+      (setting) => setting.feature === 'blogTextColor'
+    )
+  );
+
+  const blogBtn = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'blogBtn')
+  );
+  const button = blogBtn.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
+  );
+
   const clinicBgColor = useSelector((state) =>
     state.settings.settings.find(
       (setting) => setting.feature === 'clinicBgColor'
@@ -57,6 +75,8 @@ const useBlogSection = () => {
   const dispatch = useDispatch();
   const [isOpenModal, openModal, closeModal] = useModal(false);
   const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
+  const [isOpenModalBtnBlog, openModalBtnBlog, closeModalBtnBlog] =
+    useModal(false);
   const quillRef = useRef();
   const quillRef2 = useRef();
   const quillRef3 = useRef();
@@ -74,6 +94,65 @@ const useBlogSection = () => {
       });
     }
   }, [message]);
+
+  if (Object.keys(button).length > 0) {
+    document.documentElement.style.setProperty(
+      '--btnTextColorBlog',
+      `${button.textColor.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnTextColorHoverBlog',
+      `${button.textColorHover.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBgColorBlog',
+      `${button.bgColor.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBgColorHoverBlog',
+      `${button.bgColorHover.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnTlRadiusBlog',
+      `${button.tlRadius.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnTrRadiusBlog',
+      `${button.trRadius.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBlRadiusBlog',
+      `${button.blRadius.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBrRadiusBlog',
+      `${button.brRadius.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBorderColorBlog',
+      `${button.borderColor.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBorderColorHoverBlog',
+      `${button.borderColorHover.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnShadowBlog',
+      `${button.shadow.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnHeightBlog',
+      `${button.height.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnWidthBlog',
+      `${button.width.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBorderBlog',
+      `${button.border.value}`
+    );
+  }
 
   const onChangeSubsection = (name, value, sectionId, id) => {
     dispatch(changeSubsection({ name, value, sectionId, id }));
@@ -162,6 +241,10 @@ const useBlogSection = () => {
     dispatch(changeSettings({ feature, value }));
   };
 
+  const onChangeSetting2 = (feature, value, type) => {
+    dispatch(changeSettings2({ feature, value, type }));
+  };
+
   const onChangePost = (name, value) => {
     dispatch(changePost({ name, value, id: editData.id }));
     setErrorField({ ...errorField, [name]: null });
@@ -174,6 +257,8 @@ const useBlogSection = () => {
   return {
     actionPosts,
     blogSection,
+    blogTextColor,
+    button,
     quillRef,
     quillRef2,
     quillRef3,
@@ -189,6 +274,9 @@ const useBlogSection = () => {
     openModalWave,
     closeModalWave,
     clinicBgColor,
+    isOpenModalBtnBlog,
+    closeModalBtnBlog,
+    openModalBtnBlog,
     setEditData,
     setDelError,
     onSubmit,
@@ -196,6 +284,7 @@ const useBlogSection = () => {
     onChangeSection,
     onChangeSubsection,
     onChangeSetting,
+    onChangeSetting2,
     handleSelect,
     onChangePost,
   };

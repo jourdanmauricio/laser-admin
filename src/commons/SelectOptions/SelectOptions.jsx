@@ -1,7 +1,7 @@
 // import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
-const colourOptions = [
+const linksOptions = [
   { value: '/#inicio', label: 'Inicio' },
   { value: '/#about', label: 'Sobre mi' },
   { value: '/#services', label: 'Servicios' },
@@ -9,12 +9,11 @@ const colourOptions = [
   { value: '/contact', label: 'Contacto' },
 ];
 
-const SelectOptions = ({ label, name, onHandleChange, value }) => {
+const SelectOptions = ({ label, button, onHandleChange }) => {
   const handleChange = (e) => {
     console.log('change', e);
-    onHandleChange(name, e.value);
+    onHandleChange(button.link.feature, e.value, button.link.type);
   };
-  console.log('value', value);
 
   return (
     <>
@@ -23,11 +22,11 @@ const SelectOptions = ({ label, name, onHandleChange, value }) => {
         className="basic-single"
         classNamePrefix="select"
         // defaultValue={value}
-        value={colourOptions.find((opt) => opt.value === value)}
+        value={linksOptions.find((opt) => opt.value === button.link.value)}
         // isClearable
         isSearchable
-        name="color"
-        options={colourOptions}
+        name="links"
+        options={linksOptions}
         onChange={handleChange}
       />
     </>

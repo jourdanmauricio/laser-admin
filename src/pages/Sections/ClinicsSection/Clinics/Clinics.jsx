@@ -9,6 +9,7 @@ const Clinics = ({
   errorField,
   setDelError,
   onChangeClinic,
+  onChangeClinicImage,
   editData,
   setEditData,
 }) => {
@@ -41,6 +42,7 @@ const Clinics = ({
           editData={editData}
           errorField={errorField}
           onChangeClinic={onChangeClinic}
+          onChangeClinicImage={onChangeClinicImage}
         />
       )}
 

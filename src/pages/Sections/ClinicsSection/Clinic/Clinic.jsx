@@ -1,7 +1,13 @@
 import Message from '@/commons/Message/Message';
 import useClinic from './useClinic';
+import AddPicture from '@/components/AddPicture/AddPicture';
 
-const Clinic = ({ editData, errorField, onChangeClinic }) => {
+const Clinic = ({
+  editData,
+  errorField,
+  onChangeClinic,
+  onChangeClinicImage,
+}) => {
   const { clinic, error, closeMessage } = useClinic({
     editData,
   });
@@ -239,6 +245,12 @@ const Clinic = ({ editData, errorField, onChangeClinic }) => {
               />
             </div>
           </div>
+
+          <AddPicture
+            container={clinic}
+            handleChangeImage={onChangeClinicImage}
+            error={errorField}
+          />
           <div className="form__group w-full">
             <label className="form__label">Días</label>
             <input

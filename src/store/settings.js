@@ -57,6 +57,16 @@ let settingsSlice = createSlice({
       state.action = payload.action;
     },
 
+    changeSettings2: (state, { payload }) => {
+      console.log('changeSettings2', payload);
+      const newSettings = state.settings.map((setting) =>
+        setting.feature === payload.feature && setting.type === payload.type
+          ? { ...setting, value: payload.value, updated: true }
+          : setting
+      );
+      state.settings = newSettings;
+    },
+
     changeSettings: (state, { payload }) => {
       const newSettings = state.settings.map((setting) =>
         setting.feature === payload.feature
@@ -107,6 +117,7 @@ export const {
   logOutSettings,
   initEditSettings,
   changeSettings,
+  changeSettings2,
   setAction,
   delMessage,
   delError,

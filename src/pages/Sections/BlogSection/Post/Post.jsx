@@ -3,7 +3,8 @@ import ReactQuill from 'react-quill';
 import { Modal } from '@/commons/Modal/Modal';
 import Media from '@/components/Media/Media';
 import usePost from './usePost';
-import AddPicture from '../../AddPicture/AddPicture';
+import AddPicture from '@/components/AddPicture/AddPicture';
+//import AddPicture from '../../AddPicture/AddPicture';
 
 const Post = ({ editData, errorField, onChangePost }) => {
   const {

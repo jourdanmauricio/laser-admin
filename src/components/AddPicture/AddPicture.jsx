@@ -31,11 +31,7 @@ const AddPicture = ({ container, handleChangeImage, error }) => {
             <label className="form__label">Alt Imágen</label>
             <input
               onChange={(e) =>
-                handleChangeSubsection(
-                  e.target.name,
-                  e.target.value,
-                  container.id
-                )
+                handleChangeImage(e.target.name, e.target.value, container.id)
               }
               className="form__input border-gray-500 w-full"
               type="text"

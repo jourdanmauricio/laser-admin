@@ -17,6 +17,8 @@ import { useModal } from '@/hooks/useModal';
 import useEditor from '@/config/useEditor';
 import { changeSettings, updateSettings } from '@/store/settings';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
+import { getAllSettings } from '@/store/settings';
+import { changeSettings2 } from '@/store/settings';
 
 const INITIAL_ERROR_CLINICS = {
   name: null,
@@ -46,19 +48,22 @@ const useClinicsSection = () => {
       (setting) => setting.feature === 'clinicBgColor'
     )
   );
+
   const clinicTextColor = useSelector((state) =>
     state.settings.settings.find(
       (setting) => setting.feature === 'clinicTextColor'
     )
   );
 
-  const clinicBtn2 = useSelector((state) =>
+  const clinicBtn = useSelector((state) =>
     state.settings.settings.filter((setting) => setting.type === 'clinicBtn')
   );
-  const clinicBtn = clinicBtn2.reduce(
+  const button = clinicBtn.reduce(
     (obj, cur) => ({ ...obj, [cur.feature]: cur }),
     {}
   );
+
+  // console.log('button', button);
 
   const [errorField, setErrorField] = useState(INITIAL_ERROR_CLINICS);
   const [editData, setEditData] = useState();
@@ -81,8 +86,67 @@ const useClinicsSection = () => {
 
   document.documentElement.style.setProperty(
     '--clinicBgColor',
-    clinicBgColor.value
+    clinicBgColor?.value
   );
+
+  if (Object.keys(button).length > 0) {
+    document.documentElement.style.setProperty(
+      '--btnTextColorClinic',
+      `${button.textColor.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnTextColorHoverClinic',
+      `${button.textColorHover.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBgColorClinic',
+      `${button.bgColor.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBgColorHoverClinic',
+      `${button.bgColorHover.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnTlRadiusClinic',
+      `${button.tlRadius.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnTrRadiusClinic',
+      `${button.trRadius.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBlRadiusClinic',
+      `${button.blRadius.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBrRadiusClinic',
+      `${button.brRadius.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBorderColorClinic',
+      `${button.borderColor.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBorderColorHoverClinic',
+      `${button.borderColorHover.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnShadowClinic',
+      `${button.shadow.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnHeightClinic',
+      `${button.height.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnWidthClinic',
+      `${button.width.value}`
+    );
+    document.documentElement.style.setProperty(
+      '--btnBorderClinic',
+      `${button.border.value}`
+    );
+  }
 
   const dispatchNotif = useNotification();
   const dispatch = useDispatch();
@@ -189,6 +253,11 @@ const useClinicsSection = () => {
   const onCancel = () => {
     dispatch(getAllClinics());
     dispatch(getAllSections());
+    dispatch(getAllSettings());
+  };
+
+  const onChangeSetting2 = (feature, value, type) => {
+    dispatch(changeSettings2({ feature, value, type }));
   };
 
   const onChangeSetting = (feature, value) => {
@@ -233,6 +302,10 @@ const useClinicsSection = () => {
     }
   };
 
+  const onChangeClinicImage = (name, value) => {
+    dispatch(changeClinic({ name, value, id: editData.id }));
+  };
+
   const setDelError = () => {
     setErrorField(INITIAL_ERROR_CLINICS);
   };
@@ -254,7 +327,7 @@ const useClinicsSection = () => {
     editData,
     waveClinicShow,
     waveClinic,
-    clinicBtn,
+    button,
     isOpenModalWave,
     openModalWave,
     closeModalWave,
@@ -264,10 +337,12 @@ const useClinicsSection = () => {
     onChangeSection,
     handleSelect,
     onChangeSetting,
+    onChangeSetting2,
     onChangeSubsection,
     onSubmit,
     onCancel,
     onChangeClinic,
+    onChangeClinicImage,
   };
 };
 

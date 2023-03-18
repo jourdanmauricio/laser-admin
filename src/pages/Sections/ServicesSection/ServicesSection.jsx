@@ -8,7 +8,6 @@ import Service from './Service/Service';
 import { Modal } from '@/commons/Modal/Modal';
 import DeleteSubsection from './DeleteSubsection/DeleteSubsection';
 import useServicesSection from './useServicesSection';
-// import WaveSettings from '../../../commons/WaveSettings/WaveSettings';
 import WaveStyles from '@/components/WaveStyles/WaveStyles';
 
 const ServicesSection = () => {
@@ -17,6 +16,7 @@ const ServicesSection = () => {
     actionSections,
     quillRef,
     servicesBgColor,
+    servicesTextColor,
     columns,
     actionsMemo,
     service,
@@ -39,7 +39,7 @@ const ServicesSection = () => {
   return (
     <>
       <form onSubmit={onSubmit}>
-        {servicesSection && (
+        {servicesSection && servicesBgColor && (
           <div>
             {actionSections === 'SECTIONS' && (
               <>
@@ -57,33 +57,92 @@ const ServicesSection = () => {
                   />
                 </div>
 
-                <div className="form__group">
-                  <label className="form__label">Color fondo sección</label>
-                  <div className="flex items-center gap-4">
-                    <input
-                      className="form__input--color w-full border-gray-500"
-                      type="color"
-                      name="servicesBgColor"
-                      value={servicesBgColor.value}
-                      onChange={(e) =>
-                        onChangeSetting(e.target.name, e.target.value)
-                      }
-                    />
-                    <input
-                      type="text"
-                      value={servicesBgColor.value}
-                      name="servicesBgColor"
-                      placeholder="#531253"
-                      className="form__input border-gray-500"
-                      onChange={(e) =>
-                        onChangeSetting(e.target.name, e.target.value)
-                      }
-                    />
+                {/* SECTION */}
+                <div className="flex flex-col sm:flex-row sm:gap-10">
+                  <div className="form__group w-full">
+                    <label className="form__label">Background</label>
+                    <div className="flex items-center gap-4">
+                      <input
+                        className="form__input--color w-full border-gray-500"
+                        type="color"
+                        name={servicesBgColor.feature}
+                        value={servicesBgColor.value}
+                        onChange={(e) =>
+                          onChangeSetting(e.target.name, e.target.value)
+                        }
+                      />
+                      <input
+                        type="text"
+                        name={servicesBgColor.feature}
+                        value={servicesBgColor.value}
+                        placeholder="#531253"
+                        className="form__input border-gray-500"
+                        onChange={(e) =>
+                          onChangeSetting(e.target.name, e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
+
+                  <div className="form__group w-full">
+                    <label className="form__label">Contenido</label>
+                    <div className="flex items-center gap-4">
+                      <input
+                        className="form__input--color w-full border-gray-500"
+                        type="color"
+                        name={servicesTextColor.feature}
+                        value={servicesTextColor.value}
+                        onChange={(e) =>
+                          onChangeSetting(e.target.name, e.target.value)
+                        }
+                      />
+                      <input
+                        type="text"
+                        name={servicesTextColor.feature}
+                        value={servicesTextColor.value}
+                        placeholder="#531253"
+                        className="form__input border-gray-500"
+                        onChange={(e) =>
+                          onChangeSetting(e.target.name, e.target.value)
+                        }
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {/* WAVE */}
-                <div className="flex">
+                {/* BOTON - WAVE */}
+                <div className="flex flex-col sm:flex-row sm:gap-10">
+                  {/* <div className="flex items-center gap-4 w-1/2">
+                      <div className="form__group w-full">
+                        <input
+                          checked={
+                            servicesBtn.servicesBtnShow.value === 'false' ? false : true
+                          }
+                          type="checkbox"
+                          value=""
+                          name={servicesBtn.servicesBtnShow.feature}
+                          onChange={(e) =>
+                            onChangeSetting(e.target.name, e.target.checked.toString())
+                          }
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                        <label
+                          htmlFor="main"
+                          className="ml-2 text-sm font-medium text-gray-700 text"
+                        >
+                          Botón CTA
+                        </label>
+                        <button
+                          disabled={servicesBtn.servicesBtnShow.value === 'false'}
+                          type="button"
+                          onClick={() => openModalButton()}
+                          className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
+                        >
+                          Modificar botón
+                        </button>
+                      </div>
+                  </div> */}
+
                   <div className="form__group w-full">
                     <input
                       checked={
@@ -91,6 +150,7 @@ const ServicesSection = () => {
                       }
                       type="checkbox"
                       value=""
+                      id={waveServiceShow.feature}
                       name={waveServiceShow.feature}
                       onChange={(e) =>
                         onChangeSetting(
@@ -101,17 +161,16 @@ const ServicesSection = () => {
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
-                      htmlFor="main"
+                      htmlFor={waveServiceShow.feature}
                       className="ml-2 text-sm font-medium text-gray-700 text"
                     >
                       Wave
                     </label>
-                  </div>
-                  <div className="form__group w-full">
                     <button
+                      disabled={waveServiceShow.value === 'false'}
                       type="button"
                       onClick={() => openModalWave()}
-                      className="btn__primary"
+                      className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
                     >
                       Modificar wave
                     </button>
@@ -137,6 +196,7 @@ const ServicesSection = () => {
           <Service service={service} errorFields={errorFields} />
         )}
 
+        {/* ACTIONS */}
         <div className="actions">
           <button
             onClick={onCancel}

@@ -24,6 +24,12 @@ const useAboutSection = () => {
       (setting) => setting.feature === 'aboutBgColor'
     )
   );
+  const aboutTextColor = useSelector((state) =>
+    state.settings.settings.find(
+      (setting) => setting.feature === 'aboutTextColor'
+    )
+  );
+
   const servicesBgColor = useSelector((state) =>
     state.settings.settings.find(
       (setting) => setting.feature === 'servicesBgColor'
@@ -111,6 +117,7 @@ const useAboutSection = () => {
     aboutSection,
     quillRef,
     aboutBgColor,
+    aboutTextColor,
     quillRef2,
     modules,
     isOpenModal,

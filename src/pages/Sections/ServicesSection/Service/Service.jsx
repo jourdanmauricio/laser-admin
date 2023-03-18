@@ -1,9 +1,10 @@
 import ReactQuill from 'react-quill';
-import AddPicture from '../../AddPicture/AddPicture';
+//import AddPicture from '../../AddPicture/AddPicture';
 import { useRef } from 'react';
 import { changeSubsection } from '@/store/sections';
 import { useDispatch, useSelector } from 'react-redux';
 import { quillSimpleModules } from '@/config/constants';
+import AddPicture from '@/components/AddPicture/AddPicture';
 
 const Service = ({ service, errorFields }) => {
   const quillRef = useRef();

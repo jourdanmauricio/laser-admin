@@ -20,21 +20,89 @@ body {
   margin: auto;
 }
 
-.hero__top {
+.hero__pos {
   top: var(--heroTop);
+  /* left: var(--heroLeft); */
+}
+
+.btn__hero {
+  color: var(--btnTextColorHero);
+  background-color: var(--btnBgColorHero);
+  height: var(--btnHeightHero);
+  width: var(--btnWidthHero);
+  border-width: var(--btnBorderHero);
+  border-color: var(--btnBorderColorHero);
+  box-shadow: var(--btnShadowHero);
+  border-radius: var(--btnTlRadiusHero) var(--btnTrRadiusHero)
+    var(--btnBlRadiusHero) var(--btnBrRadiusHero);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn__hero:hover {
+  color: var(--btnTextColorHoverHero);
+  background-color: var(--btnBgColorHoverHero);
+  border-color: var(--btnBorderColorHoverHero);
+}
+
+.btn__clinic {
+  color: var(--btnTextColorClinic);
+  background-color: var(--btnBgColorClinic);
+  height: var(--btnHeightClinic);
+  width: var(--btnWidthClinic);
+  border-width: var(--btnBorderClinic);
+  border-color: var(--btnBorderColorClinic);
+  box-shadow: var(--btnShadowClinic);
+  border-radius: var(--btnTlRadiusClinic) var(--btnTrRadiusClinic)
+    var(--btnBlRadiusClinic) var(--btnBrRadiusClinic);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn__clinic:hover {
+  color: var(--btnTextColorHoverClinic);
+  background-color: var(--btnBgColorHoverClinic);
+  border-color: var(--btnBorderColorHoverClinic);
+}
+
+.btn__blog {
+  color: var(--btnTextColorBlog);
+  background-color: var(--btnBgColorBlog);
+  height: var(--btnHeightBlog);
+  width: var(--btnWidthBlog);
+  border-width: var(--btnBorderBlog);
+  border-radius: var(--btnTlRadiusBlog) var(--btnTrRadiusBlog)
+    var(--btnBlRadiusBlog) var(--btnBrRadiusBlog);
+  border-color: var(--btnBorderColorBlog);
+  box-shadow: var(--btnShadowBlog);
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn__blog:hover {
+  color: var(--btnTextColorHoverBlog);
+  background-color: var(--btnBgColorHoverBlog);
+  border-color: var(--btnBorderColorHoverBlog);
 }
 
 .btn__settings {
-  border-radius: var(--btnTlRadius) var(--btnTrRadius) var(--btnBlRadius)
-    var(--btnBrRadius);
   color: var(--btnTextColor);
-  background-color: var(--btnBg);
+  background-color: var(--btnBgColor);
+  /* border: var(--btnBorder); */
+  height: var(--btnHeight);
+  width: var(--btnWidth);
+  border-width: var(--btnBorder);
   border-color: var(--btnBorderColor);
   box-shadow: var(--btnShadow);
+  border-radius: var(--btnTlRadius) var(--btnTrRadius) var(--btnBlRadius)
+    var(--btnBrRadius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .btn__settings:hover {
   color: var(--btnTextColorHover);
-  background-color: var(--btnBgHover);
+  background-color: var(--btnBgColorHover);
   border-color: var(--btnBorderColorHover);
 }
 
