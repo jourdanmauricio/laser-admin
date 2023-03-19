@@ -11,7 +11,6 @@ const linksOptions = [
 
 const SelectOptions = ({ label, button, onHandleChange }) => {
   const handleChange = (e) => {
-    console.log('change', e);
     onHandleChange(button.link.feature, e.value, button.link.type);
   };
 

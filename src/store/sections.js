@@ -25,6 +25,7 @@ export const updateSections = createAsyncThunk(
       const state = getState();
       const sections = state.sections.sections;
       const newSections = await updateSectionsApi(sections);
+      console.log('updateSections', newSections);
       return newSections;
     } catch (error) {
       return rejectWithValue(error);
@@ -157,6 +158,24 @@ let sectionsSlice = createSlice({
       state.status = 'failed';
       state.error = action.payload;
       state.message = 'Error obteniendo las secciones';
+    },
+    [updateSections.pending]: (state) => {
+      state.status = 'loading';
+      state.error = '';
+      state.message = null;
+    },
+    [updateSections.fulfilled]: (state, action) => {
+      state.sections = action.payload;
+      state.status = 'success';
+      state.error = '';
+      state.actionSections = 'SECTIONS';
+      state.message = 'Sección modificada';
+    },
+    [updateSections.rejected]: (state, action) => {
+      state.sections = [];
+      state.status = 'failed';
+      state.error = action.payload;
+      state.message = 'Error modificando las secciones';
     },
 
     [updateSubsections.pending]: (state) => {

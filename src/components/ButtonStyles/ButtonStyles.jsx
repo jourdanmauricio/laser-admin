@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { FaPaintBrush } from 'react-icons/fa';
 
 const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
-  console.log('buttonStyle', button);
   if (Object.keys(button).length > 0) {
     document.documentElement.style.setProperty(
       '--btnTextColor',
@@ -14,8 +13,6 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
       '--btnTextColorHover',
       `${button.textColorHover.value}`
     );
-
-    console.log('button.bgColor.value', button.bgColor.value);
     document.documentElement.style.setProperty(
       '--btnBgColor',
       `${button.bgColor.value}`

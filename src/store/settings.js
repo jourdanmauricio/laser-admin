@@ -98,7 +98,6 @@ let settingsSlice = createSlice({
       state.error = '';
     },
     [updateSettings.fulfilled]: (state, action) => {
-      console.log('SETTINGS', action.payload);
       state.settings = action.payload;
       state.status = 'success';
       state.error = '';

@@ -19,6 +19,7 @@ export const updateSectionsApi = async (data) => {
     const data2 = JSON.parse(JSON.stringify(data));
     for (const section of data2) {
       if (section.updated === true) {
+        console.log('updateSectionApi', section);
         const id = section.id;
         delete section.id;
         delete section.subsections;
@@ -42,11 +43,13 @@ export const updateSectionsApi = async (data) => {
 };
 
 export const updateSubsectionsApi = async (data) => {
+  console.log('updateSubsectionsApi', data);
   try {
     const data2 = JSON.parse(JSON.stringify(data));
     for (const section of data2) {
       for (const subsection of section.subsections) {
         if (subsection.updated === true) {
+          console.log('updateSubsectionsApi', subsection);
           const id = subsection.id;
           delete subsection.updated;
           await axiosApi.put(`/subsections/${id}`, subsection);

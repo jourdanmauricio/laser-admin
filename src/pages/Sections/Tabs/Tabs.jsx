@@ -4,11 +4,13 @@ import {
   FaBlogger,
   FaRegHospital,
   FaHospitalUser,
+  FaIdCard,
 } from 'react-icons/fa';
 import ClinicsSection from '../ClinicsSection/ClinicsSection';
 import AboutSection from '../AboutSection/AboutSection';
 import BlogSection from '../BlogSection/BlogSection';
 import ServicesSection from '../ServicesSection/ServicesSection';
+import TestimonialsSection from '../TestimonialsSection/TestimonialsSection';
 
 const Tabs = () => {
   const [toggleState, setToggleState] = useState(1);
@@ -52,6 +54,13 @@ const Tabs = () => {
             <FaRegHospital color="teal" size={20} />
             <span className="hidden sm:inline-block">Consultorios</span>
           </div>
+          <div
+            onClick={() => toggleTab(5)}
+            className={toggleState === 5 ? 'tabs active__tabs' : 'tabs'}
+          >
+            <FaIdCard color="teal" size={20} />
+            <span className="hidden sm:inline-block">Testimonios</span>
+          </div>
         </div>
 
         <div className="tabs__content">
@@ -91,31 +100,17 @@ const Tabs = () => {
           >
             <ClinicsSection />
           </div>
+          <div
+            className={
+              toggleState === 5
+                ? 'tab__content active__content'
+                : 'tab__content'
+            }
+          >
+            <TestimonialsSection />
+          </div>
         </div>
       </div>
-
-      {/* <div className="actions">
-        <button
-          onClick={onCancel}
-          className="mt-8 btn__secondary"
-          type="button"
-        >
-          Cancelar
-        </button>
-
-        <button onClick={onSubmit} className="my-8 btn__primary" type="button">
-          {actionSections === 'SECTIONS' &&
-            actionPosts === 'POSTS' &&
-            actionClinics === 'CLINICS' &&
-            'Modificar'}
-          {actionSections === 'NEW' && 'Crear'}
-          {actionSections === 'EDIT' && 'Modificar'}
-          {actionPosts === 'NEW' && 'Crear'}
-          {actionPosts === 'EDIT' && 'Modificar'}
-          {actionClinics === 'NEW' && 'Crear'}
-          {actionClinics === 'EDIT' && 'Modificar'}
-        </button>
-      </div> */}
     </>
   );
 };

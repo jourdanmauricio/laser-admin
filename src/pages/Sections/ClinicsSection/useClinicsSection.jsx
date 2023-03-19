@@ -63,8 +63,6 @@ const useClinicsSection = () => {
     {}
   );
 
-  // console.log('button', button);
-
   const [errorField, setErrorField] = useState(INITIAL_ERROR_CLINICS);
   const [editData, setEditData] = useState();
   const clinic = useSelector((state) =>
@@ -78,9 +76,9 @@ const useClinicsSection = () => {
   const waveClinic = useSelector((state) =>
     state.settings.settings.find((setting) => setting.feature === 'waveClinic')
   );
-  const footerBgColor = useSelector((state) =>
+  const testimonialsBgColor = useSelector((state) =>
     state.settings.settings.find(
-      (setting) => setting.feature === 'footerBgColor'
+      (setting) => setting.feature === 'testimonialsBgColor'
     )
   );
 
@@ -161,15 +159,6 @@ const useClinicsSection = () => {
     openModal();
   };
   const { modules } = useEditor({ imageHandler });
-
-  useEffect(() => {
-    if (message) {
-      dispatchNotif({
-        type: `${status === 'success' ? 'SUCCESS' : 'ERROR'}`,
-        message: message,
-      });
-    }
-  }, [message]);
 
   const onChangeSubsection = (name, value, sectionId, id) => {
     dispatch(changeSubsection({ name, value, sectionId, id }));
@@ -331,7 +320,7 @@ const useClinicsSection = () => {
     isOpenModalWave,
     openModalWave,
     closeModalWave,
-    footerBgColor,
+    testimonialsBgColor,
     setDelError,
     setEditData,
     onChangeSection,

@@ -8,6 +8,7 @@ import settingsReducer from './settings';
 import postsReducer from './posts';
 import sectionsReducer from './sections';
 import clinicsReducer from './clinics';
+import testimonialsReducer from './testimonials';
 
 const reducer = combineReducers({
   user: userReducer,
@@ -15,6 +16,7 @@ const reducer = combineReducers({
   posts: postsReducer,
   sections: sectionsReducer,
   clinics: clinicsReducer,
+  testimonials: testimonialsReducer,
 });
 
 const persistConfig = {

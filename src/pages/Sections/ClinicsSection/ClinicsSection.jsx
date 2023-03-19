@@ -29,7 +29,7 @@ const ClinicsSection = () => {
     isOpenModalWave,
     openModalWave,
     closeModalWave,
-    footerBgColor,
+    testimonialsBgColor,
     setDelError,
     setEditData,
     onChangeSection,
@@ -250,9 +250,9 @@ const ClinicsSection = () => {
           onChangeSetting={onChangeSetting}
           closeModalWave={closeModalWave}
           bg={clinicBgColor} // Color seccion actual
-          waveColor={footerBgColor} // Color siguiente seccion
+          waveColor={testimonialsBgColor} // Color siguiente seccion
           section="Consultorios"
-          nextSection="Footer"
+          nextSection="Testimonios"
         />
       </Modal>
       {isOpenModalButton && (

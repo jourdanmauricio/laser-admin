@@ -50,15 +50,6 @@ const useAboutSection = () => {
   const quillRef = useRef();
   const quillRef2 = useRef();
 
-  useEffect(() => {
-    if (message) {
-      dispatchNotif({
-        type: `${status === 'success' ? 'SUCCESS' : 'ERROR'}`,
-        message: message,
-      });
-    }
-  }, [message]);
-
   const imageHandler = async () => {
     openModal();
   };
@@ -75,17 +66,17 @@ const useAboutSection = () => {
 
   const handleSelect = (image) => {
     closeModal();
-    const quillObj = quillRef.current.getEditor();
+    const quillObj = quillRef2.current.getEditor();
     quillObj.focus();
     const position = quillObj.getSelection();
     quillObj.editor.insertEmbed(position.index, 'image', image, 'user');
-    const changes = quillRef.current.unprivilegedEditor.getHTML();
+    const changes = quillRef2.current.unprivilegedEditor.getHTML();
     dispatch(
       changeSubsection({
         name: 'content',
         value: changes,
         sectionId: aboutSection.id,
-        id: quillRef.current.props.id,
+        id: quillRef2.current.props.id,
       })
     );
   };
@@ -98,7 +89,6 @@ const useAboutSection = () => {
     e.preventDefault();
     try {
       dispatch(updateSettings());
-
       dispatch(updateSections());
       dispatch(updateSubsections());
     } catch (error) {

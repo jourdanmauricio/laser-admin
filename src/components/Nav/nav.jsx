@@ -35,7 +35,6 @@ const Nav = () => {
   };
 
   const handleDesign = () => {
-    console.log('open design');
     openModal();
   };
 

@@ -49,7 +49,6 @@ const ChangePassword = ({ handleCancel }) => {
     try {
       setLoading(true);
       const response = await putUserChangePass(user.id, newPass);
-      console.log(response);
       dispatchNotif({
         type: 'SUCCESS',
         message: 'Contraseña modificada',

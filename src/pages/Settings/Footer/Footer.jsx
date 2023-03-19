@@ -5,7 +5,6 @@ import FooterPreview from './FooterPreview';
 const Footer = () => {
   const dispatch = useDispatch();
   const settings = useSelector((state) => state.settings.settings);
-  console.log('settings', settings);
 
   const footerBgColor = useSelector((state) =>
     state.settings.settings.find(

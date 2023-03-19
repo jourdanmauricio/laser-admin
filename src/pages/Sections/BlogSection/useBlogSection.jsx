@@ -86,15 +86,6 @@ const useBlogSection = () => {
   };
   const { modules } = useEditor({ imageHandler });
 
-  useEffect(() => {
-    if (message) {
-      dispatchNotif({
-        type: `${status === 'success' ? 'SUCCESS' : 'ERROR'}`,
-        message: message,
-      });
-    }
-  }, [message]);
-
   if (Object.keys(button).length > 0) {
     document.documentElement.style.setProperty(
       '--btnTextColorBlog',

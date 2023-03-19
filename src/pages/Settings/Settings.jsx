@@ -17,7 +17,6 @@ const Settings = () => {
   }, []);
 
   useEffect(() => {
-    console.log('message', message);
     if (message) {
       dispatchNotif({
         type: status === 'success' ? 'SUCCESS' : 'ERROR',
