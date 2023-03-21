@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { changeSettings, changeSettings2 } from '@/store/settings';
+import { changeSettings } from '@/store/settings';
 import ReactQuill from 'react-quill';
 import { quillSimpleModules } from '@/config/constants';
 import { useModal } from '@/hooks/useModal';
@@ -15,21 +15,10 @@ const Hero = () => {
     useModal(false);
   const dispatch = useDispatch();
 
-  const heroText = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'heroText')
+  const data = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'hero')
   );
-  const heroOpacity = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'heroOpacity')
-  );
-  const heroImage = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'heroImage')
-  );
-  const heroTop = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'heroTop')
-  );
-  const heroPosX = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'heroPosX')
-  );
+  const hero = data.reduce((obj, cur) => ({ ...obj, [cur.feature]: cur }), {});
 
   const heroBtn = useSelector((state) =>
     state.settings.settings.filter((setting) => setting.type === 'heroBtn')
@@ -39,35 +28,24 @@ const Hero = () => {
     {}
   );
 
-  const waveHeroShow = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'waveHeroShow'
-    )
+  const sectionAbout = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'sectionAbout')
   );
-  const aboutBgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'aboutBgColor'
-    )
+  const aboutSection = sectionAbout.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
   );
 
-  const waveHero = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'waveHero')
-  );
-
-  const onChangeSetting2 = (feature, value, type) => {
-    dispatch(changeSettings2({ feature, value, type }));
-  };
-
-  if (heroOpacity) {
+  if (hero.opacity) {
     document.documentElement.style.setProperty(
       '--heroOpacity',
-      heroOpacity.value
+      hero.opacity.value
     );
-    document.documentElement.style.setProperty('--heroPosX', heroPosX.value);
-    document.documentElement.style.setProperty('--heroTop', heroTop.value);
+    document.documentElement.style.setProperty('--heroPosX', hero.posX.value);
+    document.documentElement.style.setProperty('--heroTop', hero.top.value);
     document.documentElement.style.setProperty(
       '--aboutBgColor',
-      aboutBgColor.value
+      aboutSection.bgColor.value
     );
   }
 
@@ -135,23 +113,23 @@ const Hero = () => {
   }
 
   const onChangeSetting = (feature, value) => {
-    dispatch(changeSettings({ feature, value }));
+    dispatch(changeSettings({ feature, value, type: 'hero' }));
   };
 
   const handleSelect = (image) => {
     closeModal();
-    dispatch(changeSettings({ feature: 'heroImage', value: image }));
+    dispatch(changeSettings({ feature: 'image', value: image, type: 'hero' }));
   };
 
   return (
     <div className="form__group w-full">
-      {heroImage && (
+      {hero.image && (
         <>
           <section className="relative w-full max-h-[85vh] overflow-hidden">
             <div className="-z-10">
               <img
-                src={heroImage.value}
-                alt={heroImage.feature}
+                src={hero.image.value}
+                alt={hero.image.feature}
                 className="w-full h-auto object-cover object-center"
               />
             </div>
@@ -159,16 +137,16 @@ const Hero = () => {
 
             <div
               className={`z-10 absolute hero__pos text-center w-max ${
-                heroPosX.value === 'right'
+                hero.posX.value === 'right'
                   ? 'right-0'
-                  : heroPosX.value === 'left'
+                  : hero.posX.value === 'left'
                   ? 'left-0'
                   : 'left-1/2 -translate-x-2/4'
               } `}
             >
               <div
                 className="relative ql-editor"
-                dangerouslySetInnerHTML={{ __html: heroText.value }}
+                dangerouslySetInnerHTML={{ __html: hero.text.value }}
               />
               {button.show.value === 'true' && (
                 <button
@@ -180,7 +158,7 @@ const Hero = () => {
               )}
             </div>
 
-            {waveHeroShow.value === 'true' && (
+            {hero.waveShow.value === 'true' && (
               <div className="absolute bottom-0 h-[100px] left-0 w-full overflow-hidden">
                 <svg
                   viewBox="0 0 500 150"
@@ -188,7 +166,7 @@ const Hero = () => {
                   className="h-full w-full"
                 >
                   <path
-                    d={waveHero.value}
+                    d={hero.wave.value}
                     className="stroke-none fill-aboutBgColor"
                   ></path>
                 </svg>
@@ -201,15 +179,14 @@ const Hero = () => {
             <div className="form__group w-full">
               <input
                 type="range"
-                id="heroOpacity"
-                name="heroOpacity"
+                name={hero.opacity.feature}
+                value={hero.opacity.value}
                 min="0"
                 max="1"
-                value={heroOpacity.value}
                 onChange={(e) => onChangeSetting(e.target.name, e.target.value)}
                 step="0.01"
               />
-              <label className="ml-4" htmlFor="heroOpacity">
+              <label className="ml-4" htmlFor={hero.opacity.feature}>
                 Opacidad
               </label>
             </div>
@@ -220,7 +197,7 @@ const Hero = () => {
                 type="button"
                 className="btn__primary"
               >
-                Seleccionar {firstCapital(heroImage.feature)}
+                Seleccionar {firstCapital(hero.image.feature)}
               </button>
             </div>
           </div>
@@ -232,13 +209,13 @@ const Hero = () => {
                 <div>
                   <input
                     type="radio"
+                    name={hero.posX.feature}
                     value="left"
-                    name="heroPosX"
                     id="left"
                     onChange={(e) =>
                       onChangeSetting(e.target.name, e.target.value)
                     }
-                    checked={heroPosX.value === 'left'}
+                    checked={hero.posX.value === 'left'}
                   />
                   <label className="ml-2" htmlFor="left">
                     Izquierda
@@ -248,12 +225,12 @@ const Hero = () => {
                   <input
                     type="radio"
                     value="center"
-                    name="heroPosX"
+                    name={hero.posX.feature}
                     id="center"
                     onChange={(e) =>
                       onChangeSetting(e.target.name, e.target.value)
                     }
-                    checked={heroPosX.value === 'center'}
+                    checked={hero.posX.value === 'center'}
                   />
                   <label className="ml-2" htmlFor="center">
                     Centro
@@ -263,12 +240,12 @@ const Hero = () => {
                   <input
                     type="radio"
                     value="right"
-                    name="heroPosX"
+                    name={hero.posX.feature}
                     id="right"
                     onChange={(e) =>
                       onChangeSetting(e.target.name, e.target.value)
                     }
-                    checked={heroPosX.value === 'right'}
+                    checked={hero.posX.value === 'right'}
                   />
                   <label className="ml-2" htmlFor="right">
                     Derecha
@@ -280,16 +257,16 @@ const Hero = () => {
             <div className="form__group w-full">
               <input
                 type="range"
-                id="heroTop"
-                name="heroTop"
+                id={hero.top.feature}
+                name={hero.top.feature}
                 min="0"
                 max="95"
-                value={heroTop.value.replace('%', '')}
+                value={hero.top.value.replace('%', '')}
                 onChange={(e) =>
                   onChangeSetting(e.target.name, e.target.value + '%')
                 }
               />
-              <label className="ml-4" htmlFor="heroTop">
+              <label className="ml-4" htmlFor={hero.top.feature}>
                 Posición Y
               </label>
             </div>
@@ -327,24 +304,24 @@ const Hero = () => {
             <div className="flex items-center gap-4 w-full">
               <div className="form__group w-full">
                 <input
-                  checked={waveHeroShow?.value === 'false' ? false : true}
+                  checked={hero.waveShow?.value === 'false' ? false : true}
                   type="checkbox"
                   value=""
-                  id={waveHeroShow.feature}
-                  name={waveHeroShow.feature}
+                  id={hero.waveShow.feature}
+                  name={hero.waveShow.feature}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.checked.toString())
                   }
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                 />
                 <label
-                  htmlFor={waveHeroShow.feature}
+                  htmlFor={hero.waveShow.feature}
                   className="ml-2 text-sm font-medium text-gray-700 text"
                 >
                   Wave
                 </label>
                 <button
-                  disabled={waveHeroShow.value === 'false'}
+                  disabled={hero.waveShow.value === 'false'}
                   type="button"
                   onClick={() => openModalWave()}
                   className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
@@ -354,45 +331,15 @@ const Hero = () => {
               </div>
             </div>
           </div>
-          {/* WAVE */}
-          {/* <div className="flex">
-            <div className="form__group w-full">
-              <input
-                checked={waveHeroShow?.value === 'false' ? false : true}
-                type="checkbox"
-                value=""
-                name={waveHeroShow.feature}
-                onChange={(e) =>
-                  onChangeSetting(e.target.name, e.target.checked.toString())
-                }
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-              />
-              <label
-                htmlFor="main"
-                className="ml-2 text-sm font-medium text-gray-700 text"
-              >
-                Wave
-              </label>
-            </div>
-            <div className="form__group w-full">
-              <button
-                type="button"
-                onClick={() => openModalWave()}
-                className="btn__primary"
-              >
-                Modificar wave
-              </button>
-            </div>
-          </div> */}
 
           <div className="form__group w-full editor">
             <label className="form__label">Contenido</label>
             <ReactQuill
               className="bg-gray-300"
               theme="snow"
-              value={heroText.value}
-              name="heroText"
-              onChange={(e) => onChangeSetting('heroText', e)}
+              name={hero.text.feature}
+              value={hero.text.value}
+              onChange={(e) => onChangeSetting(hero.text.feature, e)}
               placeholder={'Write something awesome...'}
               modules={quillSimpleModules}
             />
@@ -404,11 +351,11 @@ const Hero = () => {
 
           <Modal isOpenModal={isOpenModalWave} closeModal={closeModalWave}>
             <WaveStyles
-              wave={waveHero}
+              wave={hero.wave}
               onChangeSetting={onChangeSetting}
               closeModalWave={closeModalWave}
               bg="#FFFFFF" // Color seccion actual
-              waveColor={aboutBgColor} // Color siguiente seccion
+              waveColor={aboutSection.bgColor} // Color siguiente seccion
               section="Imagen Hero"
               nextSection="Sobre mi"
             />
@@ -421,7 +368,7 @@ const Hero = () => {
             >
               <ButtonStyles
                 button={button}
-                onChangeSetting2={onChangeSetting2}
+                onChangeSetting2={onChangeSetting}
                 closeModal={closeModalBtnHero}
               />
             </Modal>

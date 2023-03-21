@@ -35,14 +35,14 @@ let settingsSlice = createSlice({
   name: 'settings',
   initialState: {
     settings: null,
-    status: '',
+    statusSettings: '',
     error: '',
     action: 'SETTINGS',
   },
   reducers: {
     logOutSettings: (state) => {
       state.settings = null;
-      state.status = '';
+      state.statusSettings = '';
       state.error = '';
     },
     delMessage: (state) => {
@@ -57,19 +57,9 @@ let settingsSlice = createSlice({
       state.action = payload.action;
     },
 
-    changeSettings2: (state, { payload }) => {
-      console.log('changeSettings2', payload);
-      const newSettings = state.settings.map((setting) =>
-        setting.feature === payload.feature && setting.type === payload.type
-          ? { ...setting, value: payload.value, updated: true }
-          : setting
-      );
-      state.settings = newSettings;
-    },
-
     changeSettings: (state, { payload }) => {
       const newSettings = state.settings.map((setting) =>
-        setting.feature === payload.feature
+        setting.feature === payload.feature && setting.type === payload.type
           ? { ...setting, value: payload.value, updated: true }
           : setting
       );
@@ -78,34 +68,34 @@ let settingsSlice = createSlice({
   },
   extraReducers: {
     [getAllSettings.pending]: (state) => {
-      state.status = 'loading';
+      state.statusSettings = 'loading';
       state.error = '';
       state.settings = [];
     },
     [getAllSettings.fulfilled]: (state, action) => {
       state.settings = action.payload;
-      state.status = 'success';
+      state.statusSettings = 'success';
       state.error = '';
       state.message = null;
     },
     [getAllSettings.rejected]: (state, action) => {
       state.settings = [];
-      state.status = 'failed';
+      state.statusSettings = 'failed';
       state.error = action.payload;
     },
     [updateSettings.pending]: (state) => {
-      state.status = 'loading';
+      state.statusSettings = 'loading';
       state.error = '';
     },
     [updateSettings.fulfilled]: (state, action) => {
       state.settings = action.payload;
-      state.status = 'success';
+      state.statusSettings = 'success';
       state.error = '';
       state.message = 'Configuración modificada';
     },
     [updateSettings.rejected]: (state, action) => {
       state.settings = [];
-      state.status = 'failed';
+      state.statusSettings = 'failed';
       state.error = action.payload;
       state.message = 'Error modificando la configuración';
     },
@@ -116,7 +106,6 @@ export const {
   logOutSettings,
   initEditSettings,
   changeSettings,
-  changeSettings2,
   setAction,
   delMessage,
   delError,

@@ -9,27 +9,14 @@ const Menu = () => {
   const logoImage = useSelector((state) =>
     state.settings.settings.find((setting) => setting.feature === 'logoImage')
   );
-  const navBgColor = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'navBgColor')
-  );
-  const navTextColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'navTextColor'
-    )
-  );
-  const navHoverColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'navHoverColor'
-    )
-  );
-  const navCurrentPageColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'navCurrentPageColor'
-    )
-  );
 
-  const onChangeSetting = (feature, value) => {
-    dispatch(changeSettings({ feature, value }));
+  const data = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'menu')
+  );
+  const menu = data.reduce((obj, cur) => ({ ...obj, [cur.feature]: cur }), {});
+
+  const onChangeSetting = (feature, value, type = 'menu') => {
+    dispatch(changeSettings({ feature, value, type }));
   };
 
   return (
@@ -46,16 +33,16 @@ const Menu = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name="navBgColor"
-                  value={navBgColor.value}
+                  name={menu.bgColor.feature}
+                  value={menu.bgColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  value={navBgColor.value}
-                  name="navBgColor"
+                  name={menu.bgColor.feature}
+                  value={menu.bgColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>
@@ -70,16 +57,16 @@ const Menu = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name="navTextColor"
-                  value={navTextColor.value}
+                  name={menu.textColor.feature}
+                  value={menu.textColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  value={navTextColor.value}
-                  name="navTextColor"
+                  name={menu.textColor.feature}
+                  value={menu.textColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>
@@ -96,16 +83,16 @@ const Menu = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name="navHoverColor"
-                  value={navHoverColor.value}
+                  name={menu.hoverColor.feature}
+                  value={menu.hoverColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  value={navHoverColor.value}
-                  name="navHoverColor"
+                  name={menu.hoverColor.feature}
+                  value={menu.hoverColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>
@@ -120,16 +107,16 @@ const Menu = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name="navCurrentPageColor"
-                  value={navCurrentPageColor.value}
+                  name={menu.currentPageColor.feature}
+                  value={menu.currentPageColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  value={navCurrentPageColor.value}
-                  name="navCurrentPageColor"
+                  name={menu.currentPageColor.feature}
+                  value={menu.currentPageColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>

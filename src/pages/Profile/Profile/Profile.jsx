@@ -12,12 +12,7 @@ const Profile = () => {
     openModalPass,
     user,
     status,
-    instagram,
-    facebook,
-    twitter,
-    whatsapp,
-    email,
-    phone,
+    contact,
     closeModalPass,
     handleChange,
     handleCancel,
@@ -81,7 +76,7 @@ const Profile = () => {
                 type="text"
                 name="facebook"
                 placeholder="Perfil en facebook"
-                value={facebook?.value || ''}
+                value={contact.facebook?.value || ''}
               />
               <p
                 className={`input__error ${
@@ -101,7 +96,7 @@ const Profile = () => {
                 type="text"
                 name="instagram"
                 placeholder="Perfil en Instagram"
-                value={instagram?.value || ''}
+                value={contact.instagram?.value || ''}
               />
               <p
                 className={`input__error ${
@@ -121,7 +116,7 @@ const Profile = () => {
                 type="text"
                 name="twitter"
                 placeholder="Perfil en Twitter"
-                value={twitter?.value || ''}
+                value={contact.twitter?.value || ''}
               />
               <p
                 className={`input__error ${
@@ -141,7 +136,7 @@ const Profile = () => {
                 type="text"
                 name="whatsapp"
                 placeholder="Perfil en Whatsapp"
-                value={whatsapp?.value || ''}
+                value={contact.whatsapp?.value || ''}
               />
               <p
                 className={`input__error ${
@@ -161,7 +156,7 @@ const Profile = () => {
                 type="text"
                 name="email"
                 placeholder="Email"
-                value={email?.value || ''}
+                value={contact.email?.value || ''}
               />
               <p
                 className={`input__error ${
@@ -181,7 +176,7 @@ const Profile = () => {
                 type="text"
                 name="phone"
                 placeholder="Teléfono"
-                value={phone?.value || ''}
+                value={contact.phone?.value || ''}
               />
               <p
                 className={`input__error ${

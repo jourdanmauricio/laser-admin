@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useModal } from '@/hooks/useModal';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  changeSettings2,
+  getAllSettings,
   changeSettings,
   updateSettings,
 } from '@/store/settings';
@@ -13,14 +13,8 @@ import {
   onCreatePost,
   onUpdatePost,
   changePost,
+  delMessage,
 } from '@/store/posts';
-import {
-  getAllSections,
-  changeSection,
-  changeSubsection,
-  updateSections,
-  updateSubsections,
-} from '@/store/sections';
 
 const INITIAL_ERROR_POSTS = {
   title: null,
@@ -29,19 +23,43 @@ const INITIAL_ERROR_POSTS = {
 };
 
 const useBlogSection = () => {
-  const { actionPosts, message, status } = useSelector((state) => state.posts);
-  const blogSection = useSelector((state) =>
-    state.sections.sections.find((section) => section.name === 'blog')
+  const dispatch = useDispatch();
+  const dispatchNotif = useNotification();
+  const [isOpenModal, openModal, closeModal] = useModal(false);
+  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
+  const [isOpenModalBtnBlog, openModalBtnBlog, closeModalBtnBlog] =
+    useModal(false);
+  const [errorField, setErrorField] = useState(INITIAL_ERROR_POSTS);
+  const [editData, setEditData] = useState();
+  const quillRef = useRef();
+  const quillRef2 = useRef();
+
+  // Data
+  const post = useSelector((state) =>
+    state.posts.posts.find((post) => post.id === editData?.id)
   );
-  const blogBgColor = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'blogBgColor')
+  const { actionPosts, status, message } = useSelector((state) => state.posts);
+  const settings = useSelector((state) => state.settings.settings);
+
+  // Secciones
+  const sectionBlog = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'sectionBlog')
   );
-  const blogTextColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'blogTextColor'
+  const blogSection = sectionBlog.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
+  );
+  const sectionClinics = useSelector((state) =>
+    state.settings.settings.filter(
+      (setting) => setting.type === 'sectionClinic'
     )
   );
+  const clinicsSection = sectionClinics.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
+  );
 
+  // Botones
   const blogBtn = useSelector((state) =>
     state.settings.settings.filter((setting) => setting.type === 'blogBtn')
   );
@@ -50,42 +68,13 @@ const useBlogSection = () => {
     {}
   );
 
-  const clinicBgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'clinicBgColor'
-    )
-  );
-  const waveBlogShow = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'waveBlogShow'
-    )
-  );
-  const waveBlog = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'waveBlog')
-  );
-
-  const [errorField, setErrorField] = useState(INITIAL_ERROR_POSTS);
-  const [editData, setEditData] = useState();
-
-  const post = useSelector((state) =>
-    state.posts.posts.find((post) => post.id === editData?.id)
-  );
-
-  const dispatchNotif = useNotification();
-  const dispatch = useDispatch();
-  const [isOpenModal, openModal, closeModal] = useModal(false);
-  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
-  const [isOpenModalBtnBlog, openModalBtnBlog, closeModalBtnBlog] =
-    useModal(false);
-  const quillRef = useRef();
-  const quillRef2 = useRef();
-  const quillRef3 = useRef();
-
+  // Images Module
   const imageHandler = async () => {
     openModal();
   };
   const { modules } = useEditor({ imageHandler });
 
+  // Set properties
   if (Object.keys(button).length > 0) {
     document.documentElement.style.setProperty(
       '--btnTextColorBlog',
@@ -145,13 +134,16 @@ const useBlogSection = () => {
     );
   }
 
-  const onChangeSubsection = (name, value, sectionId, id) => {
-    dispatch(changeSubsection({ name, value, sectionId, id }));
-  };
-
-  const onChangeSection = (name, value) => {
-    dispatch(changeSection({ name, value, id: blogSection.id }));
-  };
+  // Methods
+  useEffect(() => {
+    if (message) {
+      dispatchNotif({
+        type: `${status === 'success' ? 'SUCCESS' : 'ERROR'}`,
+        message: message,
+      });
+      dispatch(delMessage());
+    }
+  }, [message]);
 
   const handleSelect = (image) => {
     closeModal();
@@ -160,16 +152,8 @@ const useBlogSection = () => {
     const position = quillObj.getSelection();
     quillObj.editor.insertEmbed(position.index, 'image', image, 'user');
     const changes = quillRef2.current.unprivilegedEditor.getHTML();
-    dispatch(
-      changeSubsection({
-        name: 'content',
-        value: changes,
-        sectionId: blogSection.id,
-        id: quillRef2.current.props.id,
-      })
-    );
+    onChangeSetting('text', changes);
   };
-
   const onSubmit = async (e) => {
     e.preventDefault();
     if (editData) {
@@ -205,16 +189,14 @@ const useBlogSection = () => {
     }
 
     try {
-      dispatch(updateSettings());
+      const updated = settings.findIndex((setting) => setting.updated === true);
+      if (updated !== -1) dispatch(updateSettings());
 
-      if (actionPosts === 'NEW') {
-        dispatch(onCreatePost());
-      } else {
-        dispatch(onUpdatePost());
+      if (post?.updated === true) {
+        if (actionPosts === 'NEW') dispatch(onCreatePost());
+
+        if (actionPosts === 'EDIT') dispatch(onUpdatePost());
       }
-
-      dispatch(updateSections());
-      dispatch(updateSubsections());
     } catch (error) {
       dispatchNotif({
         type: 'ERROR',
@@ -222,49 +204,38 @@ const useBlogSection = () => {
       });
     }
   };
-
   const onCancel = () => {
     dispatch(getAllPosts());
-    dispatch(getAllSections());
+    dispatch(getAllSettings());
   };
-
   const onChangeSetting = (feature, value) => {
-    dispatch(changeSettings({ feature, value }));
+    dispatch(
+      changeSettings({ feature, value, type: blogSection.bgColor.type })
+    );
   };
-
-  const onChangeSetting2 = (feature, value, type) => {
-    dispatch(changeSettings2({ feature, value, type }));
-  };
-
   const onChangePost = (name, value) => {
     dispatch(changePost({ name, value, id: editData.id }));
     setErrorField({ ...errorField, [name]: null });
   };
-
   const setDelError = () => {
     setErrorField(INITIAL_ERROR_POSTS);
   };
 
   return {
-    actionPosts,
     blogSection,
-    blogTextColor,
+    clinicsSection,
+    actionPosts,
     button,
     quillRef,
     quillRef2,
-    quillRef3,
-    blogBgColor,
     modules,
     isOpenModal,
     closeModal,
     editData,
     errorField,
-    waveBlogShow,
-    waveBlog,
     isOpenModalWave,
     openModalWave,
     closeModalWave,
-    clinicBgColor,
     isOpenModalBtnBlog,
     closeModalBtnBlog,
     openModalBtnBlog,
@@ -272,10 +243,7 @@ const useBlogSection = () => {
     setDelError,
     onSubmit,
     onCancel,
-    onChangeSection,
-    onChangeSubsection,
     onChangeSetting,
-    onChangeSetting2,
     handleSelect,
     onChangePost,
   };

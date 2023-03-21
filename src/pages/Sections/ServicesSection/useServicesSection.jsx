@@ -1,57 +1,43 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  changeSection,
-  deleteSubsection,
-  setActionSection,
-  getAllSections,
-  updateSections,
-  updateSubsections,
-  setNewSubsection,
-  createSubsection,
-} from '@/store/sections';
-import { changeSettings, updateSettings } from '@/store/settings';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { useNotification } from '@/commons/Notifications/NotificationProvider';
 import { useModal } from '@/hooks/useModal';
+import {
+  getAllSettings,
+  changeSettings,
+  updateSettings,
+} from '@/store/settings';
+import {
+  setNewService,
+  changeService,
+  onCreateService,
+  onUpdateService,
+  onDeleteService,
+  setActionServices,
+  delMessage,
+} from '@/store/services';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+
+const INITIAL_ERROR_SERVICE = {
+  image: null,
+  alt_image: null,
+};
 
 const useServicesSection = () => {
   const dispatch = useDispatch();
-  const [service, setService] = useState();
+  const dispatchNotif = useNotification();
   const quillRef = useRef();
+  const quillRef2 = useRef();
   const [isOpenModal, openModal, closeModal] = useModal(false);
   const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
-  const [errorFields, setErrorFields] = useState({
-    image: null,
-    alt_image: null,
-  });
+  const [errorFields, setErrorFields] = useState(INITIAL_ERROR_SERVICE);
+  const [editData, setEditData] = useState();
+  const [service, setService] = useState();
 
-  const servicesSection = useSelector((state) =>
-    state.sections.sections.find((section) => section.name === 'services')
+  // Data
+  const { actionServices, status, message } = useSelector(
+    (state) => state.services
   );
-  const servicesBgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'servicesBgColor'
-    )
-  );
-  const servicesTextColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'servicesTextColor'
-    )
-  );
-
-  const blogBgColor = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'blogBgColor')
-  );
-  const waveServiceShow = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'waveServiceShow'
-    )
-  );
-  const waveService = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'waveService')
-  );
-  const { actionSections } = useSelector((state) => state.sections);
-
   const columns = [
     {
       name: 'Imagen',
@@ -88,43 +74,60 @@ const useServicesSection = () => {
       ),
     },
   ];
+  const sectionBlog = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'sectionBlog')
+  );
+  const blogSection = sectionBlog.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
+  );
+  const sectionServices = useSelector((state) =>
+    state.settings.settings.filter(
+      (setting) => setting.type === 'sectionServices'
+    )
+  );
+  const servicesSection = sectionServices.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
+  );
+  const settings = useSelector((state) => state.settings.settings);
 
+  // Methods
+  useEffect(() => {
+    if (message) {
+      dispatchNotif({
+        type: `${status === 'success' ? 'SUCCESS' : 'ERROR'}`,
+        message: message,
+      });
+      dispatch(delMessage());
+    }
+  }, [message]);
   const onEdit = (service) => {
     setService(service);
-    dispatch(setActionSection({ action: 'EDIT' }));
+    dispatch(setActionServices({ action: 'EDIT' }));
   };
-
   const onNew = () => {
-    const subsection = {
+    const service = {
       id: 0,
       image: '',
       alt_image: '',
       name: '',
       content: '',
-      section_id: servicesSection.id,
     };
-    dispatch(setNewSubsection({ subsection }));
-    setService(subsection);
+    dispatch(setNewService({ service }));
+    setService(service);
   };
-
-  const onConfirmDelete = (subsection) => {
-    setService(subsection);
+  const onConfirmDelete = (service) => {
+    setService(service);
     openModal();
   };
-
-  const handleDelete = (subsection) => {
-    dispatch(deleteSubsection(subsection.id));
+  const handleDelete = (service) => {
+    dispatch(onDeleteService(service));
   };
-
   const handleCancelDelete = () => {
     setService(null);
     closeModal();
   };
-
-  const onChangeSection = (name, value) => {
-    dispatch(changeSection({ name, value, id: servicesSection.id }));
-  };
-
   const actionsMemo = useMemo(
     () => (
       <button onClick={onNew} className="btn__primary font-normal text-base">
@@ -133,21 +136,21 @@ const useServicesSection = () => {
     ),
     [servicesSection]
   );
-
   const onChangeSetting = (feature, value) => {
-    dispatch(changeSettings({ feature, value }));
+    dispatch(
+      changeSettings({ feature, value, type: servicesSection.bgColor.type })
+    );
   };
-
   const onSubmit = (e) => {
     e.preventDefault();
     try {
-      dispatch(updateSettings());
+      const updated = settings.findIndex((setting) => setting.updated === true);
+      if (updated !== -1) dispatch(updateSettings());
 
-      dispatch(updateSections());
-      if (actionSections === 'NEW') {
-        dispatch(createSubsection());
+      if (actionServices === 'NEW') {
+        dispatch(onCreateService());
       } else {
-        dispatch(updateSubsections());
+        dispatch(onUpdateService());
       }
     } catch (error) {
       dispatchNotif({
@@ -156,31 +159,38 @@ const useServicesSection = () => {
       });
     }
   };
-
   const onCancel = () => {
-    dispatch(getAllSections());
+    dispatch(getAllSettings());
+    dispatch(setActionServices({ action: 'SERVICES' }));
+  };
+  const setDelError = () => {
+    setErrorFields(INITIAL_ERROR_SERVICE);
+  };
+  const onChangeService = (name, value) => {
+    dispatch(changeService({ name, value, id: editData.id }));
+    setErrorFields({ ...errorFields, [name]: null });
   };
 
   return {
     servicesSection,
-    actionSections,
+    blogSection,
+    actionServices,
     quillRef,
-    servicesBgColor,
-    servicesTextColor,
+    quillRef2,
     columns,
     actionsMemo,
     service,
     isOpenModal,
     closeModal,
     errorFields,
-    waveServiceShow,
-    waveService,
     isOpenModalWave,
     openModalWave,
     closeModalWave,
-    blogBgColor,
-    onChangeSection,
+    editData,
+    setDelError,
+    setEditData,
     onChangeSetting,
+    onChangeService,
     onCancel,
     onSubmit,
     handleCancelDelete,

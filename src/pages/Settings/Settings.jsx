@@ -1,25 +1,27 @@
-import Layout from '@/components/Layout/layout';
-import Tabs from './Tabs/Tabs';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllSettings, setAction, delMessage } from '@/store/settings';
-import Spinner from '@/commons/Spinner/Spinner';
-import { useEffect } from 'react';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
+import Layout from '@/components/Layout/layout';
+import Tabs from './Tabs/Tabs';
+import Spinner from '@/commons/Spinner/Spinner';
 
 const Settings = () => {
   const dispatch = useDispatch();
   const dispatchNotif = useNotification();
-  const { status, message } = useSelector((state) => state.settings);
 
+  // data
+  const { statusSettings, message } = useSelector((state) => state.settings);
+
+  // Methods
   useEffect(() => {
     dispatch(getAllSettings());
     dispatch(setAction({ action: 'SETTINGS' }));
   }, []);
-
   useEffect(() => {
     if (message) {
       dispatchNotif({
-        type: status === 'success' ? 'SUCCESS' : 'ERROR',
+        type: statusSettings === 'success' ? 'SUCCESS' : 'ERROR',
         message,
       });
       dispatch(delMessage());
@@ -29,7 +31,7 @@ const Settings = () => {
   return (
     <>
       <Layout>
-        {status === 'loading' && <Spinner />}
+        {statusSettings === 'loading' && <Spinner />}
         <Tabs />
       </Layout>
     </>

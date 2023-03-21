@@ -10,7 +10,9 @@ const AddPicture = ({ logoImage }) => {
 
   const handleSelect = (image) => {
     closeModal();
-    dispatch(changeSettings({ feature: 'image', value: image }));
+    dispatch(
+      changeSettings({ feature: 'image', value: image, type: logoImage.type })
+    );
   };
 
   function firstCapital(str) {

@@ -26,7 +26,6 @@ const useLogin = () => {
   const dispatchNotif = useNotification();
 
   useEffect(() => {
-    console.log('statusUser', statusUser);
     if (statusUser === 'failed') setHasError(true);
     if (statusUser === 'success') {
       dispatchNotif({

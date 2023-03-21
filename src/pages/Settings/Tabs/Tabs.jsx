@@ -1,26 +1,36 @@
 import { useState } from 'react';
-import { FaImages } from 'react-icons/fa';
-import Hero from '../Hero/Hero';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAllSettings, setAction, updateSettings } from '@/store/settings';
+import PagesSettings from '../PagesSettings/PagesSettings';
+import Hero from '../Hero/Hero';
 import Menu from '../Menu/Menu';
-import General from '../General/General';
 import Footer from '../Footer/Footer';
+import {
+  FaBars,
+  FaRegFilePowerpoint,
+  FaRegImage,
+  FaRegWindowMinimize,
+} from 'react-icons/fa';
 
 const Tabs = () => {
-  const [toggleState, setToggleState] = useState(1);
   const dispatch = useDispatch();
+  const [toggleState, setToggleState] = useState(1);
 
+  // Data
+  const settings = useSelector((state) => state.settings.settings);
+
+  // Methods
   const toggleTab = (index) => {
     setToggleState(index);
   };
-
   const onCancel = () => {
     dispatch(getAllSettings());
     dispatch(setAction({ action: 'SETTINGS' }));
   };
-
   const onSubmit = () => {
+    const updated = settings.findIndex((setting) => setting.updated === true);
+    if (updated === -1) return;
+
     dispatch(updateSettings());
   };
 
@@ -32,7 +42,7 @@ const Tabs = () => {
             onClick={() => toggleTab(1)}
             className={toggleState === 1 ? 'tabs active__tabs' : 'tabs'}
           >
-            <FaImages color="teal" size={20} />
+            <FaBars color="teal" size={20} />
             <span>Menú</span>
           </div>
 
@@ -40,21 +50,21 @@ const Tabs = () => {
             onClick={() => toggleTab(2)}
             className={toggleState === 2 ? 'tabs active__tabs' : 'tabs'}
           >
-            <FaImages color="teal" size={20} />
+            <FaRegImage color="teal" size={20} />
             <span>Hero</span>
           </div>
           <div
             onClick={() => toggleTab(3)}
             className={toggleState === 3 ? 'tabs active__tabs' : 'tabs'}
           >
-            <FaImages color="green" size={20} />
-            <span>General</span>
+            <FaRegFilePowerpoint color="green" size={20} />
+            <span>Páginas</span>
           </div>
           <div
             onClick={() => toggleTab(4)}
             className={toggleState === 4 ? 'tabs active__tabs' : 'tabs'}
           >
-            <FaImages color="green" size={20} />
+            <FaRegWindowMinimize color="green" size={20} />
             <span>Footer</span>
           </div>
         </div>
@@ -84,7 +94,7 @@ const Tabs = () => {
                 : 'tab__content'
             }
           >
-            <General />
+            <PagesSettings />
           </div>
           <div
             className={

@@ -1,24 +1,20 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNotification } from '@/commons/Notifications/NotificationProvider';
+import { useModal } from '@/hooks/useModal';
+import useEditor from '@/config/useEditor';
 import {
   getAllClinics,
   onCreateClinic,
   onUpdateClinic,
   changeClinic,
+  delMessage,
 } from '@/store/clinics';
 import {
-  getAllSections,
-  changeSection,
-  changeSubsection,
-  updateSections,
-  updateSubsections,
-} from '@/store/sections';
-import { useModal } from '@/hooks/useModal';
-import useEditor from '@/config/useEditor';
-import { changeSettings, updateSettings } from '@/store/settings';
-import { useNotification } from '@/commons/Notifications/NotificationProvider';
-import { getAllSettings } from '@/store/settings';
-import { changeSettings2 } from '@/store/settings';
+  getAllSettings,
+  changeSettings,
+  updateSettings,
+} from '@/store/settings';
 
 const INITIAL_ERROR_CLINICS = {
   name: null,
@@ -37,24 +33,45 @@ const INITIAL_ERROR_CLINICS = {
 };
 
 const useClinicsSection = () => {
-  const { actionClinics, message, status } = useSelector(
+  const dispatch = useDispatch();
+  const dispatchNotif = useNotification();
+  const [isOpenModal, openModal, closeModal] = useModal(false);
+  const [isOpenModalButton, openModalButton, closeModalButton] =
+    useModal(false);
+  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
+  const [errorField, setErrorField] = useState(INITIAL_ERROR_CLINICS);
+  const [editData, setEditData] = useState();
+  const quillRef = useRef();
+  const quillRef2 = useRef();
+
+  // Data
+  const { actionClinics, status, message } = useSelector(
     (state) => state.clinics
   );
-  const clinicSection = useSelector((state) =>
-    state.sections.sections.find((section) => section.name === 'clinic')
+  const clinic = useSelector((state) =>
+    state.clinics.clinics.find((clinic) => clinic.id === editData?.id)
   );
-  const clinicBgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'clinicBgColor'
+  const sectionTestimonials = useSelector((state) =>
+    state.settings.settings.filter(
+      (setting) => setting.type === 'sectionTestimonials'
     )
   );
-
-  const clinicTextColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'clinicTextColor'
+  const testimonialsSection = sectionTestimonials.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
+  );
+  const sectionClinics = useSelector((state) =>
+    state.settings.settings.filter(
+      (setting) => setting.type === 'sectionClinic'
     )
   );
+  const clinicsSection = sectionClinics.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
+  );
+  const settings = useSelector((state) => state.settings.settings);
 
+  // Botones
   const clinicBtn = useSelector((state) =>
     state.settings.settings.filter((setting) => setting.type === 'clinicBtn')
   );
@@ -63,30 +80,11 @@ const useClinicsSection = () => {
     {}
   );
 
-  const [errorField, setErrorField] = useState(INITIAL_ERROR_CLINICS);
-  const [editData, setEditData] = useState();
-  const clinic = useSelector((state) =>
-    state.clinics.clinics.find((clinic) => clinic.id === editData?.id)
-  );
-  const waveClinicShow = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'waveClinicShow'
-    )
-  );
-  const waveClinic = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'waveClinic')
-  );
-  const testimonialsBgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'testimonialsBgColor'
-    )
-  );
-
+  //Set Properties
   document.documentElement.style.setProperty(
     '--clinicBgColor',
-    clinicBgColor?.value
+    clinicsSection.bgColor?.value
   );
-
   if (Object.keys(button).length > 0) {
     document.documentElement.style.setProperty(
       '--btnTextColorClinic',
@@ -146,27 +144,22 @@ const useClinicsSection = () => {
     );
   }
 
-  const dispatchNotif = useNotification();
-  const dispatch = useDispatch();
-  const quillRef = useRef();
-  const quillRef2 = useRef();
-  const [isOpenModal, openModal, closeModal] = useModal(false);
-  const [isOpenModalButton, openModalButton, closeModalButton] =
-    useModal(false);
-  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
-
+  // Images Module
   const imageHandler = async () => {
     openModal();
   };
   const { modules } = useEditor({ imageHandler });
 
-  const onChangeSubsection = (name, value, sectionId, id) => {
-    dispatch(changeSubsection({ name, value, sectionId, id }));
-  };
-
-  const onChangeSection = (name, value) => {
-    dispatch(changeSection({ name, value, id: clinicSection.id }));
-  };
+  // Methods
+  useEffect(() => {
+    if (message) {
+      dispatchNotif({
+        type: `${status === 'success' ? 'SUCCESS' : 'ERROR'}`,
+        message: message,
+      });
+      dispatch(delMessage());
+    }
+  }, [message]);
 
   const handleSelect = (image) => {
     closeModal();
@@ -175,14 +168,7 @@ const useClinicsSection = () => {
     const position = quillObj.getSelection();
     quillObj.editor.insertEmbed(position.index, 'image', image, 'user');
     const changes = quillRef.current.unprivilegedEditor.getHTML();
-    dispatch(
-      changeSubsection({
-        name: 'content',
-        value: changes,
-        sectionId: clinicSection.id,
-        id: quillRef.current.props.id,
-      })
-    );
+    onChangeSetting('text', changes);
   };
 
   const onSubmit = async (e) => {
@@ -221,16 +207,14 @@ const useClinicsSection = () => {
     }
 
     try {
-      dispatch(updateSettings());
+      const updated = settings.findIndex((setting) => setting.updated === true);
+      if (updated !== -1) dispatch(updateSettings());
 
       if (actionClinics === 'NEW') {
         dispatch(onCreateClinic());
       } else {
         dispatch(onUpdateClinic());
       }
-
-      dispatch(updateSections());
-      dispatch(updateSubsections());
     } catch (error) {
       dispatchNotif({
         type: 'ERROR',
@@ -241,16 +225,13 @@ const useClinicsSection = () => {
 
   const onCancel = () => {
     dispatch(getAllClinics());
-    dispatch(getAllSections());
     dispatch(getAllSettings());
   };
 
-  const onChangeSetting2 = (feature, value, type) => {
-    dispatch(changeSettings2({ feature, value, type }));
-  };
-
   const onChangeSetting = (feature, value) => {
-    dispatch(changeSettings({ feature, value }));
+    dispatch(
+      changeSettings({ feature, value, type: clinicsSection.bgColor.type })
+    );
   };
 
   const onChangeClinic = (e) => {
@@ -300,12 +281,11 @@ const useClinicsSection = () => {
   };
 
   return {
+    clinicsSection,
+    testimonialsSection,
     actionClinics,
-    clinicSection,
     quillRef,
     quillRef2,
-    clinicBgColor,
-    clinicTextColor,
     isOpenModal,
     closeModal,
     isOpenModalButton,
@@ -314,20 +294,14 @@ const useClinicsSection = () => {
     modules,
     errorField,
     editData,
-    waveClinicShow,
-    waveClinic,
     button,
     isOpenModalWave,
     openModalWave,
     closeModalWave,
-    testimonialsBgColor,
     setDelError,
     setEditData,
-    onChangeSection,
     handleSelect,
     onChangeSetting,
-    onChangeSetting2,
-    onChangeSubsection,
     onSubmit,
     onCancel,
     onChangeClinic,

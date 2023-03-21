@@ -6,17 +6,17 @@ import storage from 'redux-persist/lib/storage';
 import userReducer from './user';
 import settingsReducer from './settings';
 import postsReducer from './posts';
-import sectionsReducer from './sections';
 import clinicsReducer from './clinics';
 import testimonialsReducer from './testimonials';
+import servicesReducer from './services';
 
 const reducer = combineReducers({
   user: userReducer,
   settings: settingsReducer,
   posts: postsReducer,
-  sections: sectionsReducer,
   clinics: clinicsReducer,
   testimonials: testimonialsReducer,
+  services: servicesReducer,
 });
 
 const persistConfig = {

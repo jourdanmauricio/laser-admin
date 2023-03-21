@@ -90,6 +90,9 @@ let clinicsSlice = createSlice({
       state.error = '';
       state.message = null;
     },
+    delMessage: (state) => {
+      state.message = null;
+    },
   },
   extraReducers: {
     [getAllClinics.pending]: (state) => {
@@ -164,7 +167,12 @@ let clinicsSlice = createSlice({
   },
 });
 
-export const { setActionClinics, changeClinic, setNewClinic, delError } =
-  clinicsSlice.actions;
+export const {
+  setActionClinics,
+  changeClinic,
+  setNewClinic,
+  delError,
+  delMessage,
+} = clinicsSlice.actions;
 
 export default clinicsSlice.reducer;

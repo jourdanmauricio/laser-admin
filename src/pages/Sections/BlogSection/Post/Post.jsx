@@ -14,7 +14,7 @@ const Post = ({ editData, errorField, onChangePost }) => {
     isOpenModal,
     closeModal,
     quillRef3,
-    blogBgColor,
+    blogSection,
     closeMessage,
     onBlurTitle,
     handleSelect,
@@ -137,7 +137,7 @@ const Post = ({ editData, errorField, onChangePost }) => {
               <label className="form__label">Contenido</label>
               <ReactQuill
                 ref={quillRef3}
-                style={{ backgroundColor: `${blogBgColor.value}` }}
+                style={{ backgroundColor: `${blogSection.bgColor.value}` }}
                 theme="snow"
                 value={post.content}
                 onChange={(e) => onContent(e)}

@@ -1,20 +1,19 @@
-import useEditor from '@/config/useEditor';
-import { useRef, useState } from 'react';
-import { useModal } from '@/hooks/useModal';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  changeSubsection,
-  changeSection,
-  getAllSections,
-  updateSections,
-  updateSubsections,
-} from '@/store/sections';
-import { changeSettings, updateSettings } from '@/store/settings';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
+import { useModal } from '@/hooks/useModal';
+import useEditor from '@/config/useEditor';
 import {
+  getAllSettings,
+  changeSettings,
+  updateSettings,
+} from '@/store/settings';
+import {
+  getAllTestimonials,
   changeTestimonial,
   onCreateTestimonial,
   onUpdateTestimonial,
+  delMessage,
 } from '@/store/testimonials';
 
 const INITIAL_ERROR_TESTOMIALS = {
@@ -25,69 +24,60 @@ const INITIAL_ERROR_TESTOMIALS = {
 };
 
 const useTestimonialsSection = () => {
-  const { actionTestimonials } = useSelector((state) => state.testimonials);
-
-  const [errorField, setErrorField] = useState({});
-  const [editData, setEditData] = useState();
-  const { message, status } = useSelector((state) => state.sections);
   const dispatch = useDispatch();
   const dispatchNotif = useNotification();
-  const testimonialsSection = useSelector((state) =>
-    state.sections.sections.find((section) => section.name === 'testimonials')
-  );
-  const testimonialsBgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'testimonialsBgColor'
-    )
-  );
-  const testimonialsTextColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'testimonialsTextColor'
-    )
-  );
+  const [isOpenModal, openModal, closeModal] = useModal(false);
+  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
+  const quillRef = useRef();
+  const quillRef2 = useRef();
+  const [errorField, setErrorField] = useState({});
+  const [editData, setEditData] = useState();
 
+  // Data
   const testimonial = useSelector((state) =>
     state.testimonials.testimonials.find(
       (testimonial) => testimonial.id === editData?.id
     )
   );
-
-  const footerBgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footerBgColor'
+  const { actionTestimonials, status, message } = useSelector(
+    (state) => state.testimonials
+  );
+  const sectionFooter = useSelector((state) =>
+    state.settings.settings.filter(
+      (setting) => setting.type === 'sectionFooter'
     )
   );
-
-  const waveTestimonialsShow = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'waveTestimonialsShow'
+  const footerSection = sectionFooter.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
+  );
+  const sectionTestimonials = useSelector((state) =>
+    state.settings.settings.filter(
+      (setting) => setting.type === 'sectionTestimonials'
     )
   );
-  const waveTestimonials = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'waveTestimonials'
-    )
+  const testimonialsSection = sectionTestimonials.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
   );
+  const settings = useSelector((state) => state.settings.settings);
 
-  const [isOpenModal, openModal, closeModal] = useModal(false);
-  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
-  const quillRef = useRef();
-  const quillRef2 = useRef();
-
+  // Images Module
   const imageHandler = async () => {
     openModal();
   };
-
   const { modules } = useEditor({ imageHandler });
 
-  const onChangeSubsection = (name, value, sectionId, id) => {
-    dispatch(changeSubsection({ name, value, sectionId, id }));
-  };
-
-  const onChangeSection = (name, value) => {
-    dispatch(changeSection({ name, value, id: testimonialsSection.id }));
-  };
-
+  // Methods
+  useEffect(() => {
+    if (message) {
+      dispatchNotif({
+        type: `${status === 'success' ? 'SUCCESS' : 'ERROR'}`,
+        message: message,
+      });
+      dispatch(delMessage());
+    }
+  }, [message]);
   const handleSelect = (image) => {
     closeModal();
     const quillObj = quillRef2.current.getEditor();
@@ -95,20 +85,17 @@ const useTestimonialsSection = () => {
     const position = quillObj.getSelection();
     quillObj.editor.insertEmbed(position.index, 'image', image, 'user');
     const changes = quillRef2.current.unprivilegedEditor.getHTML();
+    onChangeSetting('text', changes);
+  };
+  const onChangeSetting = (feature, value) => {
     dispatch(
-      changeSubsection({
-        name: 'content',
-        value: changes,
-        sectionId: testimonialsSection.id,
-        id: quillRef2.current.props.id,
+      changeSettings({
+        feature,
+        value,
+        type: testimonialsSection.bgColor.type,
       })
     );
   };
-
-  const onChangeSetting = (feature, value) => {
-    dispatch(changeSettings({ feature, value }));
-  };
-
   const onChangeTestimonial = (name, value) => {
     dispatch(changeTestimonial({ name, value, id: editData.id }));
 
@@ -125,10 +112,8 @@ const useTestimonialsSection = () => {
       });
     }
   };
-
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log('editData', editData);
     if (editData) {
       let formError = false;
       let fieldsErrors = Object.assign({}, errorField);
@@ -152,16 +137,14 @@ const useTestimonialsSection = () => {
       }
     }
     try {
-      dispatch(updateSettings());
+      const updated = settings.findIndex((setting) => setting.updated === true);
+      if (updated !== -1) dispatch(updateSettings());
 
       if (actionTestimonials === 'NEW') {
         dispatch(onCreateTestimonial());
       } else {
         dispatch(onUpdateTestimonial());
       }
-
-      dispatch(updateSections());
-      dispatch(updateSubsections());
     } catch (error) {
       dispatchNotif({
         type: 'ERROR',
@@ -169,37 +152,30 @@ const useTestimonialsSection = () => {
       });
     }
   };
-
   const setDelError = () => {
     setErrorField(INITIAL_ERROR_TESTOMIALS);
   };
-
   const onCancel = () => {
-    dispatch(getAllSections());
+    dispatch(getAllTestimonials());
+    dispatch(getAllSettings());
   };
 
   return {
     testimonialsSection,
+    footerSection,
     quillRef,
-    testimonialsBgColor,
-    testimonialsTextColor,
     quillRef2,
     modules,
     isOpenModal,
     closeModal,
-    waveTestimonialsShow,
-    waveTestimonials,
     isOpenModalWave,
     openModalWave,
     closeModalWave,
-    footerBgColor,
     errorField,
     editData,
     setDelError,
     setEditData,
     onChangeTestimonial,
-    onChangeSection,
-    onChangeSubsection,
     onSubmit,
     handleSelect,
     onChangeSetting,

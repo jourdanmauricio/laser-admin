@@ -1,19 +1,21 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { delError } from '@/store/services';
 import { useRef } from 'react';
-import { delError } from '@/store/posts';
-import { useModal } from '@/hooks/useModal';
 import useEditor from '@/config/useEditor';
+import { useModal } from '@/hooks/useModal';
 
-const usePost = ({ editData, onChangePost }) => {
-  const dispatch = useDispatch();
-  const [isOpenModal, openModal, closeModal] = useModal(false);
-  const quillRef3 = useRef();
-
-  // Data
-  const { error } = useSelector((state) => state.posts);
-  const post = useSelector((state) =>
-    state.posts.posts.find((post) => post.id === editData.id)
+const useService = ({ editData, onChangeService }) => {
+  const service = useSelector((state) =>
+    state.services.services.find((service) => service.id === editData.id)
   );
+
+  const { error } = useSelector((state) => state.services);
+  const dispatch = useDispatch();
+  const quillRef = useRef();
+  const quillRef2 = useRef();
+  const quillRef3 = useRef();
+  const [isOpenModal, openModal, closeModal] = useModal(false);
+
   const sectionBlog = useSelector((state) =>
     state.settings.settings.filter((setting) => setting.type === 'sectionBlog')
   );
@@ -22,53 +24,44 @@ const usePost = ({ editData, onChangePost }) => {
     {}
   );
 
-  // Images Module
   const imageHandler = async () => {
     openModal();
   };
+
   const { modules } = useEditor({ imageHandler });
 
-  // Methods
   const closeMessage = () => {
     dispatch(delError());
   };
-  const onBlurTitle = (value) => {
-    if (post.slug === '') {
-      const slug = value
-        .trim()
-        .replace(/\s+/g, '-')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase();
-      onChangePost('slug', slug);
-    }
-  };
+
   const onContent = (value) => {
-    onChangePost('content', value);
+    onChangeService('content', value);
   };
+
   const handleSelect = (image) => {
     closeModal();
-    const quillObj = quillRef3.current.getEditor();
+    const quillObj = quillRef.current.getEditor();
     quillObj.focus();
     const position = quillObj.getSelection();
     quillObj.editor.insertEmbed(position.index, 'image', image, 'user');
-    const changes = quillRef3.current.unprivilegedEditor.getHTML();
+    const changes = quillRef.current.unprivilegedEditor.getHTML();
     onContent(changes);
   };
 
   return {
-    post,
+    service,
     error,
     isOpenModal,
     closeModal,
+    quillRef,
+    quillRef2,
     quillRef3,
     modules,
     blogSection,
     closeMessage,
-    onBlurTitle,
     handleSelect,
     onContent,
   };
 };
 
-export default usePost;
+export default useService;

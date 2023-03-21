@@ -9,24 +9,20 @@ import ButtonStyles from '@/components/ButtonStyles/ButtonStyles';
 
 const BlogSection = () => {
   const {
-    actionPosts,
     blogSection,
-    blogTextColor,
+    clinicsSection,
+    actionPosts,
     button,
     quillRef,
     quillRef2,
-    blogBgColor,
     modules,
     isOpenModal,
     closeModal,
     editData,
     errorField,
-    waveBlogShow,
-    waveBlog,
     isOpenModalWave,
     openModalWave,
     closeModalWave,
-    clinicBgColor,
     isOpenModalBtnBlog,
     closeModalBtnBlog,
     openModalBtnBlog,
@@ -34,186 +30,172 @@ const BlogSection = () => {
     setDelError,
     onSubmit,
     onCancel,
-    onChangeSection,
-    onChangeSubsection,
     onChangeSetting,
-    onChangeSetting2,
     handleSelect,
     onChangePost,
   } = useBlogSection();
+
   return (
     <>
       <form onSubmit={onSubmit} noValidate>
-        {blogSection && blogBgColor && (
+        {Object.keys(blogSection).length > 0 && (
           <>
             <div className="form__group w-full">
               <label className="form__label">Título</label>
               <ReactQuill
                 ref={quillRef}
-                id={blogSection.id}
-                style={{ backgroundColor: `${blogBgColor.value}` }}
+                style={{
+                  backgroundColor: `${blogSection.bgColor.value}`,
+                }}
                 theme="snow"
-                value={blogSection.title}
-                onChange={(e) => onChangeSection('title', e)}
+                value={blogSection.title.value}
+                onChange={(e) => onChangeSetting('title', e)}
                 placeholder={'Write something awesome...'}
                 modules={quillSimpleModules}
               />
             </div>
 
-            {blogSection.subsections.map((subsection) => (
-              <div key={subsection.id}>
-                <div className="form__group w-full editor">
-                  <label className="form__label">Contenido</label>
-                  <ReactQuill
-                    ref={quillRef2}
-                    id={subsection.id}
-                    style={{ backgroundColor: `${blogBgColor.value}` }}
-                    theme="snow"
-                    value={subsection.content}
+            <div className="form__group w-full editor">
+              <label className="form__label">Contenido</label>
+              <ReactQuill
+                ref={quillRef2}
+                style={{ backgroundColor: `${blogSection.bgColor.value}` }}
+                theme="snow"
+                value={blogSection.text.value}
+                onChange={(e) => onChangeSetting('text', e)}
+                placeholder={'Write something awesome...'}
+                modules={modules}
+              />
+            </div>
+
+            <div className="border border-solid border-gray-300 bg-clinicBgColor h-20 w-full flex items-center justify-center">
+              {button.show.value === 'true' && (
+                <div
+                  type="button"
+                  className="border border-solid transition ease-in-out delay-100  hover:cursor-pointer btn__blog"
+                >
+                  {button.text.value}
+                </div>
+              )}
+            </div>
+
+            {/* SECTION */}
+            <div className="flex flex-col sm:flex-row sm:gap-10">
+              <div className="form__group w-full">
+                <label className="form__label">Background</label>
+                <div className="flex items-center gap-4">
+                  <input
+                    className="form__input--color w-full border-gray-500"
+                    type="color"
+                    name={blogSection.bgColor.feature}
+                    value={blogSection.bgColor.value}
                     onChange={(e) =>
-                      onChangeSubsection(
-                        'content',
-                        e,
-                        blogSection.id,
-                        subsection.id
-                      )
+                      onChangeSetting(e.target.name, e.target.value)
                     }
-                    placeholder={'Write something awesome...'}
-                    modules={modules}
+                  />
+                  <input
+                    type="text"
+                    name={blogSection.bgColor.feature}
+                    value={blogSection.bgColor.value}
+                    placeholder="#531253"
+                    className="form__input border-gray-500"
+                    onChange={(e) =>
+                      onChangeSetting(e.target.name, e.target.value)
+                    }
                   />
                 </div>
+              </div>
 
-                <div className="border border-solid border-gray-300 bg-clinicBgColor h-20 w-full flex items-center justify-center">
-                  {button.show.value === 'true' && (
-                    <div
-                      type="button"
-                      className="border border-solid transition ease-in-out delay-100  hover:cursor-pointer btn__blog"
-                    >
-                      {button.text.value}
-                    </div>
-                  )}
-                </div>
-
-                {/* SECTION */}
-                <div className="flex flex-col sm:flex-row sm:gap-10">
-                  <div className="form__group w-full">
-                    <label className="form__label">Background</label>
-                    <div className="flex items-center gap-4">
-                      <input
-                        className="form__input--color w-full border-gray-500"
-                        type="color"
-                        name={blogBgColor.feature}
-                        value={blogBgColor.value}
-                        onChange={(e) =>
-                          onChangeSetting(e.target.name, e.target.value)
-                        }
-                      />
-                      <input
-                        type="text"
-                        name={blogBgColor.feature}
-                        value={blogBgColor.value}
-                        placeholder="#531253"
-                        className="form__input border-gray-500"
-                        onChange={(e) =>
-                          onChangeSetting(e.target.name, e.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  <div className="form__group w-full">
-                    <label className="form__label">Contenido</label>
-                    <div className="flex items-center gap-4">
-                      <input
-                        className="form__input--color w-full border-gray-500"
-                        type="color"
-                        name={blogTextColor.feature}
-                        value={blogTextColor.value}
-                        onChange={(e) =>
-                          onChangeSetting(e.target.name, e.target.value)
-                        }
-                      />
-                      <input
-                        type="text"
-                        name={blogTextColor.feature}
-                        value={blogTextColor.value}
-                        placeholder="#531253"
-                        className="form__input border-gray-500"
-                        onChange={(e) =>
-                          onChangeSetting(e.target.name, e.target.value)
-                        }
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* BOTON - WAVE */}
-                <div className="flex flex-col sm:flex-row sm:gap-10">
-                  <div className="form__group w-full">
-                    <input
-                      checked={button.show.value === 'false' ? false : true}
-                      type="checkbox"
-                      value=""
-                      name={button.show.feature}
-                      onChange={(e) =>
-                        onChangeSetting(
-                          e.target.name,
-                          e.target.checked.toString()
-                        )
-                      }
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="main"
-                      className="ml-2 text-sm font-medium text-gray-700 text"
-                    >
-                      Botón CTA
-                    </label>
-                    <button
-                      disabled={button.show.value === 'false'}
-                      type="button"
-                      onClick={() => openModalBtnBlog()}
-                      className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
-                    >
-                      Modificar botón
-                    </button>
-                  </div>
-
-                  <div className="flex items-center gap-4 w-full">
-                    <div className="form__group w-full">
-                      <input
-                        checked={waveBlogShow?.value === 'false' ? false : true}
-                        type="checkbox"
-                        value=""
-                        id={waveBlogShow.feature}
-                        name={waveBlogShow.feature}
-                        onChange={(e) =>
-                          onChangeSetting(
-                            e.target.name,
-                            e.target.checked.toString()
-                          )
-                        }
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      />
-                      <label
-                        htmlFor={waveBlogShow.feature}
-                        className="ml-2 text-sm font-medium text-gray-700 text"
-                      >
-                        Wave
-                      </label>
-                      <button
-                        disabled={waveBlogShow.value === 'false'}
-                        type="button"
-                        onClick={() => openModalWave()}
-                        className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
-                      >
-                        Modificar wave
-                      </button>
-                    </div>
-                  </div>
+              <div className="form__group w-full">
+                <label className="form__label">Contenido</label>
+                <div className="flex items-center gap-4">
+                  <input
+                    className="form__input--color w-full border-gray-500"
+                    type="color"
+                    name={blogSection.textColor.feature}
+                    value={blogSection.textColor.value}
+                    onChange={(e) =>
+                      onChangeSetting(e.target.name, e.target.value)
+                    }
+                  />
+                  <input
+                    type="text"
+                    name={blogSection.textColor.feature}
+                    value={blogSection.textColor.value}
+                    placeholder="#531253"
+                    className="form__input border-gray-500"
+                    onChange={(e) =>
+                      onChangeSetting(e.target.name, e.target.value)
+                    }
+                  />
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* BOTON - WAVE */}
+            <div className="flex flex-col sm:flex-row sm:gap-10">
+              <div className="form__group w-full">
+                <input
+                  checked={button.show.value === 'false' ? false : true}
+                  type="checkbox"
+                  value=""
+                  name={button.show.feature}
+                  onChange={(e) =>
+                    onChangeSetting(e.target.name, e.target.checked.toString())
+                  }
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <label
+                  htmlFor="main"
+                  className="ml-2 text-sm font-medium text-gray-700 text"
+                >
+                  Botón CTA
+                </label>
+                <button
+                  disabled={button.show.value === 'false'}
+                  type="button"
+                  onClick={() => openModalBtnBlog()}
+                  className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
+                >
+                  Modificar botón
+                </button>
+              </div>
+
+              <div className="flex items-center gap-4 w-full">
+                <div className="form__group w-full">
+                  <input
+                    checked={
+                      blogSection.waveShow?.value === 'false' ? false : true
+                    }
+                    type="checkbox"
+                    value=""
+                    id={blogSection.waveShow.feature}
+                    name={blogSection.waveShow.feature}
+                    onChange={(e) =>
+                      onChangeSetting(
+                        e.target.name,
+                        e.target.checked.toString()
+                      )
+                    }
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  <label
+                    htmlFor={blogSection.waveShow.feature}
+                    className="ml-2 text-sm font-medium text-gray-700 text"
+                  >
+                    Wave
+                  </label>
+                  <button
+                    disabled={blogSection.waveShow.value === 'false'}
+                    type="button"
+                    onClick={() => openModalWave()}
+                    className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
+                  >
+                    Modificar wave
+                  </button>
+                </div>
+              </div>
+            </div>
           </>
         )}
 
@@ -245,22 +227,23 @@ const BlogSection = () => {
         <Modal isOpenModal={isOpenModalBtnBlog} closeModal={closeModalBtnBlog}>
           <ButtonStyles
             button={button}
-            onChangeSetting2={onChangeSetting2}
+            onChangeSetting={onChangeSetting}
             closeModal={closeModalBtnBlog}
           />
         </Modal>
       )}
+
       <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
         <Media handleSelect={handleSelect} />
       </Modal>
 
       <Modal isOpenModal={isOpenModalWave} closeModal={closeModalWave}>
         <WaveStyles
-          wave={waveBlog}
+          wave={blogSection.wave}
           onChangeSetting={onChangeSetting}
           closeModalWave={closeModalWave}
-          bg={blogBgColor} // Color seccion actual
-          waveColor={clinicBgColor} // Color siguiente seccion
+          bg={blogSection.bgColor} // Color seccion actual
+          waveColor={clinicsSection.clinicBgColor} // Color siguiente seccion
           section="Entradas destacadas"
           nextSection="Consultorios"
         />

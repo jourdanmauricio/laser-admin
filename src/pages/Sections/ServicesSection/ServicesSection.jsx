@@ -9,28 +9,29 @@ import { Modal } from '@/commons/Modal/Modal';
 import DeleteSubsection from './DeleteSubsection/DeleteSubsection';
 import useServicesSection from './useServicesSection';
 import WaveStyles from '@/components/WaveStyles/WaveStyles';
+import Services from './Services/Services';
 
 const ServicesSection = () => {
   const {
     servicesSection,
-    actionSections,
+    blogSection,
+    actionServices,
     quillRef,
-    servicesBgColor,
-    servicesTextColor,
+    quillRef2,
     columns,
     actionsMemo,
     service,
     isOpenModal,
     closeModal,
     errorFields,
-    waveServiceShow,
-    waveService,
     isOpenModalWave,
     openModalWave,
     closeModalWave,
-    blogBgColor,
-    onChangeSection,
+    editData,
+    setDelError,
+    setEditData,
     onChangeSetting,
+    onChangeService,
     onCancel,
     onSubmit,
     handleCancelDelete,
@@ -39,19 +40,35 @@ const ServicesSection = () => {
   return (
     <>
       <form onSubmit={onSubmit}>
-        {servicesSection && servicesBgColor && (
+        {Object.keys(servicesSection).length > 0 && (
           <div>
-            {actionSections === 'SECTIONS' && (
+            {actionServices === 'SERVICES' && (
               <>
                 <div className="form__group w-full">
                   <label className="form__label">Título</label>
                   <ReactQuill
                     ref={quillRef}
-                    id={servicesSection.id}
-                    style={{ backgroundColor: `${servicesBgColor.value}` }}
+                    style={{
+                      backgroundColor: `${servicesSection.bgColor.value}`,
+                    }}
                     theme="snow"
-                    value={servicesSection.title}
-                    onChange={(e) => onChangeSection('title', e)}
+                    value={servicesSection.title.value}
+                    onChange={(e) => onChangeSetting('title', e)}
+                    placeholder={'Write something awesome...'}
+                    modules={quillSimpleModules}
+                  />
+                </div>
+
+                <div className="form__group w-full">
+                  <label className="form__label">Contenido</label>
+                  <ReactQuill
+                    ref={quillRef2}
+                    style={{
+                      backgroundColor: `${servicesSection.bgColor.value}`,
+                    }}
+                    theme="snow"
+                    value={servicesSection.text.value}
+                    onChange={(e) => onChangeSetting('text', e)}
                     placeholder={'Write something awesome...'}
                     modules={quillSimpleModules}
                   />
@@ -65,16 +82,16 @@ const ServicesSection = () => {
                       <input
                         className="form__input--color w-full border-gray-500"
                         type="color"
-                        name={servicesBgColor.feature}
-                        value={servicesBgColor.value}
+                        name={servicesSection.bgColor.feature}
+                        value={servicesSection.bgColor.value}
                         onChange={(e) =>
                           onChangeSetting(e.target.name, e.target.value)
                         }
                       />
                       <input
                         type="text"
-                        name={servicesBgColor.feature}
-                        value={servicesBgColor.value}
+                        name={servicesSection.bgColor.feature}
+                        value={servicesSection.bgColor.value}
                         placeholder="#531253"
                         className="form__input border-gray-500"
                         onChange={(e) =>
@@ -90,16 +107,16 @@ const ServicesSection = () => {
                       <input
                         className="form__input--color w-full border-gray-500"
                         type="color"
-                        name={servicesTextColor.feature}
-                        value={servicesTextColor.value}
+                        name={servicesSection.textColor.feature}
+                        value={servicesSection.textColor.value}
                         onChange={(e) =>
                           onChangeSetting(e.target.name, e.target.value)
                         }
                       />
                       <input
                         type="text"
-                        name={servicesTextColor.feature}
-                        value={servicesTextColor.value}
+                        name={servicesSection.textColor.feature}
+                        value={servicesSection.textColor.value}
                         placeholder="#531253"
                         className="form__input border-gray-500"
                         onChange={(e) =>
@@ -112,46 +129,17 @@ const ServicesSection = () => {
 
                 {/* BOTON - WAVE */}
                 <div className="flex flex-col sm:flex-row sm:gap-10">
-                  {/* <div className="flex items-center gap-4 w-1/2">
-                      <div className="form__group w-full">
-                        <input
-                          checked={
-                            servicesBtn.servicesBtnShow.value === 'false' ? false : true
-                          }
-                          type="checkbox"
-                          value=""
-                          name={servicesBtn.servicesBtnShow.feature}
-                          onChange={(e) =>
-                            onChangeSetting(e.target.name, e.target.checked.toString())
-                          }
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                        />
-                        <label
-                          htmlFor="main"
-                          className="ml-2 text-sm font-medium text-gray-700 text"
-                        >
-                          Botón CTA
-                        </label>
-                        <button
-                          disabled={servicesBtn.servicesBtnShow.value === 'false'}
-                          type="button"
-                          onClick={() => openModalButton()}
-                          className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
-                        >
-                          Modificar botón
-                        </button>
-                      </div>
-                  </div> */}
-
                   <div className="form__group w-full">
                     <input
                       checked={
-                        waveServiceShow?.value === 'false' ? false : true
+                        servicesSection.waveShow?.value === 'false'
+                          ? false
+                          : true
                       }
                       type="checkbox"
                       value=""
-                      id={waveServiceShow.feature}
-                      name={waveServiceShow.feature}
+                      id={servicesSection.waveShow.feature}
+                      name={servicesSection.waveShow.feature}
                       onChange={(e) =>
                         onChangeSetting(
                           e.target.name,
@@ -161,13 +149,13 @@ const ServicesSection = () => {
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                     />
                     <label
-                      htmlFor={waveServiceShow.feature}
+                      htmlFor={servicesSection.waveShow.feature}
                       className="ml-2 text-sm font-medium text-gray-700 text"
                     >
                       Wave
                     </label>
                     <button
-                      disabled={waveServiceShow.value === 'false'}
+                      disabled={servicesSection.waveShow.value === 'false'}
                       type="button"
                       onClick={() => openModalWave()}
                       className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
@@ -178,22 +166,24 @@ const ServicesSection = () => {
                 </div>
 
                 <hr />
-
-                <DataTable
-                  title={<h1 className="title text-left">Servicios</h1>}
-                  columns={columns}
-                  data={servicesSection.subsections}
-                  actions={actionsMemo}
-                  pagination
-                  paginationComponentOptions={paginationComponentOptions}
+                <Services
+                  errorFields={errorFields}
+                  onChangeService={onChangeService}
+                  editData={editData}
+                  setEditData={setEditData}
+                  setDelError={setDelError}
                 />
               </>
             )}
           </div>
         )}
 
-        {actionSections !== 'SECTIONS' && (
-          <Service service={service} errorFields={errorFields} />
+        {actionServices !== 'SERVICES' && (
+          <Service
+            editData={editData}
+            errorFields={errorFields}
+            onChangeService={onChangeService}
+          />
         )}
 
         {/* ACTIONS */}
@@ -207,7 +197,7 @@ const ServicesSection = () => {
           </button>
 
           <button className="my-8 btn__primary" type="submit">
-            {actionSections === 'NEW' ? 'Crear' : 'Modificar'}
+            {actionServices === 'NEW' ? 'Crear' : 'Modificar'}
           </button>
         </div>
       </form>
@@ -222,11 +212,11 @@ const ServicesSection = () => {
 
       <Modal isOpenModal={isOpenModalWave} closeModal={closeModalWave}>
         <WaveStyles
-          wave={waveService}
+          wave={servicesSection.wave}
           onChangeSetting={onChangeSetting}
           closeModalWave={closeModalWave}
-          bg={servicesBgColor} // Color seccion actual
-          waveColor={blogBgColor} // Color siguiente seccion
+          bg={servicesSection.bgColor} // Color seccion actual
+          waveColor={blogSection.bgColor} // Color siguiente seccion
           section="Servicios"
           nextSection="Entradas destacadas"
         />

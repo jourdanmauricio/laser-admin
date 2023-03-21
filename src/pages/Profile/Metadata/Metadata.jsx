@@ -6,13 +6,10 @@ import useMetadata from './useMetadata';
 
 const Metadata = () => {
   const {
+    metaData,
     errorField,
     status,
     error,
-    meta_title,
-    meta_description,
-    meta_canonical,
-    meta_url,
     closeMessage,
     onChangeSettings,
     handleSubmit,
@@ -50,7 +47,7 @@ const Metadata = () => {
                 type="text"
                 name="meta_title"
                 placeholder="Título para la web"
-                value={meta_title?.value || ''}
+                value={metaData.meta_title.value || ''}
                 title="Obligatorio. Máximo 60 caracteres"
                 pattern="^.{1,60}$"
                 required
@@ -76,7 +73,7 @@ const Metadata = () => {
                 type="text"
                 name="meta_description"
                 placeholder="Descripción para la web"
-                value={meta_description?.value || ''}
+                value={metaData.meta_description.value || ''}
                 title="Obligatorio. Máximo 170 caracteres"
                 pattern="^.{1,170}$"
                 required
@@ -101,7 +98,7 @@ const Metadata = () => {
                 type="text"
                 name="meta_canonical"
                 placeholder="Canonica de la web"
-                value={meta_canonical?.value || ''}
+                value={metaData.meta_canonical.value || ''}
                 title="Obligatorio. Ingresa una dirección web válida"
                 pattern="^(https?://)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
                 required
@@ -125,7 +122,7 @@ const Metadata = () => {
                 type="text"
                 name="meta_url"
                 placeholder="url de la web"
-                value={meta_url?.value || ''}
+                value={metaData.meta_url.value || ''}
                 title="Obligatorio. Ingresa una dirección web válida"
                 pattern="^(https?://)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
                 required

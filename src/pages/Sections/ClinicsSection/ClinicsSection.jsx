@@ -9,34 +9,27 @@ import WaveStyles from '@/components/WaveStyles/WaveStyles';
 
 const ClinicsSection = () => {
   const {
+    clinicsSection,
+    testimonialsSection,
     actionClinics,
-    clinicSection,
     quillRef,
     quillRef2,
-    clinicBgColor,
-    clinicTextColor,
     isOpenModal,
     closeModal,
-    modules,
-    errorField,
-    editData,
-    waveClinicShow,
-    waveClinic,
     isOpenModalButton,
     closeModalButton,
     openModalButton,
+    modules,
+    errorField,
+    editData,
     button,
     isOpenModalWave,
     openModalWave,
     closeModalWave,
-    testimonialsBgColor,
     setDelError,
     setEditData,
-    onChangeSection,
     handleSelect,
     onChangeSetting,
-    onChangeSetting2,
-    onChangeSubsection,
     onSubmit,
     onCancel,
     onChangeClinic,
@@ -46,46 +39,33 @@ const ClinicsSection = () => {
   return (
     <>
       <form onSubmit={onSubmit} noValidate>
-        {clinicSection && clinicBgColor && (
+        {Object.keys(clinicsSection).length > 0 && (
           <>
             <div>
               <div className="form__group w-full">
                 <label className="form__label">Título</label>
                 <ReactQuill
                   ref={quillRef}
-                  id={clinicSection.id}
-                  style={{ backgroundColor: `${clinicBgColor.value}` }}
+                  style={{ backgroundColor: `${clinicsSection.bgColor.value}` }}
                   theme="snow"
-                  value={clinicSection.title}
-                  onChange={(e) => onChangeSection('title', e)}
+                  value={clinicsSection.title.value}
+                  onChange={(e) => onChangeSetting('title', e)}
                   placeholder={'Write something awesome...'}
                   modules={quillSimpleModules}
                 />
               </div>
-              {clinicSection.subsections.map((subsection) => (
-                <div key={subsection.id}>
-                  <div className="form__group w-full editor pb-0">
-                    <label className="form__label">Contenido</label>
-                    <ReactQuill
-                      ref={quillRef2}
-                      id={subsection.id}
-                      style={{ backgroundColor: `${clinicBgColor.value}` }}
-                      theme="snow"
-                      value={subsection.content}
-                      onChange={(e) =>
-                        onChangeSubsection(
-                          'content',
-                          e,
-                          clinicSection.id,
-                          subsection.id
-                        )
-                      }
-                      placeholder={'Write something awesome...'}
-                      modules={modules}
-                    />
-                  </div>
-                </div>
-              ))}
+              <div className="form__group w-full editor pb-0">
+                <label className="form__label">Contenido</label>
+                <ReactQuill
+                  ref={quillRef2}
+                  style={{ backgroundColor: `${clinicsSection.bgColor.value}` }}
+                  theme="snow"
+                  value={clinicsSection.text.value}
+                  onChange={(e) => onChangeSetting('text', e)}
+                  placeholder={'Write something awesome...'}
+                  modules={modules}
+                />
+              </div>
 
               <div className="border border-solid border-gray-300 bg-clinicBgColor h-20 w-full flex items-center justify-center">
                 {button.show.value === 'true' && (
@@ -108,16 +88,16 @@ const ClinicsSection = () => {
                   <input
                     className="form__input--color w-full border-gray-500"
                     type="color"
-                    name="clinicBgColor"
-                    value={clinicBgColor.value}
+                    name={clinicsSection.bgColor.feature}
+                    value={clinicsSection.bgColor.value}
                     onChange={(e) =>
                       onChangeSetting(e.target.name, e.target.value)
                     }
                   />
                   <input
                     type="text"
-                    value={clinicBgColor.value}
-                    name="clinicBgColor"
+                    value={clinicsSection.bgColor.value}
+                    name={clinicsSection.bgColor.feature}
                     placeholder="#531253"
                     className="form__input border-gray-500"
                     onChange={(e) =>
@@ -133,16 +113,16 @@ const ClinicsSection = () => {
                   <input
                     className="form__input--color w-full border-gray-500"
                     type="color"
-                    name="clinicTextColor"
-                    value={clinicTextColor.value}
+                    name={clinicsSection.textColor.feature}
+                    value={clinicsSection.textColor.value}
                     onChange={(e) =>
                       onChangeSetting(e.target.name, e.target.value)
                     }
                   />
                   <input
                     type="text"
-                    value={clinicTextColor.value}
-                    name="clinicTextColor"
+                    name={clinicsSection.textColor.feature}
+                    value={clinicsSection.textColor.value}
                     placeholder="#531253"
                     className="form__input border-gray-500"
                     onChange={(e) =>
@@ -186,11 +166,13 @@ const ClinicsSection = () => {
               <div className="flex items-center gap-4 w-full">
                 <div className="form__group w-full">
                   <input
-                    checked={waveClinicShow?.value === 'false' ? false : true}
+                    checked={
+                      clinicsSection.waveShow?.value === 'false' ? false : true
+                    }
                     type="checkbox"
                     value=""
-                    name={waveClinicShow.feature}
-                    id={waveClinicShow.feature}
+                    name={clinicsSection.waveShow.feature}
+                    id={clinicsSection.waveShow.feature}
                     onChange={(e) =>
                       onChangeSetting(
                         e.target.name,
@@ -200,13 +182,13 @@ const ClinicsSection = () => {
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                   />
                   <label
-                    htmlFor={waveClinicShow.feature}
+                    htmlFor={clinicsSection.waveShow.feature}
                     className="ml-2 w-[90px] text-sm font-medium text-gray-700"
                   >
                     Wave
                   </label>
                   <button
-                    disabled={waveClinicShow.value === 'false'}
+                    disabled={clinicsSection.waveShow.value === 'false'}
                     type="button"
                     onClick={() => openModalWave()}
                     className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
@@ -244,26 +226,29 @@ const ClinicsSection = () => {
           </button>
         </div>
       </form>
+
       <Modal isOpenModal={isOpenModalWave} closeModal={closeModalWave}>
         <WaveStyles
-          wave={waveClinic}
+          wave={clinicsSection.wave}
           onChangeSetting={onChangeSetting}
           closeModalWave={closeModalWave}
-          bg={clinicBgColor} // Color seccion actual
-          waveColor={testimonialsBgColor} // Color siguiente seccion
+          bg={clinicsSection.bgColor} // Color seccion actual
+          waveColor={testimonialsSection.bgColor} // Color siguiente seccion
           section="Consultorios"
           nextSection="Testimonios"
         />
       </Modal>
+
       {isOpenModalButton && (
         <Modal isOpenModal={isOpenModalButton} closeModal={closeModalButton}>
           <ButtonStyles
             button={button}
-            onChangeSetting2={onChangeSetting2}
+            onChangeSetting2={onChangeSetting}
             closeModal={closeModalButton}
           />
         </Modal>
       )}
+
       <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
         <Media handleSelect={handleSelect} />
       </Modal>

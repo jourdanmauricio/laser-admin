@@ -1,71 +1,63 @@
 import ReactQuill from 'react-quill';
-//import AddPicture from '../../AddPicture/AddPicture';
-import { useRef } from 'react';
-import { changeSubsection } from '@/store/sections';
-import { useDispatch, useSelector } from 'react-redux';
+
 import { quillSimpleModules } from '@/config/constants';
 import AddPicture from '@/components/AddPicture/AddPicture';
+import useService from './useService';
+import { Modal } from '@/commons/Modal/Modal';
+import Media from '@/components/Media/Media';
 
-const Service = ({ service, errorFields }) => {
-  const quillRef = useRef();
-  const quillRef2 = useRef();
-  const dispatch = useDispatch();
-
-  const servicesBgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'servicesBgColor'
-    )
-  );
-
-  const section = useSelector((state) =>
-    state.sections.sections.find((section) => section.id === service.section_id)
-  );
-  const subsection = section.subsections.find((sub) => sub.id === service.id);
-
-  const onChangeSubsection = (name, value) => {
-    dispatch(
-      changeSubsection({
-        name,
-        value,
-        sectionId: subsection.section_id,
-        id: subsection.id,
-      })
-    );
-  };
+const Service = ({ editData, errorFields, onChangeService }) => {
+  const {
+    service,
+    error,
+    handleSelect,
+    blogSection,
+    isOpenModal,
+    closeModal,
+    quillRef,
+    quillRef2,
+  } = useService({ editData, onChangeService });
 
   return (
     <div>
-      <div className="form__group w-full">
-        <label className="form__label">Título</label>
-        <ReactQuill
-          ref={quillRef}
-          style={{ backgroundColor: `${servicesBgColor.value}` }}
-          theme="snow"
-          value={subsection.name}
-          onChange={(e) => onChangeSubsection('name', e)}
-          placeholder={'Write something awesome...'}
-          modules={quillSimpleModules}
-        />
-      </div>
+      {service && (
+        <>
+          <div className="form__group w-full">
+            <label className="form__label">Título</label>
+            <ReactQuill
+              ref={quillRef}
+              style={{ backgroundColor: `${blogSection.bgColor.value}` }}
+              theme="snow"
+              value={service.title}
+              onChange={(e) => onChangeService('title', e)}
+              placeholder={'Write something awesome...'}
+              modules={quillSimpleModules}
+            />
+          </div>
 
-      <AddPicture
-        container={subsection}
-        handleChangeImage={onChangeSubsection}
-        error={errorFields}
-      />
+          <AddPicture
+            container={service}
+            handleChangeImage={onChangeService}
+            error={errorFields}
+          />
 
-      <div className="form__group w-full">
-        <label className="form__label">Contenido</label>
-        <ReactQuill
-          ref={quillRef2}
-          style={{ backgroundColor: `${servicesBgColor.value}` }}
-          theme="snow"
-          value={subsection.content}
-          onChange={(e) => onChangeSubsection('content', e)}
-          placeholder={'Write something awesome...'}
-          modules={quillSimpleModules}
-        />
-      </div>
+          <div className="form__group w-full">
+            <label className="form__label">Contenido</label>
+            <ReactQuill
+              ref={quillRef2}
+              style={{ backgroundColor: `${blogSection.bgColor.value}` }}
+              theme="snow"
+              value={service.content}
+              onChange={(e) => onChangeService('content', e)}
+              placeholder={'Write something awesome...'}
+              modules={quillSimpleModules}
+            />
+          </div>
+        </>
+      )}
+      <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
+        <Media handleSelect={handleSelect} />
+      </Modal>
     </div>
   );
 };

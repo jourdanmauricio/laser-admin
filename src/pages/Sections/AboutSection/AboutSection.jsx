@@ -8,70 +8,54 @@ import WaveStyles from '@/components/WaveStyles/WaveStyles';
 const AboutSection = () => {
   const {
     aboutSection,
+    servicesSection,
     quillRef,
-    aboutBgColor,
-    aboutTextColor,
     quillRef2,
     modules,
     isOpenModal,
     closeModal,
-    waveAboutShow,
-    waveAbout,
     isOpenModalWave,
     openModalWave,
     closeModalWave,
-    servicesBgColor,
-    onChangeSection,
-    onChangeSubsection,
+    onChangeSetting,
     onSubmit,
     handleSelect,
-    onChangeSetting,
     onCancel,
   } = useAboutSection();
 
   return (
     <>
-      {aboutSection && aboutBgColor && (
+      {Object.keys(aboutSection).length > 0 && (
         <form onSubmit={onSubmit}>
           <div className="form__group w-full">
             <label className="form__label">Título</label>
             <ReactQuill
               ref={quillRef}
-              id={aboutSection.id}
-              style={{ backgroundColor: `${aboutBgColor.value}` }}
+              style={{
+                backgroundColor: `${aboutSection.bgColor.value}`,
+              }}
               theme="snow"
-              value={aboutSection.title}
-              onChange={(e) => onChangeSection('title', e)}
+              value={aboutSection.title.value}
+              onChange={(e) => onChangeSetting('title', e)}
               placeholder={'Write something awesome...'}
               modules={quillSimpleModules}
             />
           </div>
 
-          {aboutSection.subsections.map((subsection) => (
-            <div key={subsection.id}>
-              <div className="form__group w-full editor">
-                <label className="form__label">Contenido</label>
-                <ReactQuill
-                  ref={quillRef2}
-                  id={subsection.id}
-                  style={{ backgroundColor: `${aboutBgColor.value}` }}
-                  theme="snow"
-                  value={subsection.content}
-                  onChange={(e) =>
-                    onChangeSubsection(
-                      'content',
-                      e,
-                      aboutSection.id,
-                      subsection.id
-                    )
-                  }
-                  placeholder={'Write something awesome...'}
-                  modules={modules}
-                />
-              </div>
-              <hr />
-            </div>
-          ))}
+          <div className="form__group w-full editor">
+            <label className="form__label">Contenido</label>
+            <ReactQuill
+              ref={quillRef2}
+              style={{
+                backgroundColor: `${aboutSection.bgColor.value}`,
+              }}
+              theme="snow"
+              value={aboutSection.text.value}
+              onChange={(e) => onChangeSetting('text', e)}
+              placeholder={'Write something awesome...'}
+              modules={modules}
+            />
+          </div>
 
           {/* SECTION */}
           <div className="flex flex-col sm:flex-row sm:gap-10">
@@ -81,16 +65,16 @@ const AboutSection = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name={aboutBgColor.feature}
-                  value={aboutBgColor.value}
+                  name={aboutSection.bgColor.feature}
+                  value={aboutSection.bgColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  name={aboutBgColor.feature}
-                  value={aboutBgColor.value}
+                  name={aboutSection.bgColor.feature}
+                  value={aboutSection.bgColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>
@@ -106,16 +90,16 @@ const AboutSection = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name={aboutTextColor.feature}
-                  value={aboutTextColor.value}
+                  name={aboutSection.textColor.feature}
+                  value={aboutSection.textColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  name={aboutTextColor.feature}
-                  value={aboutTextColor.value}
+                  name={aboutSection.textColor.feature}
+                  value={aboutSection.textColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>
@@ -128,60 +112,28 @@ const AboutSection = () => {
 
           {/* BOTON - WAVE */}
           <div className="flex flex-col sm:flex-row sm:gap-10">
-            {/* <div className="flex items-center gap-4 w-1/2">
-              <div className="form__group w-full">
-                <input
-                  checked={
-                    aboutBtn.aboutBtnShow.value === 'false' ? false : true
-                  }
-                  type="checkbox"
-                  value=""
-                  name={aboutBtn.aboutBtnShow.feature}
-                  onChange={(e) =>
-                    onChangeSetting(e.target.name, e.target.checked.toString())
-                  }
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label
-                  htmlFor="main"
-                  className="ml-2 text-sm font-medium text-gray-700 text"
-                >
-                  Botón CTA
-                </label>
-                <button
-                  disabled={aboutBtn.aboutBtnShow.value === 'false'}
-                  type="button"
-                  onClick={() => openModalButton()}
-                  className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
-                >
-                  Modificar botón
-                </button>
-
-              </div>
-              <div className="form__group w-full">
-              </div>
-            </div> */}
-
             <div className="form__group w-full">
               <input
-                checked={waveAboutShow?.value === 'false' ? false : true}
+                checked={
+                  aboutSection.waveShow?.value === 'false' ? false : true
+                }
                 type="checkbox"
                 value=""
-                id={waveAboutShow.feature}
-                name={waveAboutShow.feature}
+                id={aboutSection.waveShow.feature}
+                name={aboutSection.waveShow.feature}
                 onChange={(e) =>
                   onChangeSetting(e.target.name, e.target.checked.toString())
                 }
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
               />
               <label
-                htmlFor={waveAboutShow.feature}
+                htmlFor={aboutSection.waveShow.feature}
                 className="ml-2 text-sm font-medium text-gray-700 text"
               >
                 Wave
               </label>
               <button
-                disabled={waveAboutShow.value === 'false'}
+                disabled={aboutSection.waveShow.value === 'false'}
                 type="button"
                 onClick={() => openModalWave()}
                 className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
@@ -212,11 +164,11 @@ const AboutSection = () => {
       </Modal>
       <Modal isOpenModal={isOpenModalWave} closeModal={closeModalWave}>
         <WaveStyles
-          wave={waveAbout}
+          wave={aboutSection.wave}
           onChangeSetting={onChangeSetting}
           closeModalWave={closeModalWave}
-          bg={aboutBgColor} // Color seccion actual
-          waveColor={servicesBgColor} // Color siguiente seccion
+          bg={aboutSection.aboutBgColor} // Color seccion actual
+          waveColor={servicesSection.servicesBgColor} // Color siguiente seccion
           section="Sobre mi"
           nextSection="Servicios"
         />

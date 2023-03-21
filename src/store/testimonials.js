@@ -92,6 +92,9 @@ let testimonialsSlice = createSlice({
       state.error = '';
       state.message = null;
     },
+    delMessage: (state) => {
+      state.message = null;
+    },
   },
   extraReducers: {
     [getAllTestimonials.pending]: (state) => {
@@ -170,6 +173,7 @@ export const {
   changeTestimonial,
   setNewTestimonial,
   delError,
+  delMessage,
 } = testimonialsSlice.actions;
 
 export default testimonialsSlice.reducer;

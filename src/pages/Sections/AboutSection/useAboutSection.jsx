@@ -1,69 +1,57 @@
 import useEditor from '@/config/useEditor';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useModal } from '@/hooks/useModal';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  changeSubsection,
-  changeSection,
-  getAllSections,
-  updateSections,
-  updateSubsections,
-} from '@/store/sections';
-import { changeSettings, updateSettings } from '@/store/settings';
+  getAllSettings,
+  changeSettings,
+  updateSettings,
+} from '@/store/settings';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
 
 const useAboutSection = () => {
-  const { message, status } = useSelector((state) => state.sections);
   const dispatch = useDispatch();
   const dispatchNotif = useNotification();
-  const aboutSection = useSelector((state) =>
-    state.sections.sections.find((section) => section.name === 'about')
-  );
-  const aboutBgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'aboutBgColor'
-    )
-  );
-  const aboutTextColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'aboutTextColor'
-    )
-  );
-
-  const servicesBgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'servicesBgColor'
-    )
-  );
-
-  const waveAboutShow = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'waveAboutShow'
-    )
-  );
-  const waveAbout = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'waveAbout')
-  );
-
   const [isOpenModal, openModal, closeModal] = useModal(false);
   const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
   const quillRef = useRef();
   const quillRef2 = useRef();
 
+  // Data
+  const sectionAbout = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'sectionAbout')
+  );
+  const aboutSection = sectionAbout.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
+  );
+  const sectionServices = useSelector((state) =>
+    state.settings.settings.filter(
+      (setting) => setting.type === 'sectionServices'
+    )
+  );
+  const servicesSection = sectionServices.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
+  );
+  const settings = useSelector((state) => state.settings.settings);
+
+  // Images Module
   const imageHandler = async () => {
     openModal();
   };
-
   const { modules } = useEditor({ imageHandler });
 
-  const onChangeSubsection = (name, value, sectionId, id) => {
-    dispatch(changeSubsection({ name, value, sectionId, id }));
+  // Methods
+  const onChangeSetting = (feature, value) => {
+    dispatch(
+      changeSettings({
+        feature,
+        value,
+        type: aboutSection.bgColor.type,
+      })
+    );
   };
-
-  const onChangeSection = (name, value) => {
-    dispatch(changeSection({ name, value, id: aboutSection.id }));
-  };
-
   const handleSelect = (image) => {
     closeModal();
     const quillObj = quillRef2.current.getEditor();
@@ -71,26 +59,18 @@ const useAboutSection = () => {
     const position = quillObj.getSelection();
     quillObj.editor.insertEmbed(position.index, 'image', image, 'user');
     const changes = quillRef2.current.unprivilegedEditor.getHTML();
-    dispatch(
-      changeSubsection({
-        name: 'content',
-        value: changes,
-        sectionId: aboutSection.id,
-        id: quillRef2.current.props.id,
-      })
-    );
+    onChangeSetting('text', changes);
   };
-
-  const onChangeSetting = (feature, value) => {
-    dispatch(changeSettings({ feature, value }));
+  const onCancel = () => {
+    dispatch(getAllSettings());
   };
-
   const onSubmit = (e) => {
     e.preventDefault();
+    const updated = settings.findIndex((setting) => setting.updated === true);
+    if (updated === -1) return;
+
     try {
       dispatch(updateSettings());
-      dispatch(updateSections());
-      dispatch(updateSubsections());
     } catch (error) {
       dispatchNotif({
         type: 'ERROR',
@@ -99,30 +79,20 @@ const useAboutSection = () => {
     }
   };
 
-  const onCancel = () => {
-    dispatch(getAllSections());
-  };
-
   return {
     aboutSection,
+    servicesSection,
     quillRef,
-    aboutBgColor,
-    aboutTextColor,
     quillRef2,
     modules,
     isOpenModal,
     closeModal,
-    waveAboutShow,
-    waveAbout,
     isOpenModalWave,
     openModalWave,
     closeModalWave,
-    servicesBgColor,
-    onChangeSubsection,
-    onChangeSection,
+    onChangeSetting,
     onSubmit,
     handleSelect,
-    onChangeSetting,
     onCancel,
   };
 };

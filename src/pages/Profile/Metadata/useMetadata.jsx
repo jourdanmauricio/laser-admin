@@ -5,39 +5,44 @@ import { useNotification } from '@/commons/Notifications/NotificationProvider';
 import { delError, delMessage } from '@/store/settings';
 
 const useMetadata = () => {
+  const dispatch = useDispatch();
+  const dispatchNotif = useNotification();
   const [errorField, setErrorField] = useState({
     meta_title: null,
     meta_description: null,
     meta_canonical: null,
     meta_url: null,
   });
-  const dispatch = useDispatch();
-  const dispatchNotif = useNotification();
-  const { error, status, message } = useSelector((state) => state.settings);
 
-  const meta_title = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'meta_title')
+  // Data
+  const data = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'metaData')
   );
-  const meta_description = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'meta_description'
-    )
+  const metaData = data.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
   );
-  const meta_canonical = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'meta_canonical'
-    )
+  const { error, status, message, settings } = useSelector(
+    (state) => state.settings
   );
-  const meta_url = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'meta_url')
-  );
+
+  // Methods
+  useEffect(() => {
+    if (message) {
+      dispatchNotif({
+        type: status === 'success' ? 'SUCCESS' : 'ERROR',
+        message,
+      });
+      dispatch(delMessage());
+    }
+  }, [message]);
   const onChangeSettings = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     const pattern = e.target.pattern || e.target.dataset.pattern;
     const textError = e.target.title;
 
-    dispatch(changeSettings({ feature: name, value }));
+    dispatch(changeSettings({ feature: name, value, type: 'metaData' }));
     if (!e.target.required && !pattern) {
       setErrorField({
         ...errorField,
@@ -63,9 +68,13 @@ const useMetadata = () => {
           [name]: null,
         });
   };
-
+  const closeMessage = () => {
+    dispatch(delError());
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const updated = settings.findIndex((setting) => setting.updated === true);
+    if (updated === -1) return;
 
     let formError = false;
     let fieldsErrors = Object.assign({}, errorField);
@@ -76,7 +85,7 @@ const useMetadata = () => {
       'meta_url',
     ];
     for (let field of fields) {
-      if (eval(field)['value'] === '') {
+      if (metaData[field]['value'] === '') {
         formError = true;
         fieldsErrors = {
           ...fieldsErrors,
@@ -96,27 +105,11 @@ const useMetadata = () => {
     dispatch(updateSettings());
   };
 
-  useEffect(() => {
-    if (message) {
-      dispatchNotif({
-        type: status === 'success' ? 'SUCCESS' : 'ERROR',
-        message,
-      });
-      dispatch(delMessage());
-    }
-  }, [message]);
-
-  const closeMessage = () => {
-    dispatch(delError());
-  };
   return {
+    metaData,
     errorField,
     status,
     error,
-    meta_title,
-    meta_description,
-    meta_canonical,
-    meta_url,
     closeMessage,
     onChangeSettings,
     handleSubmit,

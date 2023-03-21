@@ -4,57 +4,22 @@ import FooterPreview from './FooterPreview';
 
 const Footer = () => {
   const dispatch = useDispatch();
-  const settings = useSelector((state) => state.settings.settings);
 
-  const footerBgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footerBgColor'
-    )
+  const data = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'footer')
   );
-  const footerTextColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footerTextColor'
-    )
+  const footer = data.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
   );
-  const footerButtonsColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footerButtonsColor'
-    )
-  );
-  const footerButtonsHoverColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footerButtonsHoverColor'
-    )
-  );
-  const footerLinksColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footerLinksColor'
-    )
-  );
-  const footerLinksHoverColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footerLinksHoverColor'
-    )
-  );
-  const footer2BgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footer2BgColor'
-    )
-  );
-  const footer2TextColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footer2TextColor'
-    )
-  );
-
   const onChangeSetting = (feature, value) => {
-    dispatch(changeSettings({ feature, value }));
+    dispatch(changeSettings({ feature, value, type: 'footer' }));
   };
 
   return (
     <>
       <FooterPreview />
-      {footerBgColor && (
+      {footer.bgColor && (
         <>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-20">
             <div className="mt-8 form__group w-full">
@@ -63,16 +28,16 @@ const Footer = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name="footerBgColor"
-                  value={footerBgColor.value}
+                  name={footer.bgColor.feature}
+                  value={footer.bgColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  value={footerBgColor.value}
-                  name="footerBgColor"
+                  name={footer.bgColor.feature}
+                  value={footer.bgColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>
@@ -87,16 +52,16 @@ const Footer = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name="footerTextColor"
-                  value={footerTextColor.value}
+                  name={footer.textColor.feature}
+                  value={footer.textColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  value={footerTextColor.value}
-                  name="footerTextColor"
+                  name={footer.textColor.feature}
+                  value={footer.textColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>
@@ -113,16 +78,16 @@ const Footer = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name="footerButtonsColor"
-                  value={footerButtonsColor.value}
+                  name={footer.buttonsColor.feature}
+                  value={footer.buttonsColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  value={footerButtonsColor.value}
-                  name="footerButtonsColor"
+                  name={footer.buttonsColor.feature}
+                  value={footer.buttonsColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>
@@ -137,16 +102,16 @@ const Footer = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name="footerButtonsHoverColor"
-                  value={footerButtonsHoverColor.value}
+                  name={footer.buttonsHoverColor.feature}
+                  value={footer.buttonsHoverColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  value={footerButtonsHoverColor.value}
-                  name="footerButtonsHoverColor"
+                  name={footer.buttonsHoverColor.feature}
+                  value={footer.buttonsHoverColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>
@@ -163,16 +128,16 @@ const Footer = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name="footerLinksColor"
-                  value={footerLinksColor.value}
+                  name={footer.linksColor.feature}
+                  value={footer.linksColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  value={footerLinksColor.value}
-                  name="footerLinksColor"
+                  name={footer.linksColor.feature}
+                  value={footer.linksColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>
@@ -187,16 +152,16 @@ const Footer = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name="footerLinksHoverColor"
-                  value={footerLinksHoverColor.value}
+                  name={footer.linksHoverColor.feature}
+                  value={footer.linksHoverColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  value={footerLinksHoverColor.value}
-                  name="footerLinksHoverColor"
+                  name={footer.linksHoverColor.feature}
+                  value={footer.linksHoverColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>
@@ -214,16 +179,16 @@ const Footer = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name="footer2BgColor"
-                  value={footer2BgColor.value}
+                  name={footer.footer2BgColor.feature}
+                  value={footer.footer2BgColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  value={footer2BgColor.value}
-                  name="footer2BgColor"
+                  name={footer.footer2BgColor.feature}
+                  value={footer.footer2BgColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>
@@ -238,16 +203,16 @@ const Footer = () => {
                 <input
                   className="form__input--color w-full border-gray-500"
                   type="color"
-                  name="footer2TextColor"
-                  value={footer2TextColor.value}
+                  name={footer.footer2TextColor.feature}
+                  value={footer.footer2TextColor.value}
                   onChange={(e) =>
                     onChangeSetting(e.target.name, e.target.value)
                   }
                 />
                 <input
                   type="text"
-                  value={footer2TextColor.value}
-                  name="footer2TextColor"
+                  name={footer.footer2TextColor.feature}
+                  value={footer.footer2TextColor.value}
                   placeholder="#531253"
                   className="form__input border-gray-500"
                   onChange={(e) =>

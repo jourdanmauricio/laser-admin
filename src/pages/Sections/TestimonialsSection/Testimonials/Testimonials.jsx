@@ -25,10 +25,9 @@ const Testimonials = ({
   } = useTestimonials({ setEditData, setDelError, editData });
   return (
     <>
-      TEST {actionTestimonials}
       {actionTestimonials === 'TESTIMONIALS' && (
         <DataTable
-          title={<h1 className="title text-left">Clínicas</h1>}
+          title={<h1 className="title text-left">Testimonios</h1>}
           columns={columns}
           data={testimonials}
           pagination
@@ -37,13 +36,11 @@ const Testimonials = ({
           dense
         />
       )}
-      HOLAS: {actionTestimonials}
       {actionTestimonials !== 'TESTIMONIALS' && (
         <Testimonial
           editData={editData}
           errorField={errorField}
           onChangeTestimonial={onChangeTestimonial}
-          // onChangeClinicImage={onChangeClinicImage}
         />
       )}
       <Modal isOpenModal={isOpenModal} closeModal={closeModal}>

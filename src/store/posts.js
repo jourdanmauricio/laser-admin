@@ -111,6 +111,9 @@ let postsSlice = createSlice({
       state.error = '';
       state.message = null;
     },
+    delMessage: (state) => {
+      state.message = null;
+    },
   },
   extraReducers: {
     [getAllPosts.pending]: (state) => {
@@ -186,7 +189,7 @@ let postsSlice = createSlice({
   },
 });
 
-export const { setActionPosts, changePost, setNewPost, delError } =
+export const { setActionPosts, changePost, setNewPost, delError, delMessage } =
   postsSlice.actions;
 
 export default postsSlice.reducer;
