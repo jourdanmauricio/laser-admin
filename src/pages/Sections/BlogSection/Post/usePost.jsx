@@ -15,10 +15,10 @@ const usePost = ({ editData, onChangePost }) => {
   const post = useSelector((state) =>
     state.posts.posts.find((post) => post.id === editData?.id)
   );
-  const sectionBlog = useSelector((state) =>
-    state.settings.settings.filter((setting) => setting.type === 'sectionBlog')
+  const postPage = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'pagePost')
   );
-  const blogSection = sectionBlog.reduce(
+  const pagePost = postPage.reduce(
     (obj, cur) => ({ ...obj, [cur.feature]: cur }),
     {}
   );
@@ -69,7 +69,7 @@ const usePost = ({ editData, onChangePost }) => {
     quillRef,
     quillRef2,
     modules,
-    blogSection,
+    pagePost,
     closeMessage,
     onBlurTitle,
     handleSelect,

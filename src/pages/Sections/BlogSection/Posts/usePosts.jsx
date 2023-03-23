@@ -82,7 +82,11 @@ const usePosts = ({ setEditData, setDelError, editData }) => {
     {
       name: 'Título',
       sortable: true,
-      cell: (post) => <div className="text-wrap">{post.title}</div>,
+      cell: (post) => (
+        <div className="text-wrap">
+          {post.title.replace(/(<([^>]+)>)/gi, '')}
+        </div>
+      ),
     },
     {
       name: 'Orden',
