@@ -5,8 +5,9 @@ import {
   onDeleteClinic,
   setNewClinic,
 } from '@/store/clinics';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaEdit, FaPlus, FaTrashAlt } from 'react-icons/fa';
 import { useModal } from '@/hooks/useModal';
+import Tooltip from '@/commons/Tooltip/Tooltip';
 
 const useClinics = ({ setEditData, setDelError, editData }) => {
   const dispatch = useDispatch();
@@ -56,9 +57,15 @@ const useClinics = ({ setEditData, setDelError, editData }) => {
 
   const actionsMemo = useMemo(
     () => (
-      <button onClick={onNew} className="btn__primary font-normal text-base">
-        Nuevo
-      </button>
+      <Tooltip content="Nuevo consultorio" position="left">
+        <button
+          type="button"
+          className="hover:bg-slate-200 p-2 rounded-full cursor-pointer"
+          onClick={onNew}
+        >
+          <FaPlus className="text-teal-500 text-xl" />
+        </button>
+      </Tooltip>
     ),
     []
   );

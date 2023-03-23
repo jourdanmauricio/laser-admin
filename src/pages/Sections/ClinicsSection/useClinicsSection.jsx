@@ -1,8 +1,6 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
-import { useModal } from '@/hooks/useModal';
-import useEditor from '@/config/useEditor';
 import {
   getAllClinics,
   onCreateClinic,
@@ -10,11 +8,7 @@ import {
   changeClinic,
   delMessage,
 } from '@/store/clinics';
-import {
-  getAllSettings,
-  changeSettings,
-  updateSettings,
-} from '@/store/settings';
+import { getAllSettings, updateSettings } from '@/store/settings';
 
 const INITIAL_ERROR_CLINICS = {
   name: null,
@@ -35,14 +29,8 @@ const INITIAL_ERROR_CLINICS = {
 const useClinicsSection = () => {
   const dispatch = useDispatch();
   const dispatchNotif = useNotification();
-  const [isOpenModal, openModal, closeModal] = useModal(false);
-  const [isOpenModalButton, openModalButton, closeModalButton] =
-    useModal(false);
-  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
   const [errorField, setErrorField] = useState(INITIAL_ERROR_CLINICS);
   const [editData, setEditData] = useState();
-  const quillRef = useRef();
-  const quillRef2 = useRef();
 
   // Data
   const { actionClinics, status, message } = useSelector(
@@ -72,10 +60,10 @@ const useClinicsSection = () => {
   const settings = useSelector((state) => state.settings.settings);
 
   // Botones
-  const clinicBtn = useSelector((state) =>
+  const dataBtn = useSelector((state) =>
     state.settings.settings.filter((setting) => setting.type === 'clinicBtn')
   );
-  const button = clinicBtn.reduce(
+  const button = dataBtn.reduce(
     (obj, cur) => ({ ...obj, [cur.feature]: cur }),
     {}
   );
@@ -85,70 +73,6 @@ const useClinicsSection = () => {
     '--clinicBgColor',
     clinicsSection.bgColor?.value
   );
-  if (Object.keys(button).length > 0) {
-    document.documentElement.style.setProperty(
-      '--btnTextColorClinic',
-      `${button.textColor.value}`
-    );
-    document.documentElement.style.setProperty(
-      '--btnTextColorHoverClinic',
-      `${button.textColorHover.value}`
-    );
-    document.documentElement.style.setProperty(
-      '--btnBgColorClinic',
-      `${button.bgColor.value}`
-    );
-    document.documentElement.style.setProperty(
-      '--btnBgColorHoverClinic',
-      `${button.bgColorHover.value}`
-    );
-    document.documentElement.style.setProperty(
-      '--btnTlRadiusClinic',
-      `${button.tlRadius.value}`
-    );
-    document.documentElement.style.setProperty(
-      '--btnTrRadiusClinic',
-      `${button.trRadius.value}`
-    );
-    document.documentElement.style.setProperty(
-      '--btnBlRadiusClinic',
-      `${button.blRadius.value}`
-    );
-    document.documentElement.style.setProperty(
-      '--btnBrRadiusClinic',
-      `${button.brRadius.value}`
-    );
-    document.documentElement.style.setProperty(
-      '--btnBorderColorClinic',
-      `${button.borderColor.value}`
-    );
-    document.documentElement.style.setProperty(
-      '--btnBorderColorHoverClinic',
-      `${button.borderColorHover.value}`
-    );
-    document.documentElement.style.setProperty(
-      '--btnShadowClinic',
-      `${button.shadow.value}`
-    );
-    document.documentElement.style.setProperty(
-      '--btnHeightClinic',
-      `${button.height.value}`
-    );
-    document.documentElement.style.setProperty(
-      '--btnWidthClinic',
-      `${button.width.value}`
-    );
-    document.documentElement.style.setProperty(
-      '--btnBorderClinic',
-      `${button.border.value}`
-    );
-  }
-
-  // Images Module
-  const imageHandler = async () => {
-    openModal();
-  };
-  const { modules } = useEditor({ imageHandler });
 
   // Methods
   useEffect(() => {
@@ -160,16 +84,6 @@ const useClinicsSection = () => {
       dispatch(delMessage());
     }
   }, [message]);
-
-  const handleSelect = (image) => {
-    closeModal();
-    const quillObj = quillRef.current.getEditor();
-    quillObj.focus();
-    const position = quillObj.getSelection();
-    quillObj.editor.insertEmbed(position.index, 'image', image, 'user');
-    const changes = quillRef.current.unprivilegedEditor.getHTML();
-    onChangeSetting('text', changes);
-  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -228,12 +142,6 @@ const useClinicsSection = () => {
     dispatch(getAllSettings());
   };
 
-  const onChangeSetting = (feature, value) => {
-    dispatch(
-      changeSettings({ feature, value, type: clinicsSection.bgColor.type })
-    );
-  };
-
   const onChangeClinic = (e) => {
     const name = e.target.name;
     const value =
@@ -284,24 +192,11 @@ const useClinicsSection = () => {
     clinicsSection,
     testimonialsSection,
     actionClinics,
-    quillRef,
-    quillRef2,
-    isOpenModal,
-    closeModal,
-    isOpenModalButton,
-    closeModalButton,
-    openModalButton,
-    modules,
     errorField,
     editData,
     button,
-    isOpenModalWave,
-    openModalWave,
-    closeModalWave,
     setDelError,
     setEditData,
-    handleSelect,
-    onChangeSetting,
     onSubmit,
     onCancel,
     onChangeClinic,

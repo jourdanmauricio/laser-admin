@@ -19,7 +19,7 @@ import {
 import { logOutSettings } from '@/store/settings';
 import { useModal } from '@/hooks/useModal';
 import { Modal } from '@/commons/Modal/Modal';
-import DesignComponents from '../DesignComponents/DesignComponents';
+import Notes from '@/components/Notes/Notes';
 
 const Nav = () => {
   const [mobileMenu, setMobileMenu] = useState(true);
@@ -203,11 +203,11 @@ const Nav = () => {
           </ul>
         </div>
       </nav>
-
-      <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
-        {/* <DesignComponents /> */}
-        Holas
-      </Modal>
+      {isOpenModal && (
+        <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
+          <Notes />
+        </Modal>
+      )}
     </>
   );
 };

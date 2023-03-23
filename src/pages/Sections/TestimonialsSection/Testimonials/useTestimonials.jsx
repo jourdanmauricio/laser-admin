@@ -5,8 +5,9 @@ import {
   onDeleteTestimonial,
   setNewTestimonial,
 } from '@/store/testimonials';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaEdit, FaPlus, FaTrashAlt } from 'react-icons/fa';
 import { useModal } from '@/hooks/useModal';
+import Tooltip from '@/commons/Tooltip/Tooltip';
 
 const useTestimonials = ({ setEditData, setDelError, editData }) => {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const useTestimonials = ({ setEditData, setDelError, editData }) => {
       id: 0,
       name: '',
       message: '',
-      stars: '',
+      stars: '11111',
       order,
     };
     setEditData(testimonial);
@@ -48,9 +49,15 @@ const useTestimonials = ({ setEditData, setDelError, editData }) => {
 
   const actionsMemo = useMemo(
     () => (
-      <button onClick={onNew} className="btn__primary font-normal text-base">
-        Nuevo
-      </button>
+      <Tooltip content="Nuevo testimonio" position="left">
+        <button
+          type="button"
+          className="hover:bg-slate-200 p-2 rounded-full cursor-pointer"
+          onClick={onNew}
+        >
+          <FaPlus className="text-teal-500 text-xl" />
+        </button>
+      </Tooltip>
     ),
     []
   );
@@ -66,7 +73,7 @@ const useTestimonials = ({ setEditData, setDelError, editData }) => {
       selector: (testimonial) => testimonial.name,
     },
     {
-      name: 'testimonial',
+      name: 'Testimonio',
       selector: (testimonial) => testimonial.stars,
     },
     {

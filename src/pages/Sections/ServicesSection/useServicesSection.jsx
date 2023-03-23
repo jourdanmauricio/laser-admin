@@ -1,14 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNotification } from '@/commons/Notifications/NotificationProvider';
-import { useModal } from '@/hooks/useModal';
+import { getAllSettings, updateSettings } from '@/store/settings';
 import {
-  getAllSettings,
-  changeSettings,
-  updateSettings,
-} from '@/store/settings';
-import {
-  setNewService,
   changeService,
   onCreateService,
   onUpdateService,
@@ -16,7 +10,6 @@ import {
   setActionServices,
   delMessage,
 } from '@/store/services';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
 const INITIAL_ERROR_SERVICE = {
   image: null,
@@ -26,54 +19,13 @@ const INITIAL_ERROR_SERVICE = {
 const useServicesSection = () => {
   const dispatch = useDispatch();
   const dispatchNotif = useNotification();
-  const quillRef = useRef();
-  const quillRef2 = useRef();
-  const [isOpenModal, openModal, closeModal] = useModal(false);
-  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
   const [errorFields, setErrorFields] = useState(INITIAL_ERROR_SERVICE);
   const [editData, setEditData] = useState();
-  const [service, setService] = useState();
 
   // Data
   const { actionServices, status, message } = useSelector(
     (state) => state.services
   );
-  const columns = [
-    {
-      name: 'Imagen',
-      width: '150px',
-      cell: (servicesSection) => (
-        <img src={servicesSection.image} alt={servicesSection.image_alt} />
-      ),
-    },
-    {
-      name: 'Nombre',
-      selector: (servicesSection) =>
-        servicesSection.name.replace(/(<([^>]+)>)/gi, ''),
-    },
-    {
-      name: 'Acciones',
-      button: true,
-      cell: (servicesSection) => (
-        <>
-          <button
-            type="button"
-            className="hover:bg-slate-200 p-2 rounded-full cursor-pointer disabled:text-gray-300"
-            onClick={() => onEdit(servicesSection)}
-          >
-            <FaEdit className="text-blue-500 text-lg" />
-          </button>
-          <button
-            type="button"
-            className="hover:bg-slate-200 p-2 rounded-full cursor-pointer disabled:text-gray-300"
-            onClick={() => onConfirmDelete(servicesSection)}
-          >
-            <FaTrashAlt className="text-red-500 text-lg" />
-          </button>
-        </>
-      ),
-    },
-  ];
   const sectionBlog = useSelector((state) =>
     state.settings.settings.filter((setting) => setting.type === 'sectionBlog')
   );
@@ -102,44 +54,9 @@ const useServicesSection = () => {
       dispatch(delMessage());
     }
   }, [message]);
-  const onEdit = (service) => {
-    setService(service);
-    dispatch(setActionServices({ action: 'EDIT' }));
-  };
-  const onNew = () => {
-    const service = {
-      id: 0,
-      image: '',
-      alt_image: '',
-      name: '',
-      content: '',
-    };
-    dispatch(setNewService({ service }));
-    setService(service);
-  };
-  const onConfirmDelete = (service) => {
-    setService(service);
-    openModal();
-  };
+
   const handleDelete = (service) => {
     dispatch(onDeleteService(service));
-  };
-  const handleCancelDelete = () => {
-    setService(null);
-    closeModal();
-  };
-  const actionsMemo = useMemo(
-    () => (
-      <button onClick={onNew} className="btn__primary font-normal text-base">
-        Nueva
-      </button>
-    ),
-    [servicesSection]
-  );
-  const onChangeSetting = (feature, value) => {
-    dispatch(
-      changeSettings({ feature, value, type: servicesSection.bgColor.type })
-    );
   };
   const onSubmit = (e) => {
     e.preventDefault();
@@ -175,25 +92,13 @@ const useServicesSection = () => {
     servicesSection,
     blogSection,
     actionServices,
-    quillRef,
-    quillRef2,
-    columns,
-    actionsMemo,
-    service,
-    isOpenModal,
-    closeModal,
     errorFields,
-    isOpenModalWave,
-    openModalWave,
-    closeModalWave,
     editData,
     setDelError,
     setEditData,
-    onChangeSetting,
     onChangeService,
     onCancel,
     onSubmit,
-    handleCancelDelete,
     handleDelete,
   };
 };

@@ -9,7 +9,6 @@ const Testimonials = ({
   errorField,
   setDelError,
   onChangeTestimonial,
-  // onChangeClinicImage,
   editData,
   setEditData,
 }) => {

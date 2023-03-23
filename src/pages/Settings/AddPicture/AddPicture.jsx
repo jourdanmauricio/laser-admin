@@ -3,6 +3,8 @@ import { Modal } from '@/commons/Modal/Modal';
 import Media from '@/components/Media/Media';
 import { useDispatch } from 'react-redux';
 import { changeSettings } from '@/store/settings';
+import { FaCloudUploadAlt } from 'react-icons/fa';
+import Tooltip from '@/commons/Tooltip/Tooltip';
 
 const AddPicture = ({ logoImage }) => {
   const [isOpenModal, openModal, closeModal] = useModal(false);
@@ -21,8 +23,8 @@ const AddPicture = ({ logoImage }) => {
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-        <div className="form__group p-0 mt-8">
+      <div className="flex flex-col sm:flex-row items-center mt-8 gap-4">
+        <div className="form__group p-0">
           <label className="form__label">
             {firstCapital(logoImage.feature)}
           </label>
@@ -33,9 +35,15 @@ const AddPicture = ({ logoImage }) => {
           />
         </div>
 
-        <button onClick={openModal} type="button" className="btn__primary">
-          Seleccionar {firstCapital(logoImage.feature)}
-        </button>
+        <Tooltip content="Seleccionar imagen" position="top">
+          <button
+            type="button"
+            className="hover:bg-slate-200 p-2 rounded-full cursor-pointer"
+            onClick={openModal}
+          >
+            <FaCloudUploadAlt className="text-teal-500 text-4xl" />
+          </button>
+        </Tooltip>
       </div>
       <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
         <Media handleSelect={handleSelect} />

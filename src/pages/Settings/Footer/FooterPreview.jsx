@@ -24,94 +24,56 @@ const FooterPreview = () => {
     email: null,
   });
 
-  const footerBgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footerBgColor'
-    )
+  // Data
+  const dataFooter = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'footer')
   );
-  const footerTextColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footerTextColor'
-    )
+  const footer = dataFooter.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
   );
-  const footerButtonsColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footerButtonsColor'
-    )
+  const dataContact = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'contactData')
   );
-  const footerButtonsHoverColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footerButtonsHoverColor'
-    )
-  );
-  const footerLinksColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footerLinksColor'
-    )
-  );
-  const footerLinksHoverColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footerLinksHoverColor'
-    )
-  );
-  const footer2BgColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footer2BgColor'
-    )
-  );
-  const footer2TextColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'footer2TextColor'
-    )
+  const contact = dataContact.reduce(
+    (obj, cur) => ({ ...obj, [cur.feature]: cur }),
+    {}
   );
 
-  if (footerBgColor) {
+  if (footer.bgColor) {
     document.documentElement.style.setProperty(
       '--footerBgColor',
-      footerBgColor.value
+      footer.bgColor.value
     );
     document.documentElement.style.setProperty(
       '--footerTextColor',
-      footerTextColor.value
+      footer.textColor.value
     );
     document.documentElement.style.setProperty(
       '--footerButtonsColor',
-      footerButtonsColor.value
+      footer.buttonsColor.value
     );
     document.documentElement.style.setProperty(
       '--footerButtonsHoverColor',
-      footerButtonsHoverColor.value
+      footer.buttonsHoverColor.value
     );
     document.documentElement.style.setProperty(
       '--footerLinksColor',
-      footerLinksColor.value
+      footer.linksColor.value
     );
     document.documentElement.style.setProperty(
       '--footerLinksHoverColor',
-      footerLinksHoverColor.value
+      footer.linksHoverColor.value
     );
     document.documentElement.style.setProperty(
       '--footer2BgColor',
-      footer2BgColor.value
+      footer.footer2BgColor.value
     );
     document.documentElement.style.setProperty(
       '--footer2TextColor',
-      footer2TextColor.value
+      footer.footer2TextColor.value
     );
   }
-
-  const facebook = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'facebook')
-  );
-  const instagram = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'instagram')
-  );
-  const twitter = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'twitter')
-  );
-  const whatsapp = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'whatsapp')
-  );
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -203,7 +165,7 @@ const FooterPreview = () => {
     <footer className="bg-footerBgColor text-center text-footerTextColor">
       <div className="container px-6 pt-6">
         <div className="mb-6 flex justify-center">
-          {facebook?.value.length > 0 && (
+          {contact.facebook?.value.length > 0 && (
             <Link
               className="m-2 h-9 w-9 rounded-full border-2 border-footerButtonsColor uppercase leading-normal text-footerButtonsColor transition duration-150 ease-in-out hover:bg-footerButtonsHoverColor hover:bg-opacity-50 outline-none focus:ring-0 flex justify-center items-center"
               href="#"
@@ -213,7 +175,7 @@ const FooterPreview = () => {
               <FaFacebookF className="mx-auto text-footerButtonsColor text-lg active:text-neutral-200" />
             </Link>
           )}
-          {instagram?.value.length > 0 && (
+          {contact.instagram?.value.length > 0 && (
             <Link
               className="m-2 h-9 w-9 rounded-full border-2 border-footerButtonsColor uppercase leading-normal text-footerButtonsColor transition duration-150 ease-in-out hover:bg-footerButtonsHoverColor hover:bg-opacity-50 outline-none focus:ring-0 flex justify-center items-center "
               href="#"
@@ -223,7 +185,7 @@ const FooterPreview = () => {
               <FaInstagram className="mx-auto text-footerButtonsColor text-lg" />
             </Link>
           )}
-          {twitter?.value.length > 0 && (
+          {contact.twitter?.value.length > 0 && (
             <Link
               className="m-2 h-9 w-9 rounded-full border-2 border-footerButtonsColor uppercase leading-normal text-footerButtonsColor transition duration-150 ease-in-out hover:bg-footerButtonsHoverColor hover:bg-opacity-50 outline-none focus:ring-0 flex justify-center items-center"
               href="#"
@@ -233,7 +195,7 @@ const FooterPreview = () => {
               <FaTwitter className="mx-auto text-footerButtonsColor text-lg" />
             </Link>
           )}
-          {whatsapp?.value.length > 0 && (
+          {contact.whatsapp?.value.length > 0 && (
             <Link
               className="m-2 h-9 w-9 rounded-full border-2 border-footerButtonsColor uppercase leading-normal text-footerButtonsColor transition duration-150 ease-in-out hover:bg-footerButtonsHoverColor hover:bg-opacity-50 outline-none focus:ring-0 flex justify-center items-center"
               href="#"

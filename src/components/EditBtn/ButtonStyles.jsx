@@ -1,10 +1,18 @@
-import SelectOptions from '@/commons/SelectOptions/SelectOptions';
-
 import { Link } from 'react-router-dom';
+import SelectOptions from '@/commons/SelectOptions/SelectOptions';
 import { FaPaintBrush } from 'react-icons/fa';
 
-const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
+const ButtonStyles = ({
+  button,
+  onChangeSetting,
+  closeModal,
+  currentSection,
+}) => {
   if (Object.keys(button).length > 0) {
+    document.documentElement.style.setProperty(
+      '--sectionBgColor',
+      `${currentSection?.bgColor.value}`
+    );
     document.documentElement.style.setProperty(
       '--btnTextColor',
       `${button.textColor.value}`
@@ -67,8 +75,8 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
       {Object.keys(button).length > 0 && (
         <>
           <div className="p-10">
-            <div className="bg-clinicBgColor h-20 w-full flex items-center justify-center">
-              <div className="border border-solid transition ease-in-out delay-100  hover:cursor-pointer btn__settings">
+            <div className="bg-sectionBgColor h-20 w-full flex items-center justify-center">
+              <div className="border border-solid transition ease-in-out delay-100  hover:cursor-pointer btn__styles">
                 {button.text.value}
               </div>
             </div>
@@ -80,7 +88,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                   type="text"
                   name={button.text.feature}
                   onChange={(e) =>
-                    onChangeSetting2(
+                    onChangeSetting(
                       e.target.name,
                       e.target.value,
                       button.text.type
@@ -94,7 +102,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                 <SelectOptions
                   label={'Link'}
                   button={button}
-                  onHandleChange={onChangeSetting2}
+                  onHandleChange={onChangeSetting}
                 />
               </div>
             </div>
@@ -110,7 +118,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     name={button.bgColor.feature}
                     value={button.bgColor.value}
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value,
                         button.bgColor.type
@@ -124,7 +132,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     placeholder="#531253"
                     className="form__input border-gray-500"
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value,
                         button.bgColor.type
@@ -142,7 +150,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     name={button.bgColorHover.feature}
                     value={button.bgColorHover.value}
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value,
                         button.bgColorHover.type
@@ -156,7 +164,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     value={button.bgColorHover.value}
                     className="form__input border-gray-500"
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value,
                         button.bgColorHover.type
@@ -176,7 +184,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     name={button.textColor.feature}
                     value={button.textColor.value}
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value,
                         button.textColor.type
@@ -190,7 +198,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     value={button.textColor.value}
                     className="form__input border-gray-500"
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value,
                         button.textColor.type
@@ -208,7 +216,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     name={button.textColorHover.feature}
                     value={button.textColorHover.value}
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value,
                         button.textColorHover.type
@@ -222,7 +230,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     value={button.textColorHover.value}
                     className="form__input border-gray-500"
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value,
                         button.textColorHover.type
@@ -242,7 +250,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     name={button.borderColor.feature}
                     value={button.borderColor.value}
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value,
                         button.borderColor.type
@@ -256,7 +264,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     value={button.borderColor.value}
                     className="form__input border-gray-500"
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value,
                         button.borderColor.type
@@ -274,7 +282,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     name={button.borderColorHover.feature}
                     value={button.borderColorHover.value}
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value,
                         button.borderColorHover.type
@@ -288,7 +296,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     value={button.borderColorHover.value}
                     className="form__input border-gray-500"
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value,
                         button.borderColorHover.type
@@ -309,7 +317,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     type="number"
                     name={button.trRadius.feature}
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value + 'px',
                         button.trRadius.type
@@ -325,7 +333,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     type="number"
                     name={button.blRadius.feature}
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value + 'px',
                         button.blRadius.type
@@ -341,7 +349,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     type="number"
                     name={button.brRadius.feature}
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value + 'px',
                         button.brRadius.type
@@ -357,7 +365,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     type="number"
                     name={button.tlRadius.feature}
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value + 'px',
                         button.tlRadius.type
@@ -386,7 +394,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                   type="text"
                   name={button.shadow.feature}
                   onChange={(e) =>
-                    onChangeSetting2(
+                    onChangeSetting(
                       e.target.name,
                       e.target.value,
                       button.shadow.type
@@ -406,7 +414,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     type="number"
                     name={button.width.feature}
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value + 'px',
                         button.width.type
@@ -421,7 +429,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     type="number"
                     name={button.height.feature}
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value + 'px',
                         button.height.type
@@ -436,7 +444,7 @@ const ButtonStyles = ({ button, onChangeSetting2, closeModal }) => {
                     type="number"
                     name={button.border.feature}
                     onChange={(e) =>
-                      onChangeSetting2(
+                      onChangeSetting(
                         e.target.name,
                         e.target.value + 'px',
                         button.border.type

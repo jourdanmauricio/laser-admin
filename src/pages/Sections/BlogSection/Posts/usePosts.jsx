@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { onDeletePost, setNewPost, setActionPosts } from '@/store/posts';
-import { FaCheck, FaEdit, FaTimes, FaTrashAlt } from 'react-icons/fa';
+import { FaCheck, FaEdit, FaPlus, FaTimes, FaTrashAlt } from 'react-icons/fa';
 import { useModal } from '@/hooks/useModal';
+import Tooltip from '@/commons/Tooltip/Tooltip';
 
 const usePosts = ({ setEditData, setDelError, editData }) => {
   const dispatch = useDispatch();
@@ -54,9 +55,15 @@ const usePosts = ({ setEditData, setDelError, editData }) => {
 
   const actionsMemo = useMemo(
     () => (
-      <button onClick={onNew} className="btn__primary font-normal text-base">
-        Nuevo
-      </button>
+      <Tooltip content="Nuevo post" position="left">
+        <button
+          type="button"
+          className="hover:bg-slate-200 p-2 rounded-full cursor-pointer"
+          onClick={onNew}
+        >
+          <FaPlus className="text-teal-500 text-xl" />
+        </button>
+      </Tooltip>
     ),
     []
   );

@@ -5,14 +5,13 @@ import { quillSimpleModules } from '@/config/constants';
 import { useModal } from '@/hooks/useModal';
 import { Modal } from '@/commons/Modal/Modal';
 import Media from '@/components/Media/Media';
-import WaveStyles from '@/components/WaveStyles/WaveStyles';
-import ButtonStyles from '@/components/ButtonStyles/ButtonStyles';
+import EditWave from '@/components/EditWave/EditWave';
+import EditBtn from '@/components/EditBtn/EditBtn';
+import { FaCloudUploadAlt } from 'react-icons/fa';
+import Tooltip from '@/commons/Tooltip/Tooltip';
 
 const Hero = () => {
   const [isOpenModal, openModal, closeModal] = useModal(false);
-  const [isOpenModalWave, openModalWave, closeModalWave] = useModal(false);
-  const [isOpenModalBtnHero, openModalBtnHero, closeModalBtnHero] =
-    useModal(false);
   const dispatch = useDispatch();
 
   const data = useSelector((state) =>
@@ -174,7 +173,7 @@ const Hero = () => {
             )}
           </section>
 
-          <div className="flex">
+          <div className="flex items-center">
             {/* opacidad */}
             <div className="form__group w-full">
               <input
@@ -192,13 +191,15 @@ const Hero = () => {
             </div>
             {/*  imagen */}
             <div className="form__group w-full">
-              <button
-                onClick={openModal}
-                type="button"
-                className="btn__primary"
-              >
-                Seleccionar {firstCapital(hero.image.feature)}
-              </button>
+              <Tooltip content="Seleccionar imagen" position="top">
+                <button
+                  type="button"
+                  className="hover:bg-slate-200 p-2 rounded-full cursor-pointer"
+                  onClick={openModal}
+                >
+                  <FaCloudUploadAlt className="text-teal-500 text-4xl" />
+                </button>
+              </Tooltip>
             </div>
           </div>
 
@@ -274,62 +275,14 @@ const Hero = () => {
 
           {/* BOTON - WAVE */}
           <div className="flex flex-col sm:flex-row sm:gap-10">
-            <div className="form__group w-full">
-              <input
-                checked={button.show.value === 'false' ? false : true}
-                type="checkbox"
-                value=""
-                name={button.show.feature}
-                onChange={(e) =>
-                  onChangeSetting(e.target.name, e.target.checked.toString())
-                }
-                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-              />
-              <label
-                htmlFor="main"
-                className="ml-2 text-sm font-medium text-gray-700 text"
-              >
-                Botón CTA
-              </label>
-              <button
-                disabled={button.show.value === 'false'}
-                type="button"
-                onClick={() => openModalBtnHero()}
-                className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
-              >
-                Modificar botón
-              </button>
-            </div>
+            <EditWave
+              currentSection={hero}
+              waveColor={aboutSection.bgColor} // Color siguiente seccion
+              section="Imagen Hero"
+              nextSection="Sobre mí"
+            />
 
-            <div className="flex items-center gap-4 w-full">
-              <div className="form__group w-full">
-                <input
-                  checked={hero.waveShow?.value === 'false' ? false : true}
-                  type="checkbox"
-                  value=""
-                  id={hero.waveShow.feature}
-                  name={hero.waveShow.feature}
-                  onChange={(e) =>
-                    onChangeSetting(e.target.name, e.target.checked.toString())
-                  }
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label
-                  htmlFor={hero.waveShow.feature}
-                  className="ml-2 text-sm font-medium text-gray-700 text"
-                >
-                  Wave
-                </label>
-                <button
-                  disabled={hero.waveShow.value === 'false'}
-                  type="button"
-                  onClick={() => openModalWave()}
-                  className="btn__primary ml-4 disabled:bg-slate-400 disabled:cursor-default"
-                >
-                  Modificar wave
-                </button>
-              </div>
-            </div>
+            <EditBtn button={button} currentSection={aboutSection} />
           </div>
 
           <div className="form__group w-full editor">
@@ -348,31 +301,6 @@ const Hero = () => {
           <Modal isOpenModal={isOpenModal} closeModal={closeModal}>
             <Media handleSelect={handleSelect} />
           </Modal>
-
-          <Modal isOpenModal={isOpenModalWave} closeModal={closeModalWave}>
-            <WaveStyles
-              wave={hero.wave}
-              onChangeSetting={onChangeSetting}
-              closeModalWave={closeModalWave}
-              bg="#FFFFFF" // Color seccion actual
-              waveColor={aboutSection.bgColor} // Color siguiente seccion
-              section="Imagen Hero"
-              nextSection="Sobre mi"
-            />
-          </Modal>
-
-          {isOpenModalBtnHero && (
-            <Modal
-              isOpenModal={isOpenModalBtnHero}
-              closeModal={closeModalBtnHero}
-            >
-              <ButtonStyles
-                button={button}
-                onChangeSetting2={onChangeSetting}
-                closeModal={closeModalBtnHero}
-              />
-            </Modal>
-          )}
         </>
       )}
     </div>

@@ -64,51 +64,31 @@ const Tabs = () => {
         </div>
 
         <div className="tabs__content">
-          <div
-            className={
-              toggleState === 1
-                ? 'tab__content active__content'
-                : 'tab__content'
-            }
-          >
-            <AboutSection />
-          </div>
-          <div
-            className={
-              toggleState === 2
-                ? 'tab__content active__content'
-                : 'tab__content'
-            }
-          >
-            <ServicesSection />
-          </div>
-          <div
-            className={
-              toggleState === 3
-                ? 'tab__content active__content'
-                : 'tab__content'
-            }
-          >
-            <BlogSection />
-          </div>
-          <div
-            className={
-              toggleState === 4
-                ? 'tab__content active__content'
-                : 'tab__content'
-            }
-          >
-            <ClinicsSection />
-          </div>
-          <div
-            className={
-              toggleState === 5
-                ? 'tab__content active__content'
-                : 'tab__content'
-            }
-          >
-            <TestimonialsSection />
-          </div>
+          {toggleState === 1 && (
+            <div className="tab__content active__content">
+              <AboutSection />
+            </div>
+          )}
+          {toggleState === 2 && (
+            <div className="tab__content active__content">
+              <ServicesSection />
+            </div>
+          )}
+          {toggleState === 3 && (
+            <div className="tab__content active__content">
+              <BlogSection />
+            </div>
+          )}
+          {toggleState === 4 && (
+            <div className="tab__content active__content">
+              <ClinicsSection />
+            </div>
+          )}
+          {toggleState === 5 && (
+            <div className="tab__content active__content">
+              <TestimonialsSection />
+            </div>
+          )}
         </div>
       </div>
     </>

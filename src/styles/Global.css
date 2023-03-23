@@ -45,50 +45,9 @@ body {
   border-color: var(--btnBorderColorHoverHero);
 }
 
-.btn__clinic {
-  color: var(--btnTextColorClinic);
-  background-color: var(--btnBgColorClinic);
-  height: var(--btnHeightClinic);
-  width: var(--btnWidthClinic);
-  border-width: var(--btnBorderClinic);
-  border-color: var(--btnBorderColorClinic);
-  box-shadow: var(--btnShadowClinic);
-  border-radius: var(--btnTlRadiusClinic) var(--btnTrRadiusClinic)
-    var(--btnBlRadiusClinic) var(--btnBrRadiusClinic);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.btn__clinic:hover {
-  color: var(--btnTextColorHoverClinic);
-  background-color: var(--btnBgColorHoverClinic);
-  border-color: var(--btnBorderColorHoverClinic);
-}
-
-.btn__blog {
-  color: var(--btnTextColorBlog);
-  background-color: var(--btnBgColorBlog);
-  height: var(--btnHeightBlog);
-  width: var(--btnWidthBlog);
-  border-width: var(--btnBorderBlog);
-  border-radius: var(--btnTlRadiusBlog) var(--btnTrRadiusBlog)
-    var(--btnBlRadiusBlog) var(--btnBrRadiusBlog);
-  border-color: var(--btnBorderColorBlog);
-  box-shadow: var(--btnShadowBlog);
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-}
-.btn__blog:hover {
-  color: var(--btnTextColorHoverBlog);
-  background-color: var(--btnBgColorHoverBlog);
-  border-color: var(--btnBorderColorHoverBlog);
-}
-
-.btn__settings {
+.btn__styles {
   color: var(--btnTextColor);
   background-color: var(--btnBgColor);
-  /* border: var(--btnBorder); */
   height: var(--btnHeight);
   width: var(--btnWidth);
   border-width: var(--btnBorder);
@@ -100,7 +59,7 @@ body {
   justify-content: center;
   align-items: center;
 }
-.btn__settings:hover {
+.btn__styles:hover {
   color: var(--btnTextColorHover);
   background-color: var(--btnBgColorHover);
   border-color: var(--btnBorderColorHover);

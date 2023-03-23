@@ -1,12 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   onDeleteService,
   setNewService,
   setActionServices,
 } from '@/store/services';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { FaEdit, FaPlus, FaTrashAlt } from 'react-icons/fa';
 import { useModal } from '@/hooks/useModal';
+import Tooltip from '@/commons/Tooltip/Tooltip';
 
 const useServices = ({ setEditData, setDelError, editData }) => {
   const dispatch = useDispatch();
@@ -46,12 +47,15 @@ const useServices = ({ setEditData, setDelError, editData }) => {
 
   const actionsMemo = useMemo(
     () => (
-      <button
-        onClick={() => onNew()}
-        className="btn__primary font-normal text-base"
-      >
-        Nuevo
-      </button>
+      <Tooltip content="Nuevo servicio" position="left">
+        <button
+          type="button"
+          className="hover:bg-slate-200 p-2 rounded-full cursor-pointer"
+          onClick={onNew}
+        >
+          <FaPlus className="text-teal-500 text-xl" />
+        </button>
+      </Tooltip>
     ),
     []
   );
