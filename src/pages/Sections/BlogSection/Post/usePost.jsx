@@ -7,7 +7,8 @@ import useEditor from '@/config/useEditor';
 const usePost = ({ editData, onChangePost }) => {
   const dispatch = useDispatch();
   const [isOpenModal, openModal, closeModal] = useModal(false);
-  const quillRef3 = useRef();
+  const quillRef = useRef();
+  const quillRef2 = useRef();
 
   // Data
   const { error } = useSelector((state) => state.posts);
@@ -32,27 +33,31 @@ const usePost = ({ editData, onChangePost }) => {
   const closeMessage = () => {
     dispatch(delError());
   };
-  const onBlurTitle = (value) => {
+  const onBlurTitle = () => {
+    const quillObj = quillRef.current.getEditor();
+    const text = quillObj.getText();
+
     if (post.slug === '') {
-      const slug = value
+      const slug = text
         .trim()
         .replace(/\s+/g, '-')
+        .replace(/,+/g, '')
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
         .toLowerCase();
       onChangePost('slug', slug);
     }
   };
-  const onContent = (value) => {
-    onChangePost('content', value);
+  const onContent = (name, value) => {
+    onChangePost(name, value);
   };
   const handleSelect = (image) => {
     closeModal();
-    const quillObj = quillRef3.current.getEditor();
+    const quillObj = quillRef2.current.getEditor();
     quillObj.focus();
     const position = quillObj.getSelection();
     quillObj.editor.insertEmbed(position.index, 'image', image, 'user');
-    const changes = quillRef3.current.unprivilegedEditor.getHTML();
+    const changes = quillRef2.current.unprivilegedEditor.getHTML();
     onContent(changes);
   };
 
@@ -61,7 +66,8 @@ const usePost = ({ editData, onChangePost }) => {
     error,
     isOpenModal,
     closeModal,
-    quillRef3,
+    quillRef,
+    quillRef2,
     modules,
     blogSection,
     closeMessage,
