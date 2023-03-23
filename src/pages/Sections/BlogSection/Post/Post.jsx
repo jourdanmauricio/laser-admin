@@ -36,7 +36,7 @@ const Post = ({ editData, errorField, onChangePost }) => {
               <label className="form__label">Título</label>
               <ReactQuill
                 ref={quillRef}
-                style={{ backgroundColor: `${pagePost.bgColor.value}` }}
+                style={{ backgroundColor: `${pagePost.heroBgColor.value}` }}
                 theme="snow"
                 value={post.title}
                 onChange={(e) => onContent('title', e)}
