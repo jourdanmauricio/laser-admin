@@ -4,7 +4,7 @@ import { delError } from '@/store/testimonials';
 const useTestimonial = ({ editData }) => {
   const testimonial = useSelector((state) =>
     state.testimonials.testimonials.find(
-      (testimonial) => testimonial.id === editData.id
+      (testimonial) => testimonial.id === editData?.id
     )
   );
   const { error } = useSelector((state) => state.testimonials);

@@ -9,6 +9,7 @@ import {
   onUpdateTestimonial,
   delMessage,
 } from '@/store/testimonials';
+import { setActionTestimonials } from '@/store/testimonials';
 
 const INITIAL_ERROR_TESTOMIALS = {
   name: null,
@@ -62,6 +63,9 @@ const useTestimonialsSection = () => {
       dispatch(delMessage());
     }
   }, [message]);
+  useEffect(() => {
+    dispatch(setActionTestimonials({ action: 'TESTIMONIALS' }));
+  }, []);
   const onChangeTestimonial = (name, value) => {
     dispatch(changeTestimonial({ name, value, id: editData.id }));
 

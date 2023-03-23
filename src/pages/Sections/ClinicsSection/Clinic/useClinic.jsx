@@ -3,8 +3,9 @@ import { delError } from '@/store/clinics';
 
 const useClinic = ({ editData }) => {
   const clinic = useSelector((state) =>
-    state.clinics.clinics.find((clinic) => clinic.id === editData.id)
+    state.clinics.clinics.find((clinic) => clinic.id === editData?.id)
   );
+
   const { error } = useSelector((state) => state.clinics);
   const dispatch = useDispatch();
 

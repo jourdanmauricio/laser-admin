@@ -9,6 +9,7 @@ import {
   changePost,
   delMessage,
 } from '@/store/posts';
+import { setActionPosts } from '@/store/posts';
 
 const INITIAL_ERROR_POSTS = {
   title: null,
@@ -75,6 +76,9 @@ const useBlogSection = () => {
       dispatch(delMessage());
     }
   }, [message]);
+  useEffect(() => {
+    dispatch(setActionPosts({ action: 'POSTS' }));
+  }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();

@@ -1,6 +1,8 @@
 import { useModal } from '@/hooks/useModal';
 import { Modal } from '@/commons/Modal/Modal';
 import Media from '@/components/Media/Media';
+import { FaCloudUploadAlt } from 'react-icons/fa';
+import Tooltip from '@/commons/Tooltip/Tooltip';
 
 const AddPicture = ({ container, handleChangeImage, error }) => {
   const [isOpenModal, openModal, closeModal] = useModal(false);
@@ -21,9 +23,16 @@ const AddPicture = ({ container, handleChangeImage, error }) => {
               alt=""
             />
           </div>
-          <button onClick={openModal} type="button" className="btn__primary">
-            Seleccionar imagen
-          </button>
+
+          <Tooltip content="Seleccionar imagen" position="top">
+            <button
+              type="button"
+              className="hover:bg-slate-200 p-2 rounded-full cursor-pointer"
+              onClick={openModal}
+            >
+              <FaCloudUploadAlt className="text-teal-500 text-4xl" />
+            </button>
+          </Tooltip>
         </div>
 
         <div className="w-full">

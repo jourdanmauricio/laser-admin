@@ -54,7 +54,9 @@ const useServicesSection = () => {
       dispatch(delMessage());
     }
   }, [message]);
-
+  useEffect(() => {
+    dispatch(setActionServices({ action: 'SERVICES' }));
+  }, []);
   const handleDelete = (service) => {
     dispatch(onDeleteService(service));
   };

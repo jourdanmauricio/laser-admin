@@ -9,6 +9,7 @@ import {
   delMessage,
 } from '@/store/clinics';
 import { getAllSettings, updateSettings } from '@/store/settings';
+import { setActionClinics } from '@/store/clinics';
 
 const INITIAL_ERROR_CLINICS = {
   name: null,
@@ -84,6 +85,10 @@ const useClinicsSection = () => {
       dispatch(delMessage());
     }
   }, [message]);
+
+  useEffect(() => {
+    dispatch(setActionClinics({ action: 'CLINICS' }));
+  }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();

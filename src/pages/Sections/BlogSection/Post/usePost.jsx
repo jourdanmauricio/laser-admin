@@ -12,7 +12,7 @@ const usePost = ({ editData, onChangePost }) => {
   // Data
   const { error } = useSelector((state) => state.posts);
   const post = useSelector((state) =>
-    state.posts.posts.find((post) => post.id === editData.id)
+    state.posts.posts.find((post) => post.id === editData?.id)
   );
   const sectionBlog = useSelector((state) =>
     state.settings.settings.filter((setting) => setting.type === 'sectionBlog')

@@ -30,15 +30,6 @@ const useAboutSection = () => {
   const settings = useSelector((state) => state.settings.settings);
 
   // Methods
-  const onChangeSetting = (feature, value) => {
-    dispatch(
-      changeSettings({
-        feature,
-        value,
-        type: aboutSection.bgColor.type,
-      })
-    );
-  };
   const onCancel = () => {
     dispatch(getAllSettings());
   };

@@ -6,7 +6,7 @@ import { useModal } from '@/hooks/useModal';
 
 const useService = ({ editData, onChangeService }) => {
   const service = useSelector((state) =>
-    state.services.services.find((service) => service.id === editData.id)
+    state.services.services.find((service) => service.id === editData?.id)
   );
 
   const { error } = useSelector((state) => state.services);
