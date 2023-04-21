@@ -6,7 +6,7 @@ import { changeSettings } from '@/store/settings';
 const PageSetting = ({ page }) => {
   const dispatch = useDispatch();
 
-  const onChangeSetting2 = (feature, value) => {
+  const onChangeSetting = (feature, value) => {
     dispatch(changeSettings({ feature, value, type: page.h1.type }));
   };
 
@@ -19,7 +19,7 @@ const PageSetting = ({ page }) => {
           theme="snow"
           value={page.h1.value}
           name={page.h1.feature}
-          onChange={(e) => onChangeSetting2(page.h1.feature, e)}
+          onChange={(e) => onChangeSetting(page.h1.feature, e)}
           placeholder={'Write something awesome...'}
           modules={quillSimpleModules}
         />
@@ -33,7 +33,7 @@ const PageSetting = ({ page }) => {
             type="color"
             name={page.heroBgColor.feature}
             value={page.heroBgColor.value}
-            onChange={(e) => onChangeSetting2(e.target.name, e.target.value)}
+            onChange={(e) => onChangeSetting(e.target.name, e.target.value)}
           />
           <input
             type="text"
@@ -41,7 +41,7 @@ const PageSetting = ({ page }) => {
             name={page.heroBgColor.feature}
             placeholder="#531253"
             className="form__input border-gray-500"
-            onChange={(e) => onChangeSetting2(e.target.name, e.target.value)}
+            onChange={(e) => onChangeSetting(e.target.name, e.target.value)}
           />
         </div>
       </div>
@@ -53,7 +53,7 @@ const PageSetting = ({ page }) => {
           theme="snow"
           value={page.text.value}
           name={page.text.feature}
-          onChange={(e) => onChangeSetting2(page.text.feature, e)}
+          onChange={(e) => onChangeSetting(page.text.feature, e)}
           placeholder={'Write something awesome...'}
           modules={quillSimpleModules}
         />
@@ -67,7 +67,7 @@ const PageSetting = ({ page }) => {
             type="color"
             name={page.bgColor.feature}
             value={page.bgColor.value}
-            onChange={(e) => onChangeSetting2(e.target.name, e.target.value)}
+            onChange={(e) => onChangeSetting(e.target.name, e.target.value)}
           />
           <input
             type="text"
@@ -75,7 +75,7 @@ const PageSetting = ({ page }) => {
             name={page.bgColor.feature}
             placeholder="#531253"
             className="form__input border-gray-500"
-            onChange={(e) => onChangeSetting2(e.target.name, e.target.value)}
+            onChange={(e) => onChangeSetting(e.target.name, e.target.value)}
           />
         </div>
       </div>
@@ -88,7 +88,7 @@ const PageSetting = ({ page }) => {
             type="color"
             name={page.decorationColor.feature}
             value={page.decorationColor.value}
-            onChange={(e) => onChangeSetting2(e.target.name, e.target.value)}
+            onChange={(e) => onChangeSetting(e.target.name, e.target.value)}
           />
           <input
             type="text"
@@ -96,7 +96,7 @@ const PageSetting = ({ page }) => {
             name={page.decorationColor.feature}
             placeholder="#531253"
             className="form__input border-gray-500"
-            onChange={(e) => onChangeSetting2(e.target.name, e.target.value)}
+            onChange={(e) => onChangeSetting(e.target.name, e.target.value)}
           />
         </div>
       </div>

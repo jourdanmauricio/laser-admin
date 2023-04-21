@@ -2,44 +2,31 @@ import { FaBars } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 const Nav = () => {
+  const data = useSelector((state) =>
+    state.settings.settings.filter((setting) => setting.type === 'menu')
+  );
+  const menu = data.reduce((obj, cur) => ({ ...obj, [cur.feature]: cur }), {});
+
   const logoImage = useSelector((state) =>
     state.settings.settings.find((setting) => setting.feature === 'logoImage')
   );
-  const navBgColor = useSelector((state) =>
-    state.settings.settings.find((setting) => setting.feature === 'navBgColor')
-  );
-  const navTextColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'navTextColor'
-    )
-  );
-  const navHoverColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'navHoverColor'
-    )
-  );
-  const navCurrentPageColor = useSelector((state) =>
-    state.settings.settings.find(
-      (setting) => setting.feature === 'navCurrentPageColor'
-    )
-  );
 
-  if (navBgColor) {
+  if (menu.bgColor) {
     document.documentElement.style.setProperty(
       '--navBgColor',
-      navBgColor.value
+      menu.bgColor.value
     );
     document.documentElement.style.setProperty(
       '--navHoverColor',
-      navHoverColor.value
+      menu.hoverColor.value
     );
     document.documentElement.style.setProperty(
       '--navTextColor',
-      navTextColor.value
+      menu.textColor.value
     );
     document.documentElement.style.setProperty(
       '--navCurrentPageColor',
-      navCurrentPageColor.value
+      menu.currentPageColor.value
     );
   }
 
