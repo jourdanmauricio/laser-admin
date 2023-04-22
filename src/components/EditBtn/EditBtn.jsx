@@ -15,7 +15,7 @@ const EditBtn = ({ button, currentSection }) => {
       changeSettings({
         feature,
         value,
-        type,
+        type: button.show.type,
       })
     );
   };
