@@ -15,7 +15,7 @@ const EditWave = ({ currentSection, waveColor, section, nextSection }) => {
       changeSettings({
         feature,
         value,
-        type: currentSection.bgColor.type,
+        type: currentSection.wave.type,
       })
     );
   };
