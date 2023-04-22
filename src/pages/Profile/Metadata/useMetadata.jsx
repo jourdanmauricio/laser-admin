@@ -22,7 +22,7 @@ const useMetadata = () => {
     (obj, cur) => ({ ...obj, [cur.feature]: cur }),
     {}
   );
-  const { error, status, message, settings } = useSelector(
+  const { error, statusSettings, message, settings } = useSelector(
     (state) => state.settings
   );
 
@@ -30,7 +30,7 @@ const useMetadata = () => {
   useEffect(() => {
     if (message) {
       dispatchNotif({
-        type: status === 'success' ? 'SUCCESS' : 'ERROR',
+        type: statusSettings === 'success' ? 'SUCCESS' : 'ERROR',
         message,
       });
       dispatch(delMessage());
@@ -108,7 +108,7 @@ const useMetadata = () => {
   return {
     metaData,
     errorField,
-    status,
+    statusSettings,
     error,
     closeMessage,
     onChangeSettings,

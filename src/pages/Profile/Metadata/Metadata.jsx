@@ -8,7 +8,7 @@ const Metadata = () => {
   const {
     metaData,
     errorField,
-    status,
+    statusSettings,
     error,
     closeMessage,
     onChangeSettings,
@@ -16,7 +16,7 @@ const Metadata = () => {
   } = useMetadata();
   return (
     <div className="mb-4">
-      {status === 'loading' && <Spinner />}
+      {statusSettings === 'loading' && <Spinner />}
       {error && <Message msg={error} closeMessage={closeMessage} />}
       <div className="w-full bg-slate-200 mt-4 p-4 rounded shadow-[0_1px_4px_rgba(0,0,0,0.16)]">
         <div className="flex flex-col justify-between items-center gap-4">
